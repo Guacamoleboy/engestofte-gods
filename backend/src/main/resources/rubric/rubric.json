@@ -1,0 +1,120 @@
+{
+  "title": "AIDA Internship Report Rubric",
+  "score_scale": {
+    "minimum": 0.0,
+    "maximum": 10.0,
+    "aggregation": "sum",
+    "aggregation_note": "The source rubric does not specify criterion weights or a final-score calculation."
+  },
+  "score_bands": [
+    {
+      "min_score": 0.0,
+      "max_score": 2.9,
+      "level": "Very Limited",
+      "description": "The criterion is met to a very limited extent, or the student fails to provide substantial evidence needed for grading."
+    },
+    {
+      "min_score": 3.0,
+      "max_score": 4.9,
+      "level": "Low",
+      "description": "The criterion is partially met, while documentation, reflection, or other important grading criteria have not been met with sufficient confidence or valid arguments."
+    },
+    {
+      "min_score": 5.0,
+      "max_score": 6.9,
+      "level": "Acceptable",
+      "description": "The criterion is met at an acceptable level, but the student could have provided greater content or content at a higher level given the learning objectives and criteria."
+    },
+    {
+      "min_score": 7.0,
+      "max_score": 8.9,
+      "level": "Good",
+      "description": "The criterion is met at a more than satisfactory level. The student demonstrates relevant analysis, reflection, and documentation in a professional manner."
+    },
+    {
+      "min_score": 9.0,
+      "max_score": 10.0,
+      "level": "Very High",
+      "description": "The criterion is met at a substantially high level. The student demonstrates clear documentation and understanding of the learning objectives at a very high level and presents their progress and professional development in a clear and valid manner."
+    }
+  ],
+  "criteria": [
+    {
+      "id": "understanding-company-professional-practice",
+      "name": "Understanding of the Company and Professional Practice",
+      "descriptors": {
+        "0.0-2.9": "Shows little understanding of the company or the student's role.",
+        "3.0-4.9": "Shows a basic understanding of the company and the student's role.",
+        "5.0-6.9": "Shows a good basic understanding of the company and professional practice.",
+        "7.0-8.9": "Clearly connects the internship, the company and the student's role.",
+        "9.0-10.0": "Shows a strong and detailed understanding of the company and professional practice."
+      }
+    },
+    {
+      "id": "professional-technical-application",
+      "name": "Professional and Technical Application",
+      "descriptors": {
+        "0.0-2.9": "Shows little use of relevant technical or analytical skills.",
+        "3.0-4.9": "Shows some use of relevant skills, but connections to theory are limited.",
+        "5.0-6.9": "Uses relevant technical skills and connects some work to theory.",
+        "7.0-8.9": "Clearly applies relevant technical skills and theory to practical work.",
+        "9.0-10.0": "Strongly connects technical skills, theory and practical work with clear examples."
+      }
+    },
+    {
+      "id": "problem-solving-professional-reflection",
+      "name": "Problem-Solving and Professional Reflection",
+      "descriptors": {
+        "0.0-2.9": "Mainly describes tasks without meaningful problem-solving or reflection.",
+        "3.0-4.9": "Identifies some problems, but solutions and reflection are limited.",
+        "5.0-6.9": "Identifies problems and gives reasonable solutions with some reflection.",
+        "7.0-8.9": "Clearly analyses problems, solutions and the choices made.",
+        "9.0-10.0": "Shows strong and thoughtful problem-solving with well-supported reflections."
+      }
+    },
+    {
+      "id": "personal-professional-development-dare",
+      "name": "Personal and Professional Development (DARE)",
+      "descriptors": {
+        "0.0-2.9": "Shows little reflection on personal or professional development.",
+        "3.0-4.9": "Mentions some learning or challenges, but reflection is limited.",
+        "5.0-6.9": "Reflects on learning, development and areas for improvement.",
+        "7.0-8.9": "Clearly shows initiative, learning and development through practical experience.",
+        "9.0-10.0": "Shows strong and thoughtful development, initiative and learning from challenges."
+      }
+    },
+    {
+      "id": "collaboration-knowledge-sharing-share",
+      "name": "Collaboration and Knowledge Sharing (SHARE)",
+      "descriptors": {
+        "0.0-2.9": "Shows little evidence of collaboration or knowledge sharing.",
+        "3.0-4.9": "Describes some collaboration, but reflection is limited.",
+        "5.0-6.9": "Shows good participation in teamwork and some knowledge sharing.",
+        "7.0-8.9": "Clearly shows active collaboration, communication and knowledge sharing.",
+        "9.0-10.0": "Shows strong collaboration and meaningful contributions to the team."
+      }
+    },
+    {
+      "id": "professional-responsibility-care",
+      "name": "Professional Responsibility (CARE)",
+      "descriptors": {
+        "0.0-2.9": "Shows little awareness of professional responsibility.",
+        "3.0-4.9": "Shows some awareness, but reflection is limited.",
+        "5.0-6.9": "Shows a good understanding of professional responsibility and own role.",
+        "7.0-8.9": "Clearly reflects on responsibility, relationships and own actions.",
+        "9.0-10.0": "Shows strong and thoughtful reflection on responsibility and professional behaviour."
+      }
+    },
+    {
+      "id": "formal-requirements-report-structure",
+      "name": "Formal Requirements and Report Structure",
+      "descriptors": {
+        "0.0-2.9": "Many requirements are missing or not followed.",
+        "3.0-4.9": "Some requirements are missing or not followed.",
+        "5.0-6.9": "Most requirements are met and the report is easy to follow.",
+        "7.0-8.9": "Requirements are met and the report is well structured and focused.",
+        "9.0-10.0": "All requirements are met and the report is very clear, focused and well structured."
+      }
+    }
+  ]
+}

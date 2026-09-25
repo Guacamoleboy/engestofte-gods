@@ -1,4 +1,4 @@
-# Contribution guide for Alpha Solution Scrum Project
+# Contribution guide for Engestofte Gods Project
 
 This document is made to establish and define code standards for the project. All contributors are expected to follow these when modifying or contributing to the project.
 

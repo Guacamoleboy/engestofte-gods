@@ -1,0 +1,58 @@
+# ------------------------------------------------------------------------------------------------------
+
+# Version 1.0.0
+# Created by Guacamoleboy
+# Last updated: 24/08-2026
+
+# FILE PURPOSE
+#   - Auto update existing .md files on Dify.ai instead of having to use their UI
+
+# ------------------------------------------------------------------------------------------------------
+
+name: Dify Knowledge Pipeline
+
+on:
+  push:
+    paths:
+      - "RAG/knowledge/**/*.md"
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    ## ---- CHECKOUT REPOSITORY  -----------------------------------------------------------------------
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2 # Needed for git diff to know if the file was changed from previous state
+
+      ## ---- SYNC IF CHANGED BY USING DIFY.JSON AS SOURCE OF TRUTH  -----------------------------------
+
+      - name: Sync changed documents
+        env:
+          DIFY_API_KEY: ${{ secrets.DIFY_API_KEY }}
+          DIFY_DATASET_ID: ${{ secrets.DIFY_DATASET_ID }}
+        run: |
+          for file in $(git diff --name-only HEAD^ HEAD -- 'RAG/knowledge/*.md'); do
+            name=$(basename "$file")
+            id=$(jq -r --arg name "$name" '.documents[$name]' dify.json)
+
+            curl --fail --silent --show-error \
+              --request POST \
+              --url "https://api.dify.ai/v1/datasets/$DIFY_DATASET_ID/documents/$id/update-by-text" \
+              --header "Authorization: Bearer $DIFY_API_KEY" \
+              --header "Content-Type: application/json" \
+              --data "$(jq -n \
+                --arg name "$name" \
+                --rawfile text "$file" \
+                '{
+                  name: $name,
+                  text: $text,
+                  doc_form: "hierarchical_model",
+                  doc_language: "English"
+                }')"
+          done

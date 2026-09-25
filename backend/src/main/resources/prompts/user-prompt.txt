@@ -1,0 +1,46 @@
+Evaluate the following student internship report using the provided rubric.
+
+Use the rubric as the only basis for the assessment.
+
+Evaluate every criterion individually.
+
+For each criterion:
+- Provide a score from 0.0 to 10.0.
+- Use exactly one decimal place.
+- Provide a short, professional comment explaining the score.
+- Do not invent information that is not present in the student report.
+- If evidence is missing, treat the lack of evidence as part of the feedback.
+
+Provide:
+- An overall qualitative assessment of the report.
+- Strengths and weaknesses within the overall assessment.
+- Exactly 4 to 6 actionable suggestions or questions that can be used for further dialogue with the student.
+
+Do not calculate the final overall score. Set overall_score to 0.0 because the application will calculate the final overall score.
+
+Return only valid JSON. Do not add Markdown fences, headings, or explanatory text before or after the JSON.
+Use this exact structure. The suggestions array must contain strings, not objects:
+
+{
+  "overall_score": 0.0,
+  "overall_assessment": "Overall qualitative assessment, including strengths and weaknesses.",
+  "criteria": [
+    {
+      "criterion_name": "Criterion name from the rubric",
+      "score": 0.0,
+      "comment": "Short professional comment"
+    }
+  ],
+  "suggestions": [
+    "Actionable suggestion or question 1",
+    "Actionable suggestion or question 2",
+    "Actionable suggestion or question 3",
+    "Actionable suggestion or question 4"
+  ]
+}
+
+RUBRIC:
+{{RUBRIC}}
+
+STUDENT REPORT:
+{{STUDENT_REPORT}}
