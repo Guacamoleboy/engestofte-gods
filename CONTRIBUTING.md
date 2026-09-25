@@ -1,57 +1,33 @@
-# Alpha Solution Scrum Project
+# Contribution guide for Alpha Solution Scrum Project
 
-Project created by Jonas for the 4th Term of AP Computer Science Denmark.
+This document is made to establish and define code standards for the project. All contributors are expected to follow these when modifying or contributing to the project.
 
-[![Visit](https://img.shields.io/badge/Visit-ffffff?style=for-the-badge&color=f99e00)](http://alpha.guacamoleboy.dk)
+## 1. Naming and Formatting
 
----
+### General
 
-> [!NOTE]  
-> All files in the **[main]** branch are final
+- English unless it's internal logs for PO.
+- Use clear and descriptive names for variables, classes and other features.
+- Avoid abbreviations.
 
----
+### Java
 
-## Visual Presentation
+- Classes use PascalCase
+- Methods and variables use camelCase
+- Constants use UPPER_SNAKE_CASE
 
-Member & Owner Dashboard for a Pickleball Facility
+### JavaScript
 
-![Member Display](docs/display/display-1.png)
-![Member Event Display](docs/display/display-2.png)
+- Variables and functions use camelCase
+- React components use PascalCase
+- Constants use UPPER_SNAKE_CASE
 
----
+### Markdown
 
-## Links
+- Use parent / child node layout
+- Be clear and professional
 
-REST API: N/A\
-Website: N/A\
-Github Projects: N/A\
-Docs: N/A
-
----
-
-## Short presentation
-
-Our project is a Pickelball planner tool for the Product Owner. The Product Owner in our case is the owner of the facility. The CEO.
-
-Why?
-A pickelball court is limited in staff needed in order to operate. Most staff needed is service personel.
-
-We are going to include Staff Planning as a seperate tool for the Product Owner in order to fully comply with the task provided by Klaus during class.
-This should showcase the Product Owners resources at any given time of the day and provide a clear overview along with (hopefully) warnings if the team capacity is at limit or close to it.
-
----
-
-## MVP
-
-The system should be a **resource planner** for the Pickelball Facility Owner to track his facility by moving, adding and deleting resources such as **Staff**, **Courts**, **Operating Hours** & **Assignments** to track and plan ahead of schedule.
-By allowing the Owner to implement the system he should be able to see **when his resources are spent up** and need to add additional staff **to handle demand**.
-As a **member** I should be able to **book a court from my selected membership in any available time during the Operating Hours** of the Facility.
-
----
-
-## Folder Structure
-
-This section is to showcase our folder structure. We are using a shared / feature architecture for out frontend application and a normal CRUD REST API Setup for our Java backend.
+## 2. Folder Structure
 
 ### Backend
 
@@ -133,8 +109,42 @@ frontend/
                             └── ComponentName.module.css
 ```
 
----
+## 3. Branch rules
 
-<div align="center">
-    <sub>Alpha Solution Scrum Project - 2026</sub>
-</div>
+- Do not work in main or development
+- Create your own branch from development
+
+## 4. Commit Messages
+
+Should be clear, professional, short and no long essays. It's simply to establish what was done. The overall depth will be in the Pull Request.
+
+## 5. Pull Requests
+
+- Should have a title
+- Should always go to the development branch unless it's a main release
+- Should follow the pull_request_template provided during pull request
+- Should allow the other person to approve the pull request prior to codebase entry (Tine ?)
+- Pass all CI checks
+
+## 6. DTO
+
+In order to comply with EU law, GDPR and internal structures our DTO logic is sacred. Meaning the following should always be the rule of thought.
+
+- Do not expose database IDs or other critial information in the DTOs.
+- Request and response DTOs should be seperated.
+- DTO names should follow the entity names.
+
+Example:
+
+Member (Entity)
+MemberResponse
+MemberRequest
+
+## 7. Validation
+
+Validation happens before service or logic happens internally. Meaning our program should respond once a person without access tries to enter.
+Validation errors should be consistent and professional.
+
+## 8. Exception handle
+
+We are using Java Exception Handle and uses that to showcase feedback to the customer via a notification UI element.
