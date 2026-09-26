@@ -4,6 +4,26 @@
 
 Engestofte Gods is a solo project focused on developing an AI-supported intake solution for wedding enquiries. Work is organised in focused iterations, with AI used as a development and documentation aid.
 
+The root [README.md](../README.md) is the public GitHub introduction. Keep public project information there; keep agent procedures, implementation rules and task-navigation guidance in this document.
+
+## Finding Project Information
+
+Use the smallest relevant set of documents for the task. Start with the project source of truth and then follow the links that apply:
+
+- [docs/README.md](../docs/README.md) is the documentation index and reading guide.
+- [docs/projekt/02-projekt.md](../docs/projekt/02-projekt.md) contains the current approved project scope and MVP.
+- [docs/grilling/01-projekt-afklaring.md](../docs/grilling/01-projekt-afklaring.md) contains approved decisions from the project clarification.
+- [docs/grilling/flow-definition.md](../docs/grilling/flow-definition.md) defines the AI flow and field classifications.
+- [CONTEXT.md](../CONTEXT.md) is the domain glossary and defines the meaning of project terms.
+- [docs/diagrammer/systemskitse.md](../docs/diagrammer/systemskitse.md) describes the system’s main flow.
+- [.scratch/engestofte-mvp/spec.md](../.scratch/engestofte-mvp/spec.md) is the consolidated, buildable MVP specification when it is relevant to implementation.
+- [docs/standards/architecture-and-file-conventions.md](../docs/standards/architecture-and-file-conventions.md) contains implementation conventions and must be read before creating or modifying implementation files.
+- [docs/forventet/](../docs/forventet/) contains the expected domain, database and frontend model. Read the relevant file before changing that area.
+- [RAG/](../RAG/) contains source material and prompt-grounding material for AI-related work.
+- [CONTRIBUTING.md](../CONTRIBUTING.md) contains repository contribution guidance.
+
+For a frontend task, inspect the relevant route, page, feature and shared component under `frontend/src/`. For a backend task, inspect the relevant domain under `backend/src/main/java/alpha/` and its resources under `backend/src/main/resources/`. Search for existing definitions and usages before introducing new structures.
+
 ### Root Folders
 
 - `.github/`: CI / CD, Workflows, Agents and other important tasks related to GitHub and Agents

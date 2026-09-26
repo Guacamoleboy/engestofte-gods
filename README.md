@@ -1,175 +1,75 @@
-# Engestofte Gods — AI-understøttet bryllupsforespørgsel
+# Engestofte Gods
 
-Engestofte Gods-projektet undersøger, hvordan en dokumentforankret AI-løsning kan gøre det lettere for potentielle bryllupskunder at sende en komplet og kvalificeret forespørgsel. Kunden skal opleve en personlig og tryg kontakt, mens Johan/Owner får én samlet sag at arbejde videre med.
+Engestofte Gods explores how a document-grounded AI solution can make it easier for potential wedding customers to submit a complete and qualified enquiry.
 
-Projektet udvikles af Jonas Meinert Larsen som skoleprojekt på datamatikeruddannelsen. Første MVP fokuserer udelukkende på bryllupper.
+The first MVP focuses on weddings.
 
-## MVP’en kort fortalt
+This repository is developed as an AP Computer Science project.
 
-Kundens flow er:
+## MVP overview
+
+Customers are guided through an AI-supported question flow that collects the most important wedding details and asks relevant follow-up questions. A draft can be saved locally and continued after the customer logs in or creates an account.
 
 ```text
-engestofte-gods.dk/kontakt
+engestofte-gods.dk/contact
         ↓
-AI-flow på en ny page
+AI flow
         ↓
-localStorage-kladde
+Draft saved locally
         ↓
-Login eller register
+Login or account creation
         ↓
 /dashboard/events/
-        ↓ Owner/Johan gennemgår og godkender
-/dashboard/events/{id}
         ↓
-Event-data, Messenger, godkendelser og booking
+Owner reviews the enquiry
+        ↓
+/dashboard/events/{id}
 ```
 
-### `/kontakt`
+After approval, the customer gets access to the specific event. The customer and Engestofte Gods can view event details, communicate through Messenger, suggest changes and approve agreements. The status moves from draft and submitted enquiry to approval, deposit and booking.
 
-Entry-siden skal føles som Engestofte Gods’ egen hjemmeside og indeholder blandt andet:
+The AI flow is intended to:
 
-- smiley-rapport i footeren
-- billeder af ledelsen for en personlig oplevelse
-- dansk som standardsprog
-- sprogdropdown for dansk, engelsk og tysk
-- knap, der sender kunden videre til AI-flowet
+- collect the critical wedding details
+- identify missing or conflicting answers
+- present relevant, non-binding upsell suggestions
+- handle known unavailable dates honestly
+- flag uncertainty for review by the Owner
 
-### AI-flowet
+The raw customer draft is stored in `localStorage` until the customer logs in or creates an account. Only then is the enquiry sent to the backend and database. This is a school-prototype decision and is not production approval for GDPR or EU compliance.
 
-AI-flowet er den centrale del af MVP’en. Det skal:
+## Scope
 
-- indsamle de kritiske grundoplysninger om brylluppet
-- stille relevante opfølgende spørgsmål
-- opdage manglende eller modstridende svar
-- vise relevante, ikke-bindende mersalgsforslag
-- håndtere kendt utilgængelige datoer ærligt
-- markere usikkerhed og sende uklare forhold videre til Owner
-- vise et synligt flow med trin og en afsluttende `DONE`-tilstand
+The MVP does not yet include:
 
-Kundens rå kladde gemmes i `localStorage`, indtil kunden opretter bruger eller logger ind. Først derefter sendes forespørgslen til backend og databasen. Dette er en skoleprototypebeslutning og er ikke en produktionsgodkendelse af GDPR- eller EU-compliance.
+- automatic calendar booking or guaranteed availability
+- real payments or a payment provider
+- binding offers, contracts or automatic booking
+- full support for parties, hunting, conferences or Christmas markets
+- automatic email delivery
+- replacement of the existing Squarespace, Trello or finance systems
 
-### Dashboard og event
+The deposit is simulated in the school project. Once the customer and Owner agree, the customer can mark the deposit as paid and the status becomes `Booked`.
 
-Efter login/register sendes kunden til `/dashboard/events/`, hvor kunden kan se status på sine forespørgsler. Kunden kan ikke se den fulde event-platform, før Owner/Johan har godkendt forespørgslen.
+## Technology
 
-Når forespørgslen er godkendt, oprettes eller åbnes kundens konkrete event under `/dashboard/events/{id}`. Her findes:
+- Backend: Java 17, Maven, Javalin, Jackson, Hibernate/JPA and PostgreSQL
+- Frontend: React, Vite and React Router
+- AI: a document-grounded solution with OpenAI as a possible provider
 
-- eventdata og relevante noter i venstre side
-- eventets Messenger i højre side
-- beskeder mellem kontaktpersoner og Owner
-- ændringsforslag, forklaringer og godkendelser
-- status for forespørgsel, depositum og booking
+## Documentation
 
-Alle ændringer i eventdata kræver godkendelse fra både kunde og Owner. En primær kontaktperson har særligt adgangsansvar, mens øvrige kontaktpersoner har lige rettigheder til eventets indhold og Messenger.
-
-Owner har fuld adgang. Staff har read-only-adgang til relevante arrangements- og køkkenoplysninger, men ikke Messenger eller direkte identificerende brugerdata.
-
-## Statusflow
-
-```text
-Kladde
-  → Indsendt
-  → Under gennemgang
-  → Afventer kunde
-  → Godkendt / Event-platform åben
-  → Afventer godkendelse
-  → Afventer depositum
-  → Booket
-```
-
-Depositum er simuleret i skoleprojektet. Når både kunde og Owner er enige, kan kunden trykke `Betal depositum`, hvorefter status går til `Booket`. En primær kontaktperson kan med en tydelig flertrinsbekræftelse annullere eventet. Status bliver da `Annulleret af kunde`, depositum refunderes ikke, og eventet kan ikke genåbnes.
-
-## Dokumenter en agent skal læse først
-
-For at minimere gentagen kontekst bør en agent normalt starte her:
-
-1. [Gældende projektbeskrivelse og MVP](docs/projekt/02-projekt.md)
-2. [Godkendt grilling og beslutningslog](docs/grilling/01-projekt-afklaring.md)
-3. [Fastlagt AI-flow og feltklassifikation](docs/grilling/flow-definition.md)
-4. [Domæneordbog](CONTEXT.md)
-5. [Visuel systemskitse](docs/diagrammer/systemskitse.md)
-6. [Samlet MVP-specifikation](.scratch/engestofte-mvp/spec.md)
-7. [Projektviden og kildemateriale](docs/README.md)
-8. [Arkitektur- og filkonventioner](docs/standards/architecture-and-file-conventions.md)
-9. [Forventede entities, database og frontend](docs/forventet/)
-10. [Agent-instruktioner](.github/agent-instructions.md)
-
-RAG-materialet ligger i [RAG/](RAG/), hvis opgaven handler om AI-viden, dokumentkilder eller promptgrundlag.
-
-## Dokumentation og projektfiler
-
-- [Projektets dokumentationsindeks](docs/README.md)
-- [Systemskitse som SVG](docs/diagrammer/systemskitse.svg)
-- [RAG-indeks](RAG/README.md)
-- [Bidragsguide](CONTRIBUTING.md)
-- [Arkitektur- og filkonventioner](docs/standards/architecture-and-file-conventions.md)
-- [Forventet systemmodel](docs/forventet/)
-- [Agent-instruktioner](.github/agent-instructions.md)
-
-## Afgrænsning
-
-MVP’en implementerer ikke endnu:
-
-- automatisk kalenderbooking eller garanteret tilgængelighed
-- rigtige betalinger eller betalingsudbyder
-- bindende tilbud, kontrakter eller automatisk booking
-- fuld understøttelse af fest, jagt, konference eller julemarked
-- automatisk e-mailafsendelse
-- fuld erstatning af eksisterende Squarespace-, Trello- eller økonomisystemer
-
-## Teknisk struktur
-
-Backendens og frontendens overordnede mappestruktur er fastlagt som grundlag for den videre implementering. Den aktuelle implementering af disse områder ændres ikke som en del af dokumentationsarbejdet.
-
-```text
-backend/
-└── src/main/
-    ├── resources/
-    │   ├── prompts/
-    │   ├── rubric/
-    │   └── http/
-    └── java/<base-package>/
-        ├── <domain>/
-        │   ├── controller/
-        │   ├── service/
-        │   ├── dao/
-        │   ├── entity/
-        │   ├── dto/
-        │   └── mapper/
-        ├── config/
-        ├── exception/
-        ├── security/
-        └── Main.java
-
-frontend/src/
-├── api/
-├── app/
-│   ├── pages/
-│   ├── routes/
-│   └── layout/
-├── features/
-└── shared/
-    ├── styles/
-    ├── data/
-    └── components/
-```
-
-## Technology stack and shared conventions
-
-The backend is a Java 17 Maven project using `pom.xml`, Javalin, Jackson and a normal domain-based REST API. It currently also includes Hibernate/JPA, PostgreSQL, Lombok, JWT, jBCrypt, SLF4J and Logback. OpenAI may be integrated in the backend as the AI provider, but that integration is not installed yet.
-
-The frontend uses React and Vite with React Router and React Helmet Async. TypeScript is the project convention for new frontend code and must be set up through an explicit ticket before it is used broadly.
-
-Reusable frontend values belong in global `:root` variables named `--engestofte-<name>` and are consumed with `var(--engestofte-<name>)`. Shared colors use hexadecimal or `rgba(...)` values. Repeated colors, spacing, typography and other design values must not be duplicated in individual components.
-
-See the full rules in [Architecture and file conventions](docs/standards/architecture-and-file-conventions.md).
-
-## Arbejdsform
-
-Projektet arbejdes videre med dokumenteret scope, domænebeslutninger og små vertikale tickets. Agenten må ikke køre tests, lint, typecheck, build eller Maven, medmindre det specifikt står i brugerens prompt.
+- [Project documentation index](docs/README.md)
+- [Current project description and MVP](docs/projekt/02-projekt.md)
+- [Domain glossary](CONTEXT.md)
+- [System diagram](docs/diagrammer/systemskitse.md)
+- [Architecture and file conventions](docs/standards/architecture-and-file-conventions.md)
+- [Expected system model](docs/forventet/)
+- [RAG material and source documents](RAG/README.md)
+- [Contributing guide](CONTRIBUTING.md)
 
 ---
 
 <div align="center">
-    <sub>Engestofte Gods — Created by Jonas Meinert Larsen — 2026</sub>
+    <sub>Engestofte Gods — 2026</sub>
 </div>
