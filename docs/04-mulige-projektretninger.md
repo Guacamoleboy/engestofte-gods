@@ -58,7 +58,7 @@ En lille agent kontrollerer, om sprogversionerne har samme navigation, om smiley
 
 ## Samlet anbefaling
 
-Den valgte retning er nu beskrevet i [Projekt 01](projekt/01-projekt.md): **et AI-understøttet kontaktflow til bryllupsforespørgsler**. Det afgrænser projektet til én del af kunderejsen, ligger tæt på virksomhedens vigtigste omsætning, aflaster Johan og viser tydeligt AI's rolle.
+Den valgte retning er nu beskrevet i [Projekt 02](projekt/02-projekt.md): **et AI-understøttet kontaktflow til bryllupsforespørgsler**. Det afgrænser projektet til én del af kunderejsen, ligger tæt på virksomhedens vigtigste omsætning, aflaster Johan og viser tydeligt AI's rolle.
 
 Julemarkedets stadeholderassistent er stadig en god alternativ prototype, men den nye kontaktretning har en tydeligere kobling til salg, kundeværdi og Johans daglige belastning.
 

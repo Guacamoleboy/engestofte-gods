@@ -4,11 +4,11 @@
 Approved
 
 ## Context
-Our REST API needs to comply with EU regulation and data handling. This results in the need for Hashing.
+The REST API needs to comply with EU regulation and responsible data handling. This results in the need for hashing.
 Passwords, email and other sensitive information must not be stored in plaintext.
 
 ## Decision
-We will use BCrypt for password and email hashing in our REST API.
+The REST API uses BCrypt for password and email hashing.
 Passwords and emails will be hashed before going into the database.
 When a member logs in the provided password will be verified using BCrypt against the stored hash.
 

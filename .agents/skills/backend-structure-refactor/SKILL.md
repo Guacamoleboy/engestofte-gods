@@ -5,7 +5,7 @@ description: Refactor the Java backend from a layer-based package structure to a
 
 # Custom Refactor Skill created by Guacamoleboy
 
-This skill was created by Guacamoleboy / Jonas / CPH-JL325 for the Alpha Solution Scrum Project to adjust folder structure after PO meeting in Sprint 0 reflection feedback.
+This skill was created by Guacamoleboy / Jonas / CPH-JL325 for the Engestofte Gods project to adjust folder structure after project-owner feedback.
 The skill is added in order to save time by manually refactoring. This allows for a more efficient workflow and allows me to work on something else instead of wasting time
 on a refactor that an LLM can do just as good.
 

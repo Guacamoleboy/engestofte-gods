@@ -1,3 +1,0 @@
-# Interests
-
-N/A

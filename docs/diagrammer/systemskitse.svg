@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1030" viewBox="0 0 1500 1030" role="img" aria-labelledby="title desc">
+  <title id="title">Systemskitse for Engestofte Gods</title>
+  <desc id="desc">Kundeflow fra engestofte-gods.dk/kontakt gennem AI-flow og login til dashboard/events og det godkendte event dashboard/events/id.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,3 L0,6 Z" fill="#334155"/></marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.14"/></filter>
+    <style>
+      .box { stroke: #334155; stroke-width: 2; rx: 16; filter: url(#shadow); }
+      .label { font: 700 20px Arial, sans-serif; fill: #0f172a; text-anchor: middle; }
+      .url { font: 700 17px Arial, sans-serif; fill: #1e3a8a; text-anchor: middle; }
+      .small { font: 15px Arial, sans-serif; fill: #334155; text-anchor: middle; }
+      .section { font: 700 24px Arial, sans-serif; fill: #0f172a; }
+      .lane { font: 700 17px Arial, sans-serif; fill: #475569; }
+      .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .dashed { stroke-dasharray: 8 7; }
+    </style>
+  </defs>
+  <rect width="1500" height="1030" fill="#f8fafc"/>
+  <text x="65" y="58" class="section">Engestofte Gods — systemskitse</text>
+  <text x="65" y="91" class="small" text-anchor="start">Kundens hovedflow fra kontakt til eget godkendt event</text>
+
+  <rect x="45" y="120" width="1410" height="245" rx="22" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
+  <text x="75" y="153" class="lane">Kundens offentlige flow</text>
+  <rect x="80" y="190" width="260" height="115" class="box" fill="#dbeafe"/>
+  <text x="210" y="228" class="label">Entry side</text><text x="210" y="258" class="url">/kontakt</text><text x="210" y="284" class="small">Smiley-rapport og sprogvalg</text>
+  <rect x="410" y="190" width="260" height="115" class="box" fill="#ede9fe"/>
+  <text x="540" y="228" class="label">AI-flow</text><text x="540" y="258" class="url">Ny page</text><text x="540" y="284" class="small">Alle oplysninger og mersalg</text>
+  <rect x="740" y="190" width="260" height="115" class="box" fill="#fef3c7"/>
+  <text x="870" y="228" class="label">Lokal kladde</text><text x="870" y="258" class="url">localStorage</text><text x="870" y="284" class="small">Gemmes før login/register</text>
+  <rect x="1070" y="190" width="350" height="115" class="box" fill="#dcfce7"/>
+  <text x="1245" y="228" class="label">Login / register</text><text x="1245" y="258" class="url">/login eller /register</text><text x="1245" y="284" class="small">Kladde sendes efter autentificering</text>
+  <path d="M340 247 H410" class="arrow"/><path d="M670 247 H740" class="arrow"/><path d="M1000 247 H1070" class="arrow"/>
+
+  <rect x="45" y="405" width="1410" height="245" rx="22" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+  <text x="75" y="438" class="lane">Forespørgsel og intern behandling</text>
+  <rect x="100" y="475" width="330" height="115" class="box" fill="#dbeafe"/>
+  <text x="265" y="513" class="label">Kundens forespørgsel</text><text x="265" y="543" class="url">/dashboard/events/</text><text x="265" y="569" class="small">Status og oversigt over forespørgsler</text>
+  <rect x="585" y="475" width="330" height="115" class="box" fill="#fee2e2"/>
+  <text x="750" y="513" class="label">Owner / Johan</text><text x="750" y="543" class="url">Gennemgang</text><text x="750" y="569" class="small">Afklarer og godkender forespørgsel</text>
+  <rect x="1070" y="475" width="330" height="115" class="box" fill="#fef3c7"/>
+  <text x="1235" y="513" class="label">Status tilbage til kunde</text><text x="1235" y="543" class="url">Afventer / Godkendt</text><text x="1235" y="569" class="small">Kunde kan se fremdrift</text>
+  <path d="M1245 305 V405 H265 V475" class="arrow"/><path d="M430 532 H585" class="arrow"/><path d="M915 532 H1070" class="arrow"/><path d="M1070 590 H915 V625 H430 V590" class="arrow dashed"/>
+  <text x="752" y="620" class="small">Afklaring eller ændringer</text>
+
+  <rect x="45" y="690" width="1410" height="245" rx="22" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2"/>
+  <text x="75" y="723" class="lane">Godkendt event</text>
+  <rect x="115" y="760" width="380" height="115" class="box" fill="#dcfce7"/>
+  <text x="305" y="798" class="label">Kundens event dashboard</text><text x="305" y="828" class="url">/dashboard/events/{id}</text><text x="305" y="854" class="small">Åbnes efter Owner-godkendelse</text>
+  <rect x="560" y="760" width="380" height="115" class="box" fill="#ede9fe"/>
+  <text x="750" y="798" class="label">Event-data og Messenger</text><text x="750" y="828" class="url">Pr. event</text><text x="750" y="854" class="small">Kontaktpersoner ↔ Owner</text>
+  <rect x="1005" y="760" width="380" height="115" class="box" fill="#bbf7d0"/>
+  <text x="1195" y="798" class="label">Afventer depositum → Booket</text><text x="1195" y="828" class="url">Eventet fortsætter</text><text x="1195" y="854" class="small">Depositum simuleres i skoleprojektet</text>
+  <path d="M1235 590 V680 H305 V760" class="arrow"/><path d="M495 817 H560" class="arrow"/><path d="M940 817 H1005" class="arrow"/>
+
+  <rect x="65" y="965" width="1370" height="40" rx="10" fill="#e2e8f0" stroke="#cbd5e1"/>
+  <text x="750" y="991" class="small">Udarbejdet af AI med godkendelse og menneskelig vurdering af Jonas Meinert Larsen — CPH-JL325@stud.ek.dk</text>
+</svg>

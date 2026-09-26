@@ -4,11 +4,11 @@
 
 <div align="center">
 
-# AIDA — AI Driven Applications
+# Engestofte Gods — RAG-koncepter
 
-**© 2026 Guacamoleboy. All rights reserved.**
+**© 2026 Jonas.**
 
-This document is part of the **AIDA — AI Driven Applications** project by Guacamoleboy.
+This document explains the RAG concepts used in the Engestofte Gods project.
 
 </div>
 
@@ -71,7 +71,7 @@ Input: Images
 <!-- ------------------------------------------------------------------------------------------ -->
 
 <div align="center">
-    <sub>AIDA - AI Drevne Applikationer - © 2026 Guacamoleboy</sub>
+    <sub>Engestofte Gods — Created by Jonas — 2026</sub>
 </div>
 
 <!-- ------------------------------------------------------------------------------------------ -->

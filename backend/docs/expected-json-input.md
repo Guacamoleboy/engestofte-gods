@@ -4,8 +4,8 @@ Used at initial setup to establish entities and DTOs.
 
 ## Context
 
-In order to re-design the workflow around DTOs, Entities and DAOs we are starting with what our expected JSON would look like.
-This should give us pretty much our first DTOs and our first Entities.
+In order to redesign the workflow around DTOs, entities and DAOs, the design starts with the expected JSON structure.
+This provides the basis for the first DTOs and entities.
 
 NOTE: This is an estimate and not the final solution.
 

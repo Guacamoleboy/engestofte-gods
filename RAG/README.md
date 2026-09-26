@@ -4,11 +4,11 @@
 
 <div align="center">
 
-# AIDA — AI Driven Applications
+# Engestofte Gods — Knowledge Base
 
-**© 2026 Guacamoleboy. All rights reserved.**
+**© 2026 Jonas.**
 
-This document is part of the **AIDA — AI Driven Applications** project by Guacamoleboy.
+This folder contains project knowledge for the Engestofte Gods AI-supported wedding enquiry solution.
 
 </div>
 
@@ -18,27 +18,27 @@ This document is part of the **AIDA — AI Driven Applications** project by Guac
 
 ---
 
-# RAG - Retrieval-Augmented Generation
+# Retrieval-Augmented Generation
 
 > [!IMPORTANT]  
-> This folder is used in order to learn RAG for my AIDA School Course\
-> Files, Documents, Descriptions and such are personal and should not be taken serious.
->
-> Please do not use my files for you own projects.
+> The documents in this folder are structured as independent knowledge articles. They can be used with Dify, OpenAI or another retrieval system.
 
 ---
 
-### Repository use
+## Purpose
 
-Repository is used for storage and cloud solution instead of using Dropbox, Google Docs and other online solutions.
-It serves no real use at the moment other than storing my files regarding RAG and AIDA Course.
+The knowledge base supports a conversational assistant for Engestofte Gods. The assistant helps a potential wedding customer prepare a complete enquiry and escalates decisions that require Johan's approval.
+
+Each file in `knowledge/` covers one subject so it can be uploaded as a separate document. `docs/projekt/01-projekt.md` remains the authoritative project description; these files are retrieval-oriented summaries and must be updated when the project scope changes.
+
+The documents currently describe a prototype direction, not confirmed production policy. Prices, availability, transport, legal details and package thresholds must be verified before being presented as facts.
 
 ---
 
 <!-- ------------------------------------------------------------------------------------------ -->
 
 <div align="center">
-    <sub>Engestofte Gods - Created by Jonas - 2026</sub>
+    <sub>Engestofte Gods — Created by Jonas — 2026</sub>
 </div>
 
 <!-- ------------------------------------------------------------------------------------------ -->

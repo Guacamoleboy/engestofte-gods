@@ -1,12 +1,12 @@
 # Contribution guide for Engestofte Gods Project
 
-This document is made to establish and define code standards for the project. All contributors are expected to follow these when modifying or contributing to the project.
+This document establishes the code standards for the Engestofte Gods project. Any future contributor is expected to follow them when modifying the project.
 
 ## 1. Naming and Formatting
 
 ### General
 
-- English unless it's internal logs for PO.
+- English unless the document is intended for the project owner or customer.
 - Use clear and descriptive names for variables, classes and other features.
 - Avoid abbreviations.
 
@@ -48,7 +48,7 @@ backend/
         |
         └── java/
             |
-            └── alpha/
+            └── <base-package>/
                 |
                 ├── <domain>/
                 |   |
@@ -128,7 +128,7 @@ Should be clear, professional, short and no long essays. It's simply to establis
 
 ## 6. DTO
 
-In order to comply with EU law, GDPR and internal structures our DTO logic is sacred. Meaning the following should always be the rule of thought.
+In order to comply with EU law, GDPR and internal structures, the DTO logic is treated as a strict project rule. The following principles always apply.
 
 - Do not expose database IDs or other critial information in the DTOs.
 - Request and response DTOs should be seperated.
@@ -142,9 +142,9 @@ MemberRequest
 
 ## 7. Validation
 
-Validation happens before service or logic happens internally. Meaning our program should respond once a person without access tries to enter.
+Validation happens before service logic runs. The application should respond immediately when a person without access tries to enter.
 Validation errors should be consistent and professional.
 
 ## 8. Exception handle
 
-We are using Java Exception Handle and uses that to showcase feedback to the customer via a notification UI element.
+The project uses Java exception handling to provide customer feedback through a notification UI element.

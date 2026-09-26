@@ -34,6 +34,7 @@ backend/target/
 backend/src/main/resources/http/
 backend/logs
 backend/.idea
+*.idea
 
 # === Editor caches ===
 .vscode/

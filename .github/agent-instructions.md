@@ -1,26 +1,28 @@
-# Alpha Solution Agent Instructions
+# Engestofte Gods Agent Instructions
 
 ## Project Overview
 
-Alpha Solution is about using Scrum as a development team and working in Sprints throughout the course. We will progress using Scrum techniques and try to integrate AI into our Scrum workflow.
+Engestofte Gods is a solo project focused on developing an AI-supported intake solution for wedding enquiries. Work is organised in focused iterations, with AI used as a development and documentation aid.
 
 ### Root Folders
 
 - `.github/`: CI / CD, Workflows, Agents and other important tasks related to GitHub and Agents
 - `docs/`: Files and important project documentation
-- `frontend/`: Portfolio website for AIDA
+- `frontend/`: Web application for Engestofte Gods' wedding enquiry flow
 - `backend/`: Java REST App for Rubric and client learning purposes
 - `.agents/skills/`: Agent Skills specific to this Repository and Project.
+
+Before creating implementation files, read [architecture-and-file-conventions.md](../docs/standards/architecture-and-file-conventions.md) and the relevant documents in [docs/forventet/](../docs/forventet/). They define the project owner’s required frontend separation, comment format, tab indentation, backend DTO/entity/mapper/service conventions and the expected MVP system model.
 
 ### Core Architecture (`frontend/` folder)
 
 - `frontend/node_modules/` - Installed npm dependencies. Do not modify files in this directory manually.
 - `frontend/public/` - Static assets that are served directly by the frontend.
 - `frontend/src/` - Main frontend source code.
-- `frontend/src/app/` - Pages, layout, access, roles and entry point for the portfolio.
-- `frontend/src/features/` - Components that are page specific only.
+- `frontend/src/app/` - Pages, layout, access, roles and entry point for the application.
+- `frontend/src/features/` - Components that are specific to a page or feature.
 - `frontend/src/features/any-page/` - Components are page based.
-- `frontend/src/shared/` - Used for shared context across the portfolio. Globals, types, styling and misc.
+- `frontend/src/shared/` - Shared context, globals, types, styling and utilities across the application.
 - `frontend/src/shared/hooks/` - Custom hooks to prevent redundant code across the app. Such as useAuth, useForm and so on.
 - `frontend/src/shared/utils/` - Shared utility classes and functions to prevent redundant implementations.
 - `frontend/src/shared/context/` - Context files that are added to reduce the need for parent / child behavior when a component tree becomes too big.
@@ -79,13 +81,12 @@ When requesting approval, briefly state what will be changed, which files are ex
 
 Before modifying code, inspect the relevant files and surrounding implementation. Do not assume a file, function, API, dependency, or configuration exists. Verify it first.
 
-## Validating TypeScript Changes
+## Validation Commands
 
-- `npm run typecheck-client` for the main sources under `frontend/`.
-- Run the narrowest relevant validation for the changes made.
-- Run relevant existing tests when applicable.
-- Do not run or ask the user to run `npm run build` unless the user explicitly requests a build.
-- Report validation failures clearly instead of hiding, bypassing, or silently ignoring them.
+- Do not run tests, linting, type checks, builds or Maven commands automatically.
+- Run a validation command only when the prompt explicitly requests that command or explicitly asks for validation.
+- When validation is explicitly requested, use the narrowest relevant command, such as `npm run typecheck-client` or a targeted Maven test.
+- Report requested validation failures clearly instead of hiding, bypassing or silently ignoring them.
 
 ## Coding Guidelines
 

@@ -1,7 +1,12 @@
 {
   "documents": {
-    "NAME.md": "ID-HERE-OK",
-    "NAME2.md": "ID-HERE-OK",
-    "NAME3.md": "ID-HERE-OK"
+    "01-project-overview.md": "ID-HERE-OK",
+    "02-business-context.md": "ID-HERE-OK",
+    "03-wedding-enquiry-flow.md": "ID-HERE-OK",
+    "04-ai-role-and-guardrails.md": "ID-HERE-OK",
+    "05-mvp-scope.md": "ID-HERE-OK",
+    "06-case-data-and-status.md": "ID-HERE-OK",
+    "07-sources-and-compliance.md": "ID-HERE-OK",
+    "08-design-and-languages.md": "ID-HERE-OK"
   }
 }

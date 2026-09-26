@@ -1,7 +1,7 @@
-# This is a Pull Request template used for Alpha Solutions Scrum Project.
+# Pull Request template for the Engestofte Gods project.
 
 > [!NOTE]
-> Please make sure you follow the CONTRIBUTION.md or the pull request is invalid. It is up to the entire development team to make sure the contribution requirements are met.
+> Please make sure you follow [CONTRIBUTING.md](../CONTRIBUTING.md) before submitting the pull request.
 
 ---
 
@@ -32,7 +32,6 @@ Closes issue
 ### Checklist
 
 - [ ] I'm on the newest version of the Codebase
-- [ ] I have not used AI generated code for my solution
 - [ ] I made sure it works prior to sending this Pull Request
 - [ ] Architecture follows the rest of the Codebase
 - [ ] Passes all tests & CI workflows

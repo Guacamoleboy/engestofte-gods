@@ -1,6 +1,6 @@
 # Visuel identitet og UI-principper
 
-Dette dokument fastholder observationer om Engestofte Gods' nuværende visuelle identitet. Det skal bruges som designreference, hvis vi senere laver en prototype eller nye UI-elementer.
+Dette dokument fastholder observationer om Engestofte Gods' nuværende visuelle identitet. Det skal bruges som designreference, hvis jeg senere laver en prototype eller nye UI-elementer.
 
 ## Kilde og sikkerhed
 

@@ -1,3 +1,0 @@
-# Skills
-
-N/A

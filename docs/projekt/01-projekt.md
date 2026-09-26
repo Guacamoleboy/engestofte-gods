@@ -1,6 +1,6 @@
 # Projekt 01 — AI-understøttet bryllupsforespørgsel
 
-**Status:** Foreløbig valgt projektretning  
+**Status:** Historisk projektretning — erstattet af [Projekt 02](02-projekt.md)  
 **Fokus:** Bryllupper  
 **Primær bruger hos Engestofte:** Johan  
 **Primær kundeværdi:** Fra løs henvendelse til komplet og kvalificeret forespørgsel  
@@ -8,7 +8,7 @@
 
 ## 1. Projektets idé
 
-Vi vil udvikle en online kontaktløsning, hvor en potentiel bryllupskunde kan tale med Engestofte Gods gennem en naturlig, guidet samtale.
+Jeg vil udvikle en online kontaktløsning, hvor en potentiel bryllupskunde kan tale med Engestofte Gods gennem en naturlig, guidet samtale.
 
 Løsningen skal føles som at tale med et menneske, men den skal arbejde struktureret i baggrunden. AI'en stiller ét relevant spørgsmål ad gangen, validerer svarene, finder mangler og fortsætter, indtil forespørgslen indeholder de oplysninger, som Johan har brug for til at vurdere den.
 
@@ -174,7 +174,7 @@ Det eksisterende materiale viser flere enkeltstående tilvalg og tillæg, blandt
 - koordinering
 - overnatning og ekstra nætter
 
-De fremgår som individuelle muligheder i prisdokumenter og på hjemmesiden. Materialet viser derimod ikke, at Engestofte allerede sælger en samlet **intim bryllupspakke**, **weekendpakke** eller **transportpakke**. Disse er derfor forslag til ny mersalgslogik i projektet — ikke funktioner, vi skal beskrive som eksisterende produkter.
+De fremgår som individuelle muligheder i prisdokumenter og på hjemmesiden. Materialet viser derimod ikke, at Engestofte allerede sælger en samlet **intim bryllupspakke**, **weekendpakke** eller **transportpakke**. Disse er derfor forslag til ny mersalgslogik i projektet — ikke funktioner, jeg skal beskrive som eksisterende produkter.
 
 ### Forslag: intim bryllupspakke
 
@@ -182,7 +182,7 @@ Når kunden angiver et lavere gæsteantal, skal systemet kunne foreslå en særl
 
 Eksempel:
 
-> I har angivet 60 gæster. Ved mindre bryllupper anbefaler vi vores intime bryllupsløsning, som kan indeholde ekstra koordinering, mere personlig planlægning, udvalgte drikkevarer, borddækning og mulighed for transport. Johan tilpasser løsningen til jeres ønsker.
+> I har angivet 60 gæster. Engestofte kan ved mindre bryllupper foreslå en intim bryllupsløsning, som kan indeholde ekstra koordinering, mere personlig planlægning, udvalgte drikkevarer, borddækning og mulighed for transport. Johan tilpasser løsningen til jeres ønsker.
 
 Den konkrete grænse skal være konfigurerbar. Kundematerialet nævner tillæg ved 60 gæster eller derunder, mens Johan i dialogen har omtalt en mulig grænse omkring 80 gæster. Projektet må derfor ikke hardcode 60 eller 80, før Johan har bekræftet den forretningsmæssige tærskel.
 
@@ -315,7 +315,7 @@ Dify eller en tilsvarende RAG-/agentløsning kan undersøges som AI-lag. Den end
 
 ## 15. Projektets næste fase
 
-Før implementering skal vi afklare:
+Før implementering skal jeg afklare:
 
 - den præcise minimumsliste af oplysninger for en bryllupsforespørgsel
 - hvilke PDF’er og dokumenter der er aktuelle

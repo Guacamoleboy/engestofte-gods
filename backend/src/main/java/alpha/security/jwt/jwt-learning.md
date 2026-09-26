@@ -27,9 +27,9 @@ ___
 ## What is a claim?
 
 A claim is the payload. See it as JSON data. The claim is basically JSON formatting of data.\
-So for example if we were to .claim(x, x) we would se x to x in our claim JSON formatting.
+For example, `.claim(x, x)` sets x to x in the claim JSON format.
 
-By adding a getClaims and getter for each field we can pull the data directly from the claim itself.\
+By adding `getClaims` and a getter for each field, the data can be read directly from the claim itself.\
 Smart.
 
 ___

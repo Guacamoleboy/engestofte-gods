@@ -4,18 +4,18 @@
 Approved
 
 ## Context
-Our application needs a place to store its data. The database should work with Java and be able to store needed information
+The application needs a place to store its data. The database should work with Java and be able to store the required information.
 and the needed size of data.
 
 ## Decision
-We are going to use PostgreSQL as that is what we are most comfortable with as a group.
+PostgreSQL is selected because it is a well-supported relational database for the application and the technology is familiar to the developer.
 
 ## Alternatives
 MySQL
 MongoDB
 MariaDB
 
-All rejected as the team focuses on completing tasks instead of extending knowledge.
+The alternatives are rejected so the project can focus on completing the required tasks instead of extending the technology scope.
 
 ## Consequences
 - The application uses a reliable database system that is able to handle the information it needs to.

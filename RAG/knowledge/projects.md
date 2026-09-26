@@ -1,3 +1,0 @@
-# Projects
-
-N/A

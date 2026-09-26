@@ -8,7 +8,7 @@ The application requires a backend that can provide the needed functionality and
 The backend should be easy to maintain, text and extend in case of additional functionality.
 
 ## Decision
-We will use TEST API as the architecture and solution for this specific application. It'll be the communication between
+The project uses TEST API as the architecture and solution for this specific application. It is the communication between
 the frontend layer and the backend layer.
 
 The backend folder structure will be:
@@ -26,7 +26,7 @@ The backend folder structure will be:
 ## Alternatives
 GraphQL
 
-Not using GraphQL as the team struggles as a 2-man group already while learning a new system for some of the team members
+GraphQL is not used because the project prioritises a focused implementation while the technology is still being learned.
 will cause unneeded stress.
 
 ## Consequences

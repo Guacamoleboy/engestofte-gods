@@ -4,8 +4,8 @@ Used at initial setup to establish entities and DTOs.
 
 ## Context
 
-In order to re-design the workflow around DTOs, Entities and DAOs we are starting with what our expected JSON would look like.
-This should give us pretty much our first DTOs and our first Entities.
+In order to redesign the workflow around DTOs, entities and DAOs, the design starts with the expected JSON structure.
+This provides the basis for the first DTOs and entities.
 
 NOTE: This is an estimate and not the final solution.
 
@@ -15,7 +15,7 @@ NOTE: This is an estimate and not the final solution.
 - membership_id is used to establish the type of membership
 - is_active is used to establish if the customer has been there in the past 14 days hence active or not (for planning purpose)
 - last_played is to establish an initial landing page with a "Skal vi booke igen.. ?" button
-- email should be either hashed or encrypted. I'm actually on the encryption team for this one if we want to add support later on.
+- email should be either hashed or encrypted. Hashing is preferred unless a future requirement calls for reversible encryption.
 
 ## Expected Output
 

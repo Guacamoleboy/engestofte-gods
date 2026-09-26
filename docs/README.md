@@ -4,6 +4,23 @@ Dette er den redigerede indgang til projektets kundemateriale. Projektets forel�
 
 ## Start her
 
+Hvis du skal forstå den nuværende MVP hurtigt, så læs i denne rækkefølge:
+
+1. [Projektets README](../README.md) — kort over scope, routes og arbejdsform.
+2. [Gældende projektbeskrivelse](projekt/02-projekt.md) — godkendt scope og source of truth.
+3. [Historisk projektidé](projekt/01-projekt.md) — tidligere retning og baggrund.
+4. [Godkendt grilling](grilling/01-projekt-afklaring.md) — beslutninger fra afklaringssessionen.
+5. [Flow-definition](grilling/flow-definition.md) — konkrete trin og feltklassifikation.
+6. [Domæneordbog](../CONTEXT.md) — fælles betydning af projektets begreber.
+7. [Systemskitse](diagrammer/systemskitse.md) — applikationens hovedflow.
+8. [MVP-specifikation](../.scratch/engestofte-mvp/spec.md) — samlet buildbar kontrakt for implementation.
+9. [Arkitektur- og filkonventioner](standards/architecture-and-file-conventions.md) — forventet struktur for frontend og backend.
+10. [Forventede entities](forventet/entities.md) — foreløbige domæneområder og entities.
+11. [Forventede database-relationer](forventet/database.md) — PostgreSQL-relationer og åbne databasevalg.
+12. [Forventet frontend](forventet/frontend.md) — pages, components, hooks og route guards.
+
+De øvrige dokumenter er baggrund, kilder eller undervisningsmateriale. De bør kun læses, når opgaven kræver det.
+
 1. [Kunde og forretning](01-kunde-og-forretning.md) — hvem kunden er, og hvordan virksomheden fungerer.
 2. [Problemer og muligheder](02-problemer-og-muligheder.md) — de vigtigste arbejdsgange, smertepunkter og mulige AI-anvendelser.
 3. [Julemarkedet](03-julemarkedet.md) — afgrænset problemområde med konkrete observationer fra mødet.
