@@ -1,0 +1,31 @@
+.field {
+	display: grid;
+	gap: 0.45rem;
+}
+
+.label {
+	color: var(--engestofte-heading);
+	font-size: 0.86rem;
+	font-weight: 600;
+}
+
+.input {
+	width: 100%;
+	min-height: 3rem;
+	border: 1px solid var(--engestofte-border);
+	border-radius: var(--engestofte-radius-sharp);
+	padding: 0.7rem 0.85rem;
+	background: var(--engestofte-white);
+	color: var(--engestofte-text);
+	font: inherit;
+}
+
+.input:focus-visible {
+	outline: 3px solid var(--engestofte-focus);
+	outline-offset: 3px;
+}
+
+.textarea {
+	min-height: 8rem;
+	resize: vertical;
+}
