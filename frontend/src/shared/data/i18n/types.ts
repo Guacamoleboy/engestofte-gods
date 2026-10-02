@@ -5,6 +5,24 @@
 export type Language = 'da' | 'en' | 'de'
 
 export type TranslationContent = {
+	aiFlow: {
+		introMessage: string
+		flowProgress: string
+		cancelRequest: string
+		firstQuestion: string
+		answerLabel: string
+		answerPlaceholder: string
+		assistantName: string
+		customerName: string
+		statusSending: string
+		statusSent: string
+		statusReceived: string
+		statusNew: string
+		statusFailed: string
+		error: string
+		pending: string
+		submit: string
+	}
 	navigation: {
 		label: string
 		openMenu: string

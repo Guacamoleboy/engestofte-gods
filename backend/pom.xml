@@ -170,7 +170,7 @@
     <!-- ___________ ## BUILD ## ___________________________________________________________________________________ -->
 
     <build>
-        <finalName>alpha-backend</finalName>
+        <finalName>engestofte-backend</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -208,7 +208,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>alpha.Main</mainClass>
+                                    <mainClass>engestofte.Main</mainClass>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>

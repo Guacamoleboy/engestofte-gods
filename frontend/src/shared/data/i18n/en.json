@@ -1,4 +1,22 @@
 {
+	"aiFlow": {
+		"introMessage": "I am an AI assistant, not a person. Your messages are stored in Engestofte Estate’s enquiry history. Do not share sensitive personal information. This is a prototype and is not approved for production use under GDPR.",
+		"flowProgress": "Flow {step}/6",
+		"cancelRequest": "Cancel enquiry",
+		"firstQuestion": "What name should I create the enquiry under?",
+		"answerLabel": "Your answer",
+		"answerPlaceholder": "Send a message...",
+		"assistantName": "Engestofte Estate · AI assistant",
+		"customerName": "You",
+		"statusSending": "Sending...",
+		"statusSent": "Sent",
+		"statusReceived": "Reply received",
+		"statusNew": "New message",
+		"statusFailed": "Not sent · try again",
+		"error": "We could not get a response right now. Please try again.",
+		"pending": "Thinking...",
+		"submit": "Send answer"
+	},
 	"navigation": {
 		"label": "Main navigation",
 		"openMenu": "Open navigation",
@@ -67,7 +85,7 @@
 		"smileyReport": "Food inspection report"
 	},
 	"placeholder": {
-		"eyebrow": "Engestofte Estate · wedding enquiry",
+		"eyebrow": "Engestofte Estate · event enquiry",
 		"notFound": "Page not found",
 		"notFoundDescription": "Return to the contact page to get started.",
 		"comingSoon": "This section is coming soon",
@@ -75,7 +93,7 @@
 		"backToContact": "Back to contact page",
 		"routeLabel": "Route",
 		"routes": {
-			"/ai-flow": "Your wedding, your wishes",
+			"/ai-flow": "Your event, your wishes",
 			"/login": "Log in",
 			"/register": "Create an account",
 			"/dashboard/events/": "My enquiries",

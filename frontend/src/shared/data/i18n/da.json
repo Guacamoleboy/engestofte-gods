@@ -1,4 +1,22 @@
 {
+	"aiFlow": {
+		"introMessage": "Jeg er en AI-assistent, ikke et menneske. Dine beskeder gemmes i Engestofte Gods’ forespørgselshistorik. Del ikke følsomme personoplysninger. Dette er en prototype og ikke godkendt til produktionsbrug under GDPR.",
+		"flowProgress": "Flow {step}/6",
+		"cancelRequest": "Annullér forespørgsel",
+		"firstQuestion": "Hvilket navn skal jeg oprette forespørgslen i?",
+		"answerLabel": "Jeres svar",
+		"answerPlaceholder": "Send besked...",
+		"assistantName": "Engestofte Gods · AI-assistent",
+		"customerName": "Jer",
+		"statusSending": "Sender...",
+		"statusSent": "Sendt",
+		"statusReceived": "Svar modtaget",
+		"statusNew": "Ny besked",
+		"statusFailed": "Ikke sendt · prøv igen",
+		"error": "Vi kunne ikke hente et svar lige nu. Prøv igen.",
+		"pending": "Tænker...",
+		"submit": "Send svar"
+	},
 	"navigation": {
 		"label": "Hovednavigation",
 		"openMenu": "Åbn navigation",
@@ -67,7 +85,7 @@
 		"smileyReport": "Se smileyrapport"
 	},
 	"placeholder": {
-		"eyebrow": "Engestofte Gods · bryllupsforespørgsel",
+		"eyebrow": "Engestofte Gods · eventforespørgsel",
 		"notFound": "Siden blev ikke fundet",
 		"notFoundDescription": "Gå tilbage til kontaktsiden og start herfra.",
 		"comingSoon": "Denne del åbner snart",
@@ -75,7 +93,7 @@
 		"backToContact": "Til kontaktsiden",
 		"routeLabel": "Rute",
 		"routes": {
-			"/ai-flow": "Jeres bryllup, jeres ønsker",
+			"/ai-flow": "Jeres event, jeres ønsker",
 			"/login": "Log ind",
 			"/register": "Opret konto",
 			"/dashboard/events/": "Mine forespørgsler",

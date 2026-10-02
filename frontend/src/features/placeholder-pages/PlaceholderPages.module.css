@@ -1,0 +1,49 @@
+/* Pathing
+   _______
+   src/features/placeholder-pages/PlaceholderPages.module.css */
+
+.placeholderPage {
+	min-height: 60vh;
+	padding-top: var(--engestofte-space-10);
+}
+
+.placeholderPage h1 {
+	max-width: 44rem;
+	margin: 0;
+	color: var(--engestofte-heading);
+	font-family: var(--engestofte-font-display);
+	font-size: clamp(2.5rem, 5vw, 4.25rem);
+	font-weight: 400;
+	letter-spacing: -0.045em;
+	line-height: 1.04;
+}
+
+.eyebrow {
+	margin: 0 0 var(--engestofte-space-4);
+	color: var(--engestofte-green);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.placeholderCard {
+	max-width: 46rem;
+	margin-top: var(--engestofte-space-8);
+}
+
+.routeCaption {
+	margin-top: var(--engestofte-space-5);
+	color: var(--engestofte-muted);
+	font-size: 0.82rem;
+}
+
+.routeCaption code {
+	color: var(--engestofte-green-dark);
+}
+
+@media (max-width: 560px) {
+	.placeholderPage {
+		padding-top: var(--engestofte-space-6);
+	}
+}

@@ -79,6 +79,10 @@ Dokumentationen skal tydeligt notere, at denne prototypebeslutning ikke er en pr
 
 Prototypefasen må demonstrere localStorage-flowet uden at gennemføre en fuld produktionsjuridisk vurdering. Før løsningen eventuelt bruges med rigtige kundedata i produktion, skal GDPR-vurdering, databehandlingsgrundlag, opbevaring og sikkerhed afklares.
 
+### Opfølgende beslutning — AI-interaktioner før login
+
+ADR-001 præciserer den tekniske prototypeadfærd: hvert svar, der sendes til AI-flowet, gemmes som en `AiFlow`-interaktion sammen med spørgsmålet og AI-resultatet. Det er ikke en indsendt forespørgsel, knyttes ikke til en konto og vises ikke til Johan. Den samlede, genoptagelige kladde ligger fortsat i `localStorage`, og den samlede `WeddingEnquiry` oprettes først efter login eller brugeroprettelse. Se [ADR-001](../../backend/docs/ARD/001-openai-backend.md).
+
 ### D6 — Fem trin er tilstrækkelige for MVP-flowet
 
 Kildematerialet kræver ikke et ekstra selvstændigt trin. De fem trin fastholdes med denne præcisering:

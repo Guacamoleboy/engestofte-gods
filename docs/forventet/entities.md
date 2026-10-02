@@ -31,13 +31,14 @@ Dette dokument er et bud på de domæneområder og entities, som sandsynligvis e
 | `StatusHistory` | Workflow | Historik over statusændringer med aktør og tidspunkt. | Anbefalet |
 | `DepositumRecord` | Booking | Simuleret depositumstatus og tidspunkt. | Skal med i prototype |
 | `AiAssessment` | AI | AI-opsummering, usikkerheder, konflikter og interne vurderinger. | Skal med efter behov |
+| `AiFlow` | AI/Enquiry | En indsendt AI-interaktion med kundens svar, det stillede spørgsmål og det strukturerede næste svar. Den er teknisk prototypehistorik, ikke den samlede `WeddingEnquiry`. | Implementeret i scope 03 |
 | `UpsellSuggestion` | AI/Sales | Et ikke-bindende mersalgsforslag med status og eventuel Owner-beslutning. | Skal med efter behov |
 | `SourceReference` | AI/Knowledge | Kilde, version og reference til grundlaget for AI-svar. | Skal med efter behov |
 
 ## Entities der ikke bør oprettes automatisk endnu
 
 - `ImportantMessage` bør i første omgang være en afledt visning af `MessageRecipient`, hvor `readAt` mangler efter syv dage. En separat tabel bør først oprettes, hvis der senere er behov for en selvstændig notifikationshistorik.
-- En lokal AI-kladde bør ikke være en database-entity før login/register. Den ligger i browserens `localStorage` i skoleprototypen.
+- Den samlede, genoptagelige AI-kladde ligger i browserens `localStorage` før login/register. Scope 03 gemmer derudover hver indsendt AI-interaktion som `AiFlow`; det opretter ikke en samlet `WeddingEnquiry` før login/register.
 - `KnowledgeDocument` og vektordata kan ligge i OpenAI/RAG-infrastrukturen eller en separat knowledge store. De bør ikke kopieres ind i den almindelige event-database uden en konkret beslutning.
 - `Customer` og `Staff` bør ikke duplikere `UserAccount`; roller og eventrelationer bør styre adgangen.
 

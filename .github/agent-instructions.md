@@ -22,7 +22,7 @@ Use the smallest relevant set of documents for the task. Start with the project 
 - [RAG/](../RAG/) contains source material and prompt-grounding material for AI-related work.
 - [CONTRIBUTING.md](../CONTRIBUTING.md) contains repository contribution guidance.
 
-For a frontend task, inspect the relevant route, page, feature and shared component under `frontend/src/`. For a backend task, inspect the relevant domain under `backend/src/main/java/alpha/` and its resources under `backend/src/main/resources/`. Search for existing definitions and usages before introducing new structures.
+For a frontend task, inspect the relevant route, page, feature and shared component under `frontend/src/`. For a backend task, inspect the relevant domain under `backend/src/main/java/engestofte/` and its resources under `backend/src/main/resources/`. Search for existing definitions and usages before introducing new structures.
 
 ### Root Folders
 
@@ -55,7 +55,9 @@ Before creating implementation files, read [architecture-and-file-conventions.md
 - `backend/docs/` - Folder for documentation, learning purposes and general personal knowledge.
 - `backend/target/` - Don't adjust manually.
 - `backend/src/main/resources/` - Java-specific resources including things such as rubric, prompts, student reports and env files. Never expose or leak environment files or secrets.
-- `backend/src/main/java/alpha/` - The Java application with `Main.java` as its entry point.
+- `backend/src/main/java/engestofte/` - The Java application with `Main.java` as its entry point and `engestofte` as its package root.
+
+Before creating or changing backend entities, DTOs or mappers, follow their exact examples and required JSON/database comments in the Backend conventions section of [architecture-and-file-conventions.md](../docs/standards/architecture-and-file-conventions.md), including Lombok, Jackson, naming, and tested/date comment patterns.
 
 For every scope implementation, follow the app-entry/feature/shared ownership, ADR approval, and scope-completion rules in [architecture-and-file-conventions.md](../docs/standards/architecture-and-file-conventions.md). The project owner controls Git staging and commit operations; implementation agents leave those operations to the owner.
 
@@ -115,6 +117,10 @@ Before modifying code, inspect the relevant files and surrounding implementation
 ### Indentation
 
 Use tabs, not spaces.
+
+### File endings
+
+End each source or documentation file with its final content and one line terminator. Keep the end of the file free of blank lines.
 
 ### Naming Conventions
 

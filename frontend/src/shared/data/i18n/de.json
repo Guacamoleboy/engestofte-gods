@@ -1,4 +1,22 @@
 {
+	"aiFlow": {
+		"introMessage": "Ich bin ein KI-Assistent, kein Mensch. Ihre Nachrichten werden im Anfrageverlauf von Gut Engestofte gespeichert. Geben Sie keine sensiblen personenbezogenen Daten ein. Dieser Prototyp ist nicht für den produktiven Einsatz gemäß DSGVO freigegeben.",
+		"flowProgress": "Ablauf {step}/6",
+		"cancelRequest": "Anfrage abbrechen",
+		"firstQuestion": "Auf welchen Namen soll ich die Anfrage anlegen?",
+		"answerLabel": "Ihre Antwort",
+		"answerPlaceholder": "Nachricht senden...",
+		"assistantName": "Gut Engestofte · KI-Assistent",
+		"customerName": "Sie",
+		"statusSending": "Wird gesendet...",
+		"statusSent": "Gesendet",
+		"statusReceived": "Antwort erhalten",
+		"statusNew": "Neue Nachricht",
+		"statusFailed": "Nicht gesendet · erneut versuchen",
+		"error": "Wir konnten gerade keine Antwort abrufen. Bitte versuchen Sie es erneut.",
+		"pending": "Wird verarbeitet...",
+		"submit": "Antwort senden"
+	},
 	"navigation": {
 		"label": "Hauptnavigation",
 		"openMenu": "Navigation öffnen",
@@ -67,7 +85,7 @@
 		"smileyReport": "Lebensmittelkontrollbericht"
 	},
 	"placeholder": {
-		"eyebrow": "Gut Engestofte · Hochzeitsanfrage",
+		"eyebrow": "Gut Engestofte · Veranstaltungsanfrage",
 		"notFound": "Seite nicht gefunden",
 		"notFoundDescription": "Kehren Sie zur Kontaktseite zurück, um hier zu beginnen.",
 		"comingSoon": "Dieser Bereich ist bald verfügbar",
@@ -75,7 +93,7 @@
 		"backToContact": "Zur Kontaktseite",
 		"routeLabel": "Pfad",
 		"routes": {
-			"/ai-flow": "Ihre Hochzeit, Ihre Wünsche",
+			"/ai-flow": "Ihre Veranstaltung, Ihre Wünsche",
 			"/login": "Anmelden",
 			"/register": "Konto erstellen",
 			"/dashboard/events/": "Meine Anfragen",

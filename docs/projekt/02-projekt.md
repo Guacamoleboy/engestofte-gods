@@ -88,7 +88,7 @@ Den præcise feltklassifikation findes i [flow-definition.md](../grilling/flow-d
 
 ### Lokal kladde og authentication
 
-Kundens rå flowdata gemmes i browserens `localStorage`, så kunden kan vende tilbage uden at miste sit arbejde. Data sendes ikke til Johan eller databasen, før kunden har oprettet bruger eller logget ind.
+Kundens samlede, genoptagelige flowkladde gemmes i browserens `localStorage`, så kunden kan vende tilbage uden at miste sit arbejde. Hvert svar, der sendes til AI-flowet, gemmes også som en teknisk `AiFlow`-interaktion med det aktuelle spørgsmål og AI-resultatet. Interaktionen er ikke en indsendt `WeddingEnquiry`, bliver ikke vist til Johan og opretter ikke en konto eller sag. Den samlede forespørgsel gemmes først efter login eller brugeroprettelse.
 
 Dette er en skoleprototypebeslutning og er ikke en produktionsgodkendelse af GDPR eller EU-compliance. En produktionsløsning kræver særskilt vurdering af dataminimering, opbevaring, sikkerhed, samtykke, sletning og brug af eksterne AI-tjenester.
 
