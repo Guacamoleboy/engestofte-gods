@@ -12,10 +12,13 @@ import engestofte.domain.aiflow.provider.OpenAiFlowProvider;
 import engestofte.exception.ApiException;
 import engestofte.service.EntityManagerService;
 import jakarta.persistence.EntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AiFlowService extends EntityManagerService<AiFlow> {
 
 	// Attributes
+	private static final Logger LOGGER = LoggerFactory.getLogger(AiFlowService.class);
 	private final AiFlowDAO aiFlowDAO;
 	private final AiFlowProvider provider;
 
@@ -28,6 +31,7 @@ public class AiFlowService extends EntityManagerService<AiFlow> {
 		this.provider = apiKey == null || apiKey.isBlank()
 				? new LocalAiFlowProvider()
 				: new OpenAiFlowProvider(apiKey);
+		LOGGER.info("AI flow provider selected: {}", apiKey == null || apiKey.isBlank() ? "local fallback" : "OpenAI");
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -54,14 +58,17 @@ public class AiFlowService extends EntityManagerService<AiFlow> {
 		if (request.getLanguage() == null || !request.getLanguage().matches("da|en|de")) {
 			throw new ApiException(400, "Language must be da, en or de");
 		}
+		if (request.getStep() == null || request.getStep() < 1 || request.getStep() > 5) {
+			throw new ApiException(400, "The flow step must be between 1 and 5");
+		}
 		if (request.getCustomerName() != null && request.getCustomerName().length() > 160) {
 			throw new ApiException(400, "The customer name is too long");
 		}
-		if (request.getStep() != null && (request.getStep() < 1 || request.getStep() > 5)) {
-			throw new ApiException(400, "The flow step is invalid");
-		}
 		if (request.getAnswer().length() > 2000 || request.getCurrentQuestion().length() > 500) {
 			throw new ApiException(400, "The question or answer is too long");
+		}
+		if (request.getConversation() != null && request.getConversation().size() > 100) {
+			throw new ApiException(400, "The conversation is too long");
 		}
 	}
 

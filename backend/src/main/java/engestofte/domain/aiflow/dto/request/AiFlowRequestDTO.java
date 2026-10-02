@@ -3,6 +3,7 @@ package engestofte.domain.aiflow.dto.request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @JsonIgnoreProperties
@@ -18,7 +19,13 @@ public class AiFlowRequestDTO {
 	//			"current_question": "What name should I create the enquiry under?",
 	//			"customer_name": "",
 	//			"step": 1,
-	//			"language": "en"
+	//			"language": "en",
+	//			"conversation": [
+	//				{
+	//					"question": "What name should I create the enquiry under?",
+	//					"answer": "Alex Morgan"
+	//				}
+	//			]
 	//		}
 	//
 	// ____________________
@@ -43,5 +50,8 @@ public class AiFlowRequestDTO {
 
 	@JsonProperty("language")
 	private String language;
+
+	@JsonProperty("conversation")
+	private List<AiFlowTurnDTO> conversation;
 
 }

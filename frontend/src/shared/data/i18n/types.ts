@@ -9,7 +9,7 @@ export type TranslationContent = {
 		introMessage: string
 		flowProgress: string
 		cancelRequest: string
-		firstQuestion: string
+		stepQuestions: string[]
 		answerLabel: string
 		answerPlaceholder: string
 		assistantName: string
@@ -22,6 +22,10 @@ export type TranslationContent = {
 		error: string
 		pending: string
 		submit: string
+		outOfScopeContact: string
+		finished: string
+		contactViaWebsite: string
+		emailUs: string
 	}
 	navigation: {
 		label: string

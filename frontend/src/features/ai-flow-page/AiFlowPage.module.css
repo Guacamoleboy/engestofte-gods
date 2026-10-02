@@ -3,10 +3,11 @@
    src/features/ai-flow-page/AiFlowPage.module.css */
 
 .page {
-	min-height: 100dvh;
+	height: 100dvh;
+	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	padding: clamp(1.25rem, 4vw, 3.5rem);
+	padding: clamp(0.75rem, 2vh, 1.5rem) clamp(0.75rem, 4vw, 3.5rem);
 }
 
 :global(.page-container).page {
@@ -15,10 +16,12 @@
 }
 
 .messengerFrame {
-	min-height: 34rem;
+	height: 100%;
+	min-height: 0;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 	padding: var(--engestofte-space-6);
 	border: 6px solid var(--engestofte-green);
 	background: var(--engestofte-white);
@@ -162,6 +165,11 @@
 	max-width: 42%;
 }
 
+.introMessageContent {
+	width: 76%;
+	max-width: 76%;
+}
+
 .customerRow .messageContent { margin-left: auto; }
 
 .messageMeta {
@@ -190,6 +198,21 @@
 }
 
 .assistantBubble { background: var(--engestofte-white); }
+
+.introContactLinks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem 0.9rem;
+	margin: 0.5rem 0 0;
+	font-size: 0.76rem;
+}
+
+.introContactLinks a {
+	color: var(--engestofte-green-dark);
+	font-weight: 650;
+}
+
+.introContactLinks a:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
 
 .customerBubble {
 	border-color: var(--engestofte-green);
@@ -313,6 +336,23 @@
 .cancelLink:hover { border-color: var(--engestofte-green); }
 .cancelLink:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
 
+.contactButton {
+	min-height: 4.1rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--engestofte-green);
+	padding: 0.65rem 1rem;
+	background: var(--engestofte-green);
+	color: var(--engestofte-white);
+	font-size: 0.88rem;
+	font-weight: 650;
+	text-decoration: none;
+}
+
+.contactButton:hover { background: var(--engestofte-green-dark); }
+.contactButton:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+
 .sendButton:hover:not(:disabled) { background: var(--engestofte-green-dark); }
 .sendButton:disabled { opacity: 0.55; cursor: not-allowed; }
 .sendButton:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
@@ -325,7 +365,7 @@
 @media (max-width: 680px) {
 	.page { padding: 1rem; }
 	.messengerFrame {
-		min-height: min(38rem, calc(100dvh - 18rem));
+		min-height: 0;
 		padding: var(--engestofte-space-4);
 	}
 	.composer { gap: 0.5rem; }

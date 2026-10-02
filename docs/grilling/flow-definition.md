@@ -9,7 +9,18 @@ Dette dokument fastlægger, hvilke oplysninger AI-flowet skal indsamle, og hvorn
 - **Valgfrit:** Kan indsamles og sendes til Johan, men blokerer ikke indsendelsen.
 - **Mersalg:** Et relevant forslag baseret på kundens svar. Det er aldrig automatisk en pris, booking eller aftale.
 
-## Trin 1 — Grundoplysninger
+## Samtalens fem trin
+
+Samtalen præsenterer de godkendte oplysninger i denne personlige rækkefølge. Feltklassifikationerne nedenfor er fortsat styrende.
+
+1. Kontaktpersonens navn.
+2. Ønsket bryllupsdato eller datointerval. Datoens ledighed er ikke bekræftet, før Engestofte har undersøgt den.
+3. Forventet gæsteantal og overnatningsbehov. Hvis kunden ønsker overnatning, afklares antal personer og datoer. Ved 60 eller færre gæster må AI'en én gang spørge, om kunden ønsker et ikke-bindende tilbud, der sammenligner Intimpakken med standardbryllupspakken. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Pakkeindhold, pris og transportmulighed bekræftes af Engestofte.
+4. Brylluppets grundform: vielse, reception, middag, fest og vielsesform/-sted.
+5. Mad, drikke, relevante kosthensyn, tilvalg og øvrige særlige ønsker. Budget er frivilligt.
+
+Introspørgsmålene er faste og lokaliserede. AI'en stiller personlige opfølgende spørgsmål, indtil de kritiske og relevante betingede oplysninger for det aktuelle trin er tilstrækkelige. Valgfrie oplysninger må ikke blokere.
+## Grundoplysninger
 
 | Felt | Status | Begrundelse |
 | --- | --- | --- |
@@ -19,13 +30,13 @@ Dette dokument fastlægger, hvilke oplysninger AI-flowet skal indsamle, og hvorn
 | Grundlæggende arrangementsform | Kritisk | Flowet skal kende, om kunden ønsker vielse, reception, middag og/eller fest — eller om noget endnu ikke er besluttet. |
 | Vielsesform/-sted | Kritisk med “ikke besluttet” som gyldigt svar | Kilderne nævner egen kirke, privat park, Maribo Domkirke og andre lokationer. Det har betydning for den videre dialog, men kunden behøver ikke have valgt endeligt ved første kontakt. |
 
-### Mersalg i trin 1
+### Mersalg ved 60 eller færre gæster
 
-Hvis gæsteantallet ligger under den konfigurerede tærskel, kan AI'en foreslå en intim bryllupsløsning. Tærsklen må ikke hardcodes til 60 eller 80, før Johan har bekræftet den konkrete forretningsregel.
+Ved 60 eller færre gæster spørger AI'en én gang, om kunden ønsker et ikke-bindende tilbud, der sammenligner Intimpakken med standardbryllupspakken. AI'en oplyser ikke en pris eller ubekræftede pakkevilkår; Engestofte bekræfter tilbuddet.
 
 Hvis en dato er eksplicit kendt som umulig eller blokeret, skal kunden informeres og spørges, om forespørgslen stadig skal fortsætte med menneskelig hjælp til at finde en anden dato. AI'en må ikke love, at en anden dato er ledig.
 
-## Trin 2 — Brylluppet
+## Brylluppets program
 
 | Felt | Status | Begrundelse |
 | --- | --- | --- |
@@ -35,7 +46,7 @@ Hvis en dato er eksplicit kendt som umulig eller blokeret, skal kunden informere
 | Fest ønskes | Betinget | Relevant, hvis kunden ønsker et egentligt festforløb efter middagen. |
 | Ønsket varighed eller særlige tidsønsker | Valgfrit | Kilderne viser forskellige arrangementslængder og sluttider; Johan kan afklare dette senere. |
 
-## Trin 3 — Mad og tilvalg
+## Mad og tilvalg
 
 | Felt | Status | Begrundelse |
 | --- | --- | --- |
@@ -48,7 +59,7 @@ Hvis en dato er eksplicit kendt som umulig eller blokeret, skal kunden informere
 | Blomster, borddekoration og særlige bordbehov | Valgfrit / mersalg | Dokumenterede tilvalg og særlige behov fra kundedialogen. |
 | Ekstra koordinering | Valgfrit / mersalg | Dokumenteret mulighed, især relevant ved ønske om mere personlig planlægning. |
 
-## Trin 4 — Overnatning og transport
+## Overnatning og transport
 
 | Felt | Status | Begrundelse |
 | --- | --- | --- |
@@ -59,7 +70,7 @@ Hvis en dato er eksplicit kendt som umulig eller blokeret, skal kunden informere
 | Interesse for transport | Betinget / mersalg | Må foreslås ved overnatning uden for godset, men må ikke loves uden Johans godkendelse. |
 | Specifik bolig eller værelse | Valgfrit | Johan skal vurdere tilgængelighed og egnethed; kunden behøver ikke vælge bolig i første flow. |
 
-## Trin 5 — Ekstra information
+## Ekstra information
 
 | Felt | Status | Begrundelse |
 | --- | --- | --- |

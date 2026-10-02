@@ -3,7 +3,7 @@
 // src/features/ai-flow-page/AiFlowPage.hooks.ts
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { submitAiAnswer, type AiInteractionResponse } from '../../api/endpoints/aiFlow'
+import { submitAiAnswer, type AiConversationTurn, type AiInteractionResponse } from '../../api/endpoints/aiFlow'
 import type { Language } from '../../shared/data/i18n/types'
 
 type Message = {
@@ -18,9 +18,10 @@ type Message = {
 	status: 'sending' | 'sent' | 'received' | 'new' | 'failed'
 }
 
-export function useAiFlow(introMessage: string, firstQuestion: string, defaultCustomerName: string, language: Language) {
+export function useAiFlow(introMessage: string, stepQuestions: string[], completionMessage: string, defaultCustomerName: string, language: Language) {
 	const nextMessageId = useRef(2)
 	const customerName = useRef('')
+	const conversation = useRef<AiConversationTurn[]>([])
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const [messages, setMessages] = useState<Message[]>(() => [
 		{
@@ -33,16 +34,18 @@ export function useAiFlow(introMessage: string, firstQuestion: string, defaultCu
 		{
 			id: 1,
 			sender: 'assistant',
-			text: firstQuestion,
+			text: stepQuestions[0],
 			animate: true,
 			createdAt: new Date(),
 			status: 'new',
 		},
 	])
-	const [question, setQuestion] = useState(firstQuestion)
+	const [question, setQuestion] = useState(stepQuestions[0])
 	const [currentStep, setCurrentStep] = useState(1)
 	const [answer, setAnswer] = useState('')
 	const [isPending, setIsPending] = useState(false)
+	const [isComplete, setIsComplete] = useState(false)
+	const [isOutOfScope, setIsOutOfScope] = useState(false)
 	const [error, setError] = useState('')
 
 	useEffect(() => {
@@ -61,7 +64,7 @@ export function useAiFlow(introMessage: string, firstQuestion: string, defaultCu
 	async function submitAnswer(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault()
 		const submittedAnswer = answer.trim()
-		if (!submittedAnswer || isPending) return
+		if (!submittedAnswer || isPending || isComplete || isOutOfScope) return
 
 		const retryMessage = [...messages].reverse().find((message) =>
 			message.sender === 'customer' && message.status === 'failed' && message.text === submittedAnswer,
@@ -84,26 +87,54 @@ export function useAiFlow(introMessage: string, firstQuestion: string, defaultCu
 		setIsPending(true)
 		setError('')
 		setAnswer('')
+		const submittedTurn = { question, answer: submittedAnswer }
 		try {
-			const result: AiInteractionResponse = await submitAiAnswer(submittedAnswer, question, customerName.current, currentStep, language)
+			const result: AiInteractionResponse = await submitAiAnswer(
+				submittedAnswer,
+				question,
+				customerName.current,
+				currentStep,
+				language,
+				[...conversation.current, submittedTurn],
+			)
 			if (result.customer_name) customerName.current = result.customer_name
-			const nextStep = result.status === 'DONE' ? 6 : Math.min(Math.max(result.step, 1), 5)
+			conversation.current = [...conversation.current, submittedTurn]
+
+			let nextStep = currentStep
+			let nextQuestion = ''
+			if (result.status === 'STEP_COMPLETE') {
+				nextStep = currentStep + 1
+				nextQuestion = stepQuestions[nextStep - 1].replace('{name}', customerName.current || defaultCustomerName)
+			} else if (result.status === 'DONE') {
+				nextStep = 6
+				setIsComplete(true)
+				nextQuestion = completionMessage
+			} else if (result.status === 'OUT_OF_SCOPE') {
+				setIsOutOfScope(true)
+			} else {
+				nextQuestion = result.next_question
+			}
+
 			const flowChanged = nextStep > currentStep
 			setCurrentStep(nextStep)
+			const assistantText = result.status === 'STEP_COMPLETE'
+				? nextQuestion
+				: [result.acknowledgement, nextQuestion].filter(Boolean).join('\n\n')
 			setMessages((currentMessages) => [...currentMessages.map((message) =>
-				message.id === outgoingId ? { ...message, senderName: customerName.current, status: 'sent' } : message,
+				message.id === outgoingId ? { ...message, senderName: customerName.current || senderName, status: 'sent' } : message,
 			), {
 				id: nextMessageId.current++,
 				sender: 'assistant',
 				flowChanged,
 				step: nextStep,
 				animate: true,
-				senderName: customerName.current,
-				text: `${result.acknowledgement}\n\n${result.next_question}`,
+				senderName: customerName.current || defaultCustomerName,
+				text: assistantText,
 				createdAt: new Date(),
 				status: 'received',
 			}])
-			setQuestion(result.next_question)
+			if (result.status === 'IN_PROGRESS') setQuestion(result.next_question)
+			else if (result.status === 'STEP_COMPLETE') setQuestion(nextQuestion)
 		} catch {
 			setMessages((currentMessages) => currentMessages.map((message) =>
 				message.id === outgoingId ? { ...message, status: 'failed' } : message,
@@ -114,7 +145,7 @@ export function useAiFlow(introMessage: string, firstQuestion: string, defaultCu
 		}
 	}
 
-	return { answer, currentStep, error, formatMessageTime, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
+	return { answer, currentStep, error, formatMessageTime, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
 }
 
 export function useAiMessageTyping(text: string, animate: boolean) {

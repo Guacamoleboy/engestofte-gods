@@ -594,3 +594,11 @@ Valgt model: Nej. Kunden skal oprette en ny forespørgsel, hvis kunden fortryder
 ### D52 — Annullerede events genåbnes ikke
 
 En forespørgsel med status `Annulleret af kunde` kan ikke genåbnes, heller ikke hvis der ikke er betalt depositum. Kunden skal oprette en ny forespørgsel. Den oprindelige forespørgsel og dens historik bevares som afsluttet annullering.
+
+### Q53 — Skal et lavt gæsteantal udløse et sammenlignende tilbud, og hvad tilbydes ved fravalgt overnatning?
+
+Valgt model: Ved 60 eller færre gæster må AI'en én gang spørge, om kunden ønsker et tilbud, der sammenligner Intimpakken med standardbryllupspakken. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte.
+
+### D53 — Mersalg #1 og transport er ikke-bindende forespørgsler
+
+Tærsklen for Mersalg #1 er 60 eller færre gæster. AI'en tilbyder at få Engestofte til at udarbejde et sammenlignende tilbud; den oplyser ikke selv priser eller ubekræftede pakkevilkår. Ved fravalgt overnatning kan AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Tilbud, priser og transportmuligheder bekræftes af Engestofte, og kunden kan afslå uden at blokere forespørgslen.

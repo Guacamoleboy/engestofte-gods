@@ -4,7 +4,7 @@
 
 **Blocked by:** 01: Establish the application shell and generic UI foundation; 02: Build the Engestofte Gods contact entry side
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -22,12 +22,12 @@
 
 ## Acceptance criteria
 
-- [ ] `/ai-flow` displays one relevant wedding-enquiry question.
-- [ ] A customer answer produces a structured next state rather than unstructured text only.
-- [ ] Provider loading and provider failure are visible and recoverable.
-- [ ] The interface identifies the interaction as AI-assisted.
-- [ ] The provider can be replaced without rewriting the page’s domain state handling.
-- [ ] The backend stores each submitted answer, current question, language and structured AI result as an application-owned AI interaction.
+- [x] `/ai-flow` displays one relevant wedding-enquiry question.
+- [x] A customer answer produces a structured next state rather than unstructured text only.
+- [x] Provider loading and provider failure are visible and recoverable.
+- [x] The interface identifies the interaction as AI-assisted.
+- [x] The provider can be replaced without rewriting the page’s domain state handling.
+- [x] The backend stores each submitted answer, current question, language and structured AI result as an application-owned AI interaction.
 
 ## Verification
 

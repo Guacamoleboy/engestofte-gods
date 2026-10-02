@@ -1,9 +1,15 @@
 {
 	"aiFlow": {
-		"introMessage": "I am an AI assistant, not a person. Your messages are stored in Engestofte Estate’s enquiry history. Do not share sensitive personal information. This is a prototype and is not approved for production use under GDPR.",
+		"introMessage": "We currently offer AI-assisted enquiries for weddings only. For prices, answers or contact about another type of event, please reach us through the website or at mail@engestofte.dk.\n\nI am an AI assistant, not a person. Your messages are stored in Engestofte Estate’s enquiry history. Do not share sensitive personal information. This is a prototype and is not approved for production use under GDPR.",
 		"flowProgress": "Flow {step}/6",
 		"cancelRequest": "Cancel enquiry",
-		"firstQuestion": "What name should I create the enquiry under?",
+		"stepQuestions": [
+			"What name should the enquiry be created under?",
+			"Hi, {name} 😃\n\nWhen are you planning to hold your wedding?",
+			"That is a lovely day to get married! We will still need to check whether the date is available.\n\nHow many guests are you expecting? Will you need accommodation with us, and if so, for how many people?",
+			"How do you picture your wedding day? Would you like a ceremony, reception, dinner and party — and where would you like the ceremony?",
+			"What would you like for food and drinks? Are there any allergies or dietary needs we should know about?"
+		],
 		"answerLabel": "Your answer",
 		"answerPlaceholder": "Send a message...",
 		"assistantName": "Engestofte Estate · AI assistant",
@@ -15,7 +21,11 @@
 		"statusFailed": "Not sent · try again",
 		"error": "We could not get a response right now. Please try again.",
 		"pending": "Thinking...",
-		"submit": "Send answer"
+		"submit": "Send answer",
+		"outOfScopeContact": "Contact Engestofte Estate",
+		"finished": "Thank you. We have collected the details for your wedding enquiry.",
+		"contactViaWebsite": "Contact us through the website",
+		"emailUs": "Email mail@engestofte.dk"
 	},
 	"navigation": {
 		"label": "Main navigation",

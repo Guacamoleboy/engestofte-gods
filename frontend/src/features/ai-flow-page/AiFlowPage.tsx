@@ -11,7 +11,7 @@ import styles from './AiFlowPage.module.css'
 export default function AiFlowPage() {
 	const { content, language } = useTranslate()
 	const copy = content.aiFlow
-	const { answer, currentStep, error, formatMessageTime, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.firstQuestion, copy.customerName, language)
+	const { answer, currentStep, error, formatMessageTime, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finished, copy.customerName, language)
 
 	return (
 		<main className={`page-container ${styles.page}`}>
@@ -51,13 +51,21 @@ export default function AiFlowPage() {
 											<img src="/images/shared/logo-white.png" alt="" />
 										</div>
 									)}
-									<div className={styles.messageContent}>
+									<div className={`${styles.messageContent} ${message.id === 0 ? styles.introMessageContent : ''}`}>
 										<div className={styles.messageMeta}>
 											<strong>{senderName}</strong>
 											<time dateTime={message.createdAt.toISOString()}>{formatMessageTime(message.createdAt)}</time>
 										</div>
 										{isAssistant
-											? <AiFlowMessage text={message.text} animate={message.animate ?? false} />
+											? <>
+												<AiFlowMessage text={message.text} animate={message.animate ?? false} />
+												{message.id === 0 && (
+													<div className={styles.introContactLinks}>
+														<Link to="/kontakt">{copy.contactViaWebsite}</Link>
+														<a href="mailto:mail@engestofte.dk">{copy.emailUs}</a>
+													</div>
+												)}
+											</>
 											: <p className={`${styles.messageBubble} ${styles.customerBubble}`}>{message.text}</p>}
 										<p className={`${styles.messageStatus} ${message.status === 'failed' ? styles.failedStatus : ''}`}>
 											{message.status === 'sending' && <span className={styles.statusSpinner} aria-hidden="true" />}
@@ -88,6 +96,11 @@ export default function AiFlowPage() {
 
 				{error && <p className={styles.error} role="alert">{copy.error}</p>}
 
+				{isOutOfScope ? (
+					<div className={styles.composer}>
+						<Link className={styles.contactButton} to="/kontakt">{copy.outOfScopeContact}</Link>
+					</div>
+				) : !isComplete && (
 				<form className={styles.composer} onSubmit={submitAnswer}>
 					<label className="visually-hidden" htmlFor="ai-answer">{copy.answerLabel}</label>
 					<textarea
@@ -109,6 +122,7 @@ export default function AiFlowPage() {
 						<Link className={styles.cancelLink} to="/kontakt">{copy.cancelRequest}</Link>
 					</div>
 				</form>
+				)}
 			</section>
 		</main>
 	)

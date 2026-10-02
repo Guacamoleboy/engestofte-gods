@@ -16,4 +16,8 @@ AI'en strukturerer samtalen og foreslår næste spørgsmål, men menneskelig kon
 
 Forespørgslen kan afdække behov for reception, ekstra ret, bryllupskage, cocktails, spiritus, natmad, morgenmad, ekstra timer, blomster, borddekoration, koordinering, overnatning og ekstra nætter.
 
-Intim bryllupspakke, weekendpakke og transportpakke er projektforslag — de må ikke beskrives som eksisterende produkter, før Johan har bekræftet dem.
+Ved 60 eller færre gæster kan AI'en én gang spørge, om kunden ønsker et ikke-bindende tilbud, der sammenligner Intimpakken med standardbryllupspakken. AI'en må ikke oplyse udokumenteret indhold eller pris; Engestofte bekræfter tilbuddet.
+
+Hvis kunden ikke ønsker overnatning, kan AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Det må ikke fremstilles som en bekræftet booking, pris eller garanteret transportmulighed.
+
+Weekendpakker og andre ikke-bekræftede produkter er fortsat projektforslag.

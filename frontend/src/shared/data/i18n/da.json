@@ -1,9 +1,15 @@
 {
 	"aiFlow": {
-		"introMessage": "Jeg er en AI-assistent, ikke et menneske. Dine beskeder gemmes i Engestofte Gods’ forespørgselshistorik. Del ikke følsomme personoplysninger. Dette er en prototype og ikke godkendt til produktionsbrug under GDPR.",
+		"introMessage": "Vi tilbyder kun AI-hjælp med bryllupsforespørgsler lige nu. Ønsker du pris, svar eller kontakt i forbindelse med et andet arrangement, kan du kontakte os via hjemmesiden eller på mail@engestofte.dk.\n\nJeg er en AI-assistent, ikke et menneske. Dine beskeder gemmes i Engestofte Gods’ forespørgselshistorik. Del ikke følsomme personoplysninger. Dette er en prototype og ikke godkendt til produktionsbrug under GDPR.",
 		"flowProgress": "Flow {step}/6",
 		"cancelRequest": "Annullér forespørgsel",
-		"firstQuestion": "Hvilket navn skal jeg oprette forespørgslen i?",
+		"stepQuestions": [
+			"Hvad navn skal forespørgslen oprettes i?",
+			"Hej, {name} 😃\n\nHvornår planlægger du, at jeres bryllup skal holdes?",
+			"Det er en god dag at blive gift på! Vi skal dog undersøge, om datoen er ledig.\n\nHvor mange gæster regner I med til festen? Har I behov for overnatning hos os, og i så fald til hvor mange?",
+			"Hvordan forestiller I jer jeres bryllupsdag? Skal der være vielse, reception, middag og fest – og hvor ønsker I vielsen?",
+			"Hvad ønsker I jer af mad og drikke? Er der allergier eller særlige kosthensyn, vi skal tage højde for?"
+		],
 		"answerLabel": "Jeres svar",
 		"answerPlaceholder": "Send besked...",
 		"assistantName": "Engestofte Gods · AI-assistent",
@@ -15,7 +21,11 @@
 		"statusFailed": "Ikke sendt · prøv igen",
 		"error": "Vi kunne ikke hente et svar lige nu. Prøv igen.",
 		"pending": "Tænker...",
-		"submit": "Send svar"
+		"submit": "Send svar",
+		"outOfScopeContact": "Kontakt Engestofte Gods",
+		"finished": "Tak. Vi har samlet oplysningerne til jeres bryllupsforespørgsel.",
+		"contactViaWebsite": "Kontakt via hjemmesiden",
+		"emailUs": "Skriv til mail@engestofte.dk"
 	},
 	"navigation": {
 		"label": "Hovednavigation",
