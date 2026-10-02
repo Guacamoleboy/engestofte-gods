@@ -57,6 +57,8 @@ Before creating implementation files, read [architecture-and-file-conventions.md
 - `backend/src/main/resources/` - Java-specific resources including things such as rubric, prompts, student reports and env files. Never expose or leak environment files or secrets.
 - `backend/src/main/java/alpha/` - The Java application with `Main.java` as its entry point.
 
+For every scope implementation, follow the app-entry/feature/shared ownership, ADR approval, and scope-completion rules in [architecture-and-file-conventions.md](../docs/standards/architecture-and-file-conventions.md). The project owner controls Git staging and commit operations; implementation agents leave those operations to the owner.
+
 ## Agent Permissions and Workflow
 
 ### Read-Only Actions
