@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -21,12 +21,12 @@
 
 ## Acceptance criteria
 
-- [ ] The placeholder routes can be opened directly and through navigation.
-- [ ] New frontend implementation files use TypeScript/TSX consistently after this setup.
-- [ ] The routes share a consistent layout and reusable visual primitives.
-- [ ] Reused design values are defined as `--engestofte-<name>` variables in `:root` and consumed with `var(--engestofte-<name>)`.
-- [ ] The foundation follows the agreed sharp, professional Engestofte visual identity.
-- [ ] Loading, empty and error states have a consistent presentation.
+- [x] The placeholder routes can be opened directly and through navigation.
+- [x] New frontend implementation files use TypeScript/TSX consistently after this setup.
+- [x] The routes share a consistent layout and reusable visual primitives.
+- [x] Reused design values are defined as `--engestofte-<name>` variables in `:root` and consumed with `var(--engestofte-<name>)`.
+- [x] The foundation follows the agreed sharp, professional Engestofte visual identity.
+- [x] Loading, empty and error states have a consistent presentation.
 
 ## Verification
 

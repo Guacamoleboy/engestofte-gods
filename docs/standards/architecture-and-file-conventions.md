@@ -90,7 +90,14 @@ Keep responsibilities separated:
 - Shared styling belongs in `src/shared/styles/`.
 - Static or shared data belongs in `src/shared/data/`.
 
-If a component needs hooks, create a sibling `.hooks.js` or `.hooks.ts` file. Hook functionality must not be placed directly in `.jsx` or `.tsx` files.
+#### App entry points and feature ownership
+
+- Keep `src/app/pages/<Name>.tsx` and `src/app/layouts/<Name>.tsx` as thin composition/entry files. They render the route or shell and delegate feature behavior; do not add sibling hook or stylesheet files for these app entry points.
+- Put page-specific UI and behavior under `src/features/<feature>/`. A feature may expose `index.tsx` as its entry point and contain a named component such as `ContactPage.tsx`; put component-specific hooks in `<Component>.hooks.js`/`.hooks.ts` and styles in `<Component>.module.css` only when they are actually needed.
+- Keep shared localization in `src/shared/`: translation dictionaries under `data/i18n/`, and a reusable `useTranslate` hook under `hooks/`. Use a shared context/provider when language state must be consumed by multiple parts of the application; avoid putting translation state or dictionaries in an app layout hook.
+- Use PascalCase filenames for React component modules (for example, `ContactPage.tsx`); use `index.ts`/`index.tsx` for a barrel or feature entry point. Hooks and other non-component modules use camelCase.
+
+If a feature component needs hooks, create a sibling `.hooks.js` or `.hooks.ts` file. Hook functionality must not be placed directly in feature component `.jsx` or `.tsx` files. App page and layout entry points remain thin and do not get hook/style siblings; feature hooks and styles live with their feature component.
 
 If a component needs styles, create a sibling `.module.css` file. Do not place large component-specific style blocks directly inside the component file.
 
@@ -103,7 +110,14 @@ Expected feature shape:
 └── <ComponentName>.module.css    # only when component styles are needed
 ```
 
-The files are created when the component needs them. Do not create empty `.hooks.js` or `.module.css` files without a reason.
+The files are created when the component needs them. Do not create empty `.hooks.js` or `.module.css` files without a reason. `src/app/pages/` and `src/app/layouts/` are entry/composition layers, not feature folders.
+
+### Architecture decision records and scope status
+
+- Create an ADR only for a deliberate, approved architectural/design decision with meaningful alternatives and consequences. A missing feature, deferred scope, implementation limitation, or unchecked ticket item is not an ADR.
+- Record a decision as approved only after the project owner has approved it. When the architecture choice is still open, ask before treating a proposal as settled or recording it as approved.
+- Keep scope tickets in their current status until the project owner explicitly approves completion. Implementation, a passing check, or an agent handoff does not itself authorize changing a ticket to `complete`.
+- Git staging and history operations belong to the project owner. Agents may inspect Git state, but leave `git add`, commit, stash, reset, rebase, and similar state-changing commands to the owner unless the owner explicitly asks otherwise.
 
 ### API client shape
 

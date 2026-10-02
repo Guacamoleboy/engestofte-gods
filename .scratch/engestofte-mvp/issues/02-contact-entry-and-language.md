@@ -4,7 +4,7 @@
 
 **Blocked by:** 01: Establish the application shell and generic UI foundation
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -21,11 +21,11 @@
 
 ## Acceptance criteria
 
-- [ ] A customer understands what Engestofte Gods offers and how to start a wedding enquiry.
-- [ ] The CTA opens `/ai-flow` without opening login first.
-- [ ] The smiley-report link is visible in the footer.
-- [ ] The language dropdown changes the entry-page language and defaults to Danish.
-- [ ] The page works with the generic shell from Ticket 01.
+- [x] A customer understands what Engestofte Gods offers and how to start an event enquiry.
+- [x] The CTA opens `/ai-flow` without opening login first.
+- [x] The smiley-report link is visible in the footer.
+- [x] The language dropdown changes the entry-page language and defaults to Danish.
+- [x] The page works with the generic shell from Ticket 01.
 
 ## Verification
 
