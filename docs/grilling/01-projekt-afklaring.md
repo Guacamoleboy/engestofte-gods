@@ -79,6 +79,10 @@ Dokumentationen skal tydeligt notere, at denne prototypebeslutning ikke er en pr
 
 Prototypefasen må demonstrere localStorage-flowet uden at gennemføre en fuld produktionsjuridisk vurdering. Før løsningen eventuelt bruges med rigtige kundedata i produktion, skal GDPR-vurdering, databehandlingsgrundlag, opbevaring og sikkerhed afklares.
 
+### Opfølgende beslutning — AI-interaktioner før login
+
+ADR-001 præciserer den tekniske prototypeadfærd: hvert svar, der sendes til AI-flowet, gemmes som en `AiFlow`-interaktion sammen med spørgsmålet og AI-resultatet. Det er ikke en indsendt forespørgsel, knyttes ikke til en konto og vises ikke til Johan. Den samlede, genoptagelige kladde ligger fortsat i `localStorage`, og den samlede `WeddingEnquiry` oprettes først efter login eller brugeroprettelse. Se [ADR-001](../../backend/docs/ARD/001-openai-backend.md).
+
 ### D6 — Fem trin er tilstrækkelige for MVP-flowet
 
 Kildematerialet kræver ikke et ekstra selvstændigt trin. De fem trin fastholdes med denne præcisering:
@@ -590,3 +594,11 @@ Valgt model: Nej. Kunden skal oprette en ny forespørgsel, hvis kunden fortryder
 ### D52 — Annullerede events genåbnes ikke
 
 En forespørgsel med status `Annulleret af kunde` kan ikke genåbnes, heller ikke hvis der ikke er betalt depositum. Kunden skal oprette en ny forespørgsel. Den oprindelige forespørgsel og dens historik bevares som afsluttet annullering.
+
+### Q53 — Skal et lavt gæsteantal udløse et sammenlignende tilbud, og hvad tilbydes ved fravalgt overnatning?
+
+Valgt model: Ved 60 eller færre gæster må AI'en én gang spørge, om kunden ønsker et tilbud, der sammenligner Intimpakken med standardbryllupspakken. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte.
+
+### D53 — Mersalg #1 og transport er ikke-bindende forespørgsler
+
+Tærsklen for Mersalg #1 er 60 eller færre gæster. AI'en tilbyder at få Engestofte til at udarbejde et sammenlignende tilbud; den oplyser ikke selv priser eller ubekræftede pakkevilkår. Ved fravalgt overnatning kan AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Tilbud, priser og transportmuligheder bekræftes af Engestofte, og kunden kan afslå uden at blokere forespørgslen.

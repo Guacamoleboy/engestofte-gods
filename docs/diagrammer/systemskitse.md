@@ -13,6 +13,7 @@ flowchart TD
     A[engestofte-gods.dk/kontakt<br/>Smiley-rapport og sprogvalg]
     B[AI-flow - ny page<br/>Alle oplysninger og mersalg]
     C[localStorage<br/>Lokal kladde]
+    M[(AiFlow<br/>Interaktionshistorik)]
     D[Login / register]
     E[/dashboard/events/<br/>Status på forespørgsel]
     F[(Backend og database)]
@@ -25,6 +26,7 @@ flowchart TD
 
     A --> B
     B --> C
+    B -. Svar og AI-resultat .-> M
     C --> D
     D --> E
     E --> F
@@ -43,10 +45,11 @@ flowchart TD
 |---|---|
 | `/kontakt` | Entry side med Engestofte Gods, smiley-rapport, sprogvalg og knap til AI-flowet. |
 | AI-flow | En ny page, hvor al forespørgselsfunktionalitet foregår: grundoplysninger, opfølgende spørgsmål og ikke-bindende mersalgsforslag. |
-| `localStorage` | Gemmer kundens kladde lokalt, indtil kunden opretter bruger eller logger ind. |
+| `localStorage` | Gemmer kundens samlede, genoptagelige kladde lokalt, indtil kunden opretter bruger eller logger ind. |
+| `AiFlow` | Gemmer hvert indsendt AI-svar og det strukturerede resultat som teknisk interaktionshistorik; det opretter ikke en samlet forespørgsel eller giver Johan adgang før login. |
 | Login/register | Sender kunden videre efter autentificering og afleverer den lokale kladde til backend. |
 | `/dashboard/events/` | Viser kundens forespørgsler og status, mens de afventer Owner/Johans gennemgang. |
-| Backend og database | Gemmer bruger, forespørgsel, eventdata, beskeder, godkendelser og status efter login. |
+| Backend og database | Gemmer AI-interaktioner løbende og den samlede bruger, forespørgsel, eventdata, beskeder, godkendelser og status efter login. |
 | Owner-flow | Giver Owner mulighed for at gennemgå forespørgslen, afklare oplysninger og sende beskeder. |
 | `/dashboard/events/{id}` | Kundens konkrete event-platform, som åbnes efter Owner/Johans godkendelse. |
 | Event-platform | Viser godkendte eventdata og eventets Messenger mellem kontaktpersoner og Owner. |

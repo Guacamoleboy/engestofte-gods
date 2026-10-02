@@ -43,7 +43,7 @@ erDiagram
 - A request can exist before an `Event` is approved.
 - A request can become one concrete `Event` in the MVP.
 - `EnquiryAnswer` preserves structured values and must support conflicts without silently overwriting the original answer.
-- The localStorage draft is not in PostgreSQL until authentication and submission succeed.
+- The complete localStorage draft is not a `WeddingEnquiry` in PostgreSQL until authentication and submission succeed. Scope 03 separately stores each sent AI turn as an `AiFlow` interaction record; it is not an account-linked or submitted enquiry.
 
 ### Event og kommunikation
 

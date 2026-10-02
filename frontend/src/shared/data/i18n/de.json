@@ -1,4 +1,32 @@
 {
+	"aiFlow": {
+		"introMessage": "Derzeit bieten wir KI-gestützte Anfragen nur für Hochzeiten an. Für Preise, Antworten oder Kontakt zu einer anderen Veranstaltung erreichen Sie uns über die Website oder unter mail@engestofte.dk.\n\nIch bin ein KI-Assistent, kein Mensch. Ihre Nachrichten werden im Anfrageverlauf von Gut Engestofte gespeichert. Geben Sie keine sensiblen personenbezogenen Daten ein. Dieser Prototyp ist nicht für den produktiven Einsatz gemäß DSGVO freigegeben.",
+		"flowProgress": "Ablauf {step}/6",
+		"cancelRequest": "Anfrage abbrechen",
+		"stepQuestions": [
+			"Unter welchem Namen soll die Anfrage angelegt werden?",
+			"Hallo, {name} 😃\n\nWann planen Sie Ihre Hochzeit?",
+			"Das ist ein schöner Tag zum Heiraten! Wir müssen noch prüfen, ob der Termin verfügbar ist.\n\nMit wie vielen Gästen rechnen Sie? Benötigen Sie eine Übernachtung bei uns, und wenn ja, für wie viele Personen?",
+			"Wie stellen Sie sich Ihren Hochzeitstag vor? Wünschen Sie eine Trauung, einen Empfang, ein Abendessen und eine Feier — und wo soll die Trauung stattfinden?",
+			"Was wünschen Sie sich beim Essen und bei den Getränken? Gibt es Allergien oder besondere Ernährungsbedürfnisse?"
+		],
+		"answerLabel": "Ihre Antwort",
+		"answerPlaceholder": "Nachricht senden...",
+		"assistantName": "Gut Engestofte · KI-Assistent",
+		"customerName": "Sie",
+		"statusSending": "Wird gesendet...",
+		"statusSent": "Gesendet",
+		"statusReceived": "Antwort erhalten",
+		"statusNew": "Neue Nachricht",
+		"statusFailed": "Nicht gesendet · erneut versuchen",
+		"error": "Wir konnten gerade keine Antwort abrufen. Bitte versuchen Sie es erneut.",
+		"pending": "Wird verarbeitet...",
+		"submit": "Antwort senden",
+		"outOfScopeContact": "Engestofte Gods kontaktieren",
+		"finished": "Vielen Dank. Wir haben die Angaben für Ihre Hochzeitsanfrage gesammelt.",
+		"contactViaWebsite": "Über die Website kontaktieren",
+		"emailUs": "E-Mail an mail@engestofte.dk"
+	},
 	"navigation": {
 		"label": "Hauptnavigation",
 		"openMenu": "Navigation öffnen",
@@ -67,7 +95,7 @@
 		"smileyReport": "Lebensmittelkontrollbericht"
 	},
 	"placeholder": {
-		"eyebrow": "Gut Engestofte · Hochzeitsanfrage",
+		"eyebrow": "Gut Engestofte · Veranstaltungsanfrage",
 		"notFound": "Seite nicht gefunden",
 		"notFoundDescription": "Kehren Sie zur Kontaktseite zurück, um hier zu beginnen.",
 		"comingSoon": "Dieser Bereich ist bald verfügbar",
@@ -75,7 +103,7 @@
 		"backToContact": "Zur Kontaktseite",
 		"routeLabel": "Pfad",
 		"routes": {
-			"/ai-flow": "Ihre Hochzeit, Ihre Wünsche",
+			"/ai-flow": "Ihre Veranstaltung, Ihre Wünsche",
 			"/login": "Anmelden",
 			"/register": "Konto erstellen",
 			"/dashboard/events/": "Meine Anfragen",

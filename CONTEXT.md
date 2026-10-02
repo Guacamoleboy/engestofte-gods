@@ -70,6 +70,10 @@ AI'en kan vise ikke-bindende mersalgsforslag under kundens flow og samtidig vise
 
 AI'en må vise priser fra aktuelle og godkendte kilder som vejledende, ikke-bindende prisinformation. Johan skal godkende den endelige pris eller løsning.
 
+### Bryllupstilbud ved lavt gæsteantal og transportforslag
+
+Ved 60 eller færre bryllupsgæster må AI'en spørge, om kunden ønsker et tilbud, der sammenligner Intimpakken med standardbryllupspakken. Engestofte bekræfter tilbuddet og dets indhold. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte; det er ikke en transportgaranti.
+
 ## Johan
 
 Den menneskelige ansvarlige, som vurderer forespørgsler, godkender svar og mersalgsforslag og overtager dialogen, når AI'en ikke kan eller må afgøre næste skridt.

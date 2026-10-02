@@ -2,14 +2,14 @@
 // _______
 // src/app/layouts/PublicLayout.tsx
 
-import type { ChangeEvent, FormEvent } from 'react'
+import type { ChangeEvent } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import InputText from '../../shared/components/input-text/InputText'
 import PageContainer from '../../shared/components/PageContainer'
 import Submit from '../../shared/components/submit/Submit'
 import type { Language } from '../../shared/data/i18n/types'
-import { usePublicNavigation } from './PublicLayout.hooks'
-import './PublicLayout.css'
+import { usePublicNavigation } from '../../features/public-navigation/usePublicNavigation'
+import '../../features/public-navigation/PublicLayout.module.css'
 
 const navigationItems = [
 	{ key: 'wedding', href: 'https://www.engestofte.com/da/bryllup' },
@@ -32,7 +32,7 @@ const summerHouseLinks = [
 const smileyReportUrl = 'https://www.findsmiley.dk/Sider/KontrolRapport.aspx?Virk6887688='
 
 export default function PublicLayout() {
-	const { isMenuOpen, toggleMenu, closeMenu, language, setLanguage, content: copy } = usePublicNavigation()
+	const { isMenuOpen, toggleMenu, closeMenu, language, setLanguage, content: copy, localizeHref, submitNewsletter } = usePublicNavigation()
 
 	function handleLanguageChange(event: ChangeEvent<HTMLSelectElement>) {
 		setLanguage(event.currentTarget.value as Language)
@@ -55,13 +55,13 @@ export default function PublicLayout() {
 						<div className="site-menu__content">
 							<nav className="site-nav" aria-label={copy.navigation.label}>
 								{navigationItems.map((item) => (
-									<a className="site-nav__link" key={item.key} href={localizeHref(item.href, language)} onClick={closeMenu}>{copy.navigation[item.key]}</a>
+									<a className="site-nav__link" key={item.key} href={localizeHref(item.href)} onClick={closeMenu}>{copy.navigation[item.key]}</a>
 								))}
 								<details className="site-nav__dropdown">
 									<summary className="site-nav__link">{copy.navigation.summerHouses} <span className="site-nav__chevron" aria-hidden="true" /></summary>
 									<div className="site-nav__submenu">
 										{summerHouseLinks.map((href, index) => (
-											<a key={href} href={localizeHref(href, language)} onClick={closeMenu}>{copy.navigation.summerHouseLinks[index]}</a>
+											<a key={href} href={localizeHref(href)} onClick={closeMenu}>{copy.navigation.summerHouseLinks[index]}</a>
 										))}
 									</div>
 								</details>
@@ -129,17 +129,4 @@ export default function PublicLayout() {
 			</footer>
 		</div>
 	)
-}
-
-function localizeHref(href: string, language: Language) {
-	return href.replace('/da/', `/${language}/`)
-}
-
-function submitNewsletter(event: FormEvent<HTMLFormElement>, subjectText: string, bodyText: string) {
-	event.preventDefault()
-	const formData = new FormData(event.currentTarget)
-	const email = String(formData.get('newsletterEmail') ?? '')
-	const subject = encodeURIComponent(subjectText)
-	const body = encodeURIComponent(`${bodyText} ${email}`)
-	window.location.assign(`mailto:mail@engestofte.dk?subject=${subject}&body=${body}`)
 }

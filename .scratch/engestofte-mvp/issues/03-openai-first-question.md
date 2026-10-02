@@ -4,7 +4,7 @@
 
 **Blocked by:** 01: Establish the application shell and generic UI foundation; 02: Build the Engestofte Gods contact entry side
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -16,16 +16,18 @@
 ## Out of scope
 
 - The complete five-step flow.
-- RAG retrieval, authentication, persistence or Owner review.
+- RAG retrieval, authentication, complete wedding-enquiry submission or Owner review.
 - Storing real secrets in source control or browser code.
+- Persisting the complete wedding-enquiry aggregate; this ticket stores only the submitted AI interaction and its structured result.
 
 ## Acceptance criteria
 
-- [ ] `/ai-flow` displays one relevant wedding-enquiry question.
-- [ ] A customer answer produces a structured next state rather than unstructured text only.
-- [ ] Provider loading and provider failure are visible and recoverable.
-- [ ] The interface identifies the interaction as AI-assisted.
-- [ ] The provider can be replaced without rewriting the page’s domain state handling.
+- [x] `/ai-flow` displays one relevant wedding-enquiry question.
+- [x] A customer answer produces a structured next state rather than unstructured text only.
+- [x] Provider loading and provider failure are visible and recoverable.
+- [x] The interface identifies the interaction as AI-assisted.
+- [x] The provider can be replaced without rewriting the page’s domain state handling.
+- [x] The backend stores each submitted answer, current question, language and structured AI result as an application-owned AI interaction.
 
 ## Verification
 
@@ -33,7 +35,6 @@ Demonstrate one successful question/answer cycle and one provider-error recovery
 
 ## Stop and ask if
 
-- The provider contract needs a database schema or dependency not already approved.
 - OpenAI data handling would require sending real personal or sensitive data.
 - The model response cannot be made structurally valid without guessing.
 

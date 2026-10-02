@@ -73,7 +73,7 @@ The primary external user is a potential wedding customer. The primary internal 
 - The system must support the agreed five-step wedding enquiry.
 - Critical, conditional and optional fields must behave according to `flow-definition.md`.
 - The AI must return structured flow state and must not guess unsupported facts.
-- The system must preserve local drafts before authentication and persist requests after authentication.
+- The system must preserve resumable local drafts before authentication, persist each submitted AI interaction, and persist the complete wedding enquiry after authentication.
 - The system must separate request overview access from approved event-platform access.
 - The system must isolate event data and Messenger per event.
 - The system must enforce Owner, primary contact person, additional contact person and Staff boundaries.
@@ -102,7 +102,7 @@ The primary external user is a potential wedding customer. The primary internal 
 ## Acceptance criteria
 
 - [ ] A customer can complete the agreed public-to-event journey without authentication before the AI-flow is complete.
-- [ ] A local draft can be resumed and is only persisted to the system after login/register.
+- [ ] The complete local draft can be resumed before login/register; submitted AI turns may be stored as `AiFlow` interaction records, while the complete wedding enquiry is created only after login/register.
 - [ ] Owner can review and approve a submitted request without exposing internal information to the customer.
 - [ ] Approval opens the correct event-specific platform and Messenger.
 - [ ] Customer and Owner approvals are required for final event-data changes.
@@ -202,7 +202,8 @@ The primary external user is a potential wedding customer. The primary internal 
 - Contact data is collected as part of login/register at the end of the flow, not as an early abandonment barrier.
 - Raw draft data is stored in browser `localStorage` before authentication.
 - The localStorage choice is acceptable only as a school-prototype decision and is not a production GDPR approval.
-- The request is persisted in the backend/database only after successful login or registration.
+- AI interaction records are persisted in the backend/database as answers are submitted to the AI-flow endpoint.
+- The complete wedding enquiry is persisted in the backend/database only after successful login or registration.
 - `/dashboard/events/` is the customer’s request overview and status page.
 - `/dashboard/events/{id}` is the concrete event platform and is opened only after Owner/Johan approval.
 - An event has its own data and Messenger thread; there is no general customer Messenger.

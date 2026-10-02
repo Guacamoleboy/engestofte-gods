@@ -165,15 +165,15 @@ The debug logging is development-only and must not expose secrets or sensitive c
 
 ### Domain-based package structure
 
-Backend code is organized by domain. The current project package examples use `alpha` as the Java package root, even though the product is Engestofte Gods. Do not rename the package root as part of an unrelated feature.
+Backend code is organized by domain under the `engestofte` Java package root.
 
 Example imports:
 
 ```java
-import alpha.domain.role.dao.RoleDAO;
-import alpha.domain.role.entity.Role;
-import alpha.domain.role.enums.RoleName;
-import alpha.service.EntityManagerService;
+import engestofte.domain.role.dao.RoleDAO;
+import engestofte.domain.role.entity.Role;
+import engestofte.domain.role.enums.RoleName;
+import engestofte.service.EntityManagerService;
 ```
 
 Within a domain, keep related classes together:
@@ -236,7 +236,7 @@ Every DTO includes a visible expected JSON section with:
 Request DTO example:
 
 ```java
-import alpha.domain.role.enums.RoleName;
+import engestofte.domain.role.enums.RoleName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -284,9 +284,9 @@ Every entity includes:
 Example shape:
 
 ```java
-package alpha.domain.role.entity;
+package engestofte.domain.role.entity;
 
-import alpha.domain.role.enums.RoleName;
+import engestofte.domain.role.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -347,10 +347,10 @@ The mapper should have one clear responsibility. A request mapper converts a req
 Request mapper example:
 
 ```java
-package alpha.domain.role.mapper.request;
+package engestofte.domain.role.mapper.request;
 
-import alpha.domain.role.dto.request.RoleRequestDTO;
-import alpha.domain.role.entity.Role;
+import engestofte.domain.role.dto.request.RoleRequestDTO;
+import engestofte.domain.role.entity.Role;
 
 public class RoleRequestMapper {
 
