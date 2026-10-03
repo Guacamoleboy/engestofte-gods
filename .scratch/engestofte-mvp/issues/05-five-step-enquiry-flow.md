@@ -4,7 +4,7 @@
 
 **Blocked by:** 04: Harden AI flow behavior and guardrails
 
-**Status:** implemented; review passed; behavioral verification deferred
+**Status:** implemented; review passed; runtime behavior not exercised per owner instruction
 
 ## In scope
 
@@ -39,7 +39,7 @@
 
 ## Verification
 
-The owner declined tests for this ticket. The frontend typecheck was attempted but could not run because TypeScript dependencies are absent; `npm ci` was blocked by a locked Windows binary in `node_modules`. Inspect the localized progress indicator and final question/answer summary manually when dependencies are available.
+The owner declined tests for this ticket. `npm run typecheck` passes. Runtime paths, including conditional follow-ups and conflict handling, were not exercised.
 
 ## Stop and ask if
 

@@ -124,7 +124,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 			const assistantText = result.status === 'STEP_COMPLETE'
 				? nextQuestion
 				: [result.acknowledgement, nextQuestion].filter(Boolean).join('\n\n')
-			setMessages((currentMessages) => [...currentMessages.map((message) =>
+			setMessages((currentMessages) => [...currentMessages.map((message): Message =>
 				message.id === outgoingId ? { ...message, senderName: customerName.current || senderName, status: 'sent' } : message,
 			), {
 				id: nextMessageId.current++,
