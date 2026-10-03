@@ -3,6 +3,13 @@
 		"introMessage": "Derzeit bieten wir KI-gestützte Anfragen nur für Hochzeiten an. Für Preise, Antworten oder Kontakt zu einer anderen Veranstaltung erreichen Sie uns über die Website oder unter mail@engestofte.dk.\n\nIch bin ein KI-Assistent, kein Mensch. Ihre Nachrichten werden im Anfrageverlauf von Gut Engestofte gespeichert. Geben Sie keine sensiblen personenbezogenen Daten ein. Dieser Prototyp ist nicht für den produktiven Einsatz gemäß DSGVO freigegeben.",
 		"flowProgress": "Schritt {step}/5",
 		"flowComplete": "Anfrage vollständig",
+		"draftResumeNotice": "Ihr Entwurf ist in diesem Browser gespeichert. Sie können später zurückkehren und fortfahren. Dieser Prototyp ist nicht für die produktive Speicherung personenbezogener Daten gemäß DSGVO freigegeben.",
+		"draftUnreadableNotice": "Ein Entwurf aus einer anderen Version wurde gefunden, kann aber nicht geöffnet werden. Er wurde beibehalten. Beginnen Sie nur neu, wenn Sie ihn löschen möchten.",
+		"draftCompleteNotice": "Ihre fertige Anfrage ist lokal gespeichert. Melden Sie sich unten an oder erstellen Sie ein Konto.",
+		"startNewDraft": "Neue Anfrage beginnen",
+		"confirmNewDraft": "Wenn Sie eine neue Anfrage beginnen, wird dieser Entwurf aus dem Browser gelöscht. Fortfahren?",
+		"continueDraft": "Entwurf fortsetzen",
+		"draftStorageNotice": "Ihr Entwurf wird nur lokal gespeichert und erst nach der Anmeldung oder Kontoerstellung als Anfrage an Engestofte gesendet.",
 		"cancelRequest": "Anfrage abbrechen",
 		"goBack": "Zurück",
 		"stepQuestions": [
@@ -40,6 +47,7 @@
 			"description":"Wir haben Ihre Angaben gesammelt. Die Anfrage kann nun zur Bearbeitung an eine Leitungsperson weitergeleitet werden.",
 			"contactExplanation":"Damit Engestofte Sie später kontaktieren kann, wählen Sie bitte eine der folgenden Möglichkeiten.",
 			"createAccount":"Konto erstellen",
+			"login":"Anmelden",
 			"sendEmail":"E-Mail senden",
 			"cancelEnquiry":"Anfrage abbrechen"
 		}
