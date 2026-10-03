@@ -1,0 +1,31 @@
+/* Pathing
+   _______
+   src/features/auth-page/AuthPage.module.css */
+
+.page {
+	min-height: 65vh;
+	display: grid;
+	place-items: center;
+	padding-block: var(--engestofte-space-10);
+}
+
+.card {
+	width: min(100%, 32rem);
+	border: 1px solid var(--engestofte-border);
+	padding: clamp(1.5rem, 5vw, 3rem);
+	background: var(--engestofte-white);
+}
+
+.eyebrow { color: var(--engestofte-green); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.card h1 { margin: 0 0 0.75rem; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; }
+.card > p:not(.eyebrow) { color: var(--engestofte-muted); line-height: 1.6; }
+.form { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.form label { display: grid; gap: 0.4rem; color: var(--engestofte-heading); font-size: 0.9rem; font-weight: 650; }
+.form input { min-height: 2.8rem; border: 1px solid var(--engestofte-border); padding: 0.65rem 0.75rem; color: var(--engestofte-text); font: inherit; }
+.form input:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+.form button { min-height: 3rem; border: 1px solid var(--engestofte-green-dark); padding: 0.7rem 1rem; background: var(--engestofte-green-dark); color: var(--engestofte-white); font: inherit; font-weight: 700; cursor: pointer; transition: var(--engestofte-transition-control); }
+.form button:hover { background: var(--engestofte-green); }
+.form button:disabled { cursor: wait; opacity: 0.7; }
+.error { margin: 0; color: var(--engestofte-danger); }
+.links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; margin-top: 1.25rem; }
+.links a, .secondaryLink { color: var(--engestofte-green-dark); text-underline-offset: 0.2rem; }

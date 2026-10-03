@@ -37,6 +37,7 @@ type StoredDraft = {
 	question: string
 	language: Language
 	savedAt: string
+	submissionId?: string
 }
 
 function readDraft(): StoredDraft | null {
@@ -123,6 +124,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 			question,
 			language,
 			savedAt: new Date().toISOString(),
+			submissionId: initialDraft?.submissionId,
 		}
 		window.localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
 	}, [answer, currentStep, expectedGuestCount, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, language, messages, question])

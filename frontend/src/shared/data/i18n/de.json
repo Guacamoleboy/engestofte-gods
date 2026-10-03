@@ -1,4 +1,23 @@
 {
+	"auth": {
+		"eyebrow": "Gut Engestofte · Hochzeitsanfrage",
+		"loginTitle": "Anmelden",
+		"loginDescription": "Melden Sie sich an, um Ihre fertige Anfrage zu senden.",
+		"registerTitle": "Konto erstellen",
+		"registerDescription": "Erstellen Sie ein Konto, damit wir Ihre Anfrage speichern können.",
+		"forgotTitle": "Passwort vergessen",
+		"forgotDescription": "Die automatische Zurücksetzung ist in diesem Prototyp nicht aktiviert. Kontaktieren Sie uns unter mail@engestofte.dk.",
+		"name": "Name",
+		"email": "E-Mail",
+		"password": "Passwort",
+		"loginSubmit": "Anmelden und Anfrage senden",
+		"registerSubmit": "Konto erstellen und Anfrage senden",
+		"submitting": "Wird gesendet…",
+		"forgotLink": "Passwort vergessen?",
+		"backToLogin": "Zurück zur Anmeldung",
+		"haveAccount": "Sie haben bereits ein Konto? Anmelden",
+		"needAccount": "Noch kein Konto? Konto erstellen"
+	},
 	"aiFlow": {
 		"introMessage": "Derzeit bieten wir KI-gestützte Anfragen nur für Hochzeiten an. Für Preise, Antworten oder Kontakt zu einer anderen Veranstaltung erreichen Sie uns über die Website oder unter mail@engestofte.dk.\n\nIch bin ein KI-Assistent, kein Mensch. Ihre Nachrichten werden im Anfrageverlauf von Gut Engestofte gespeichert. Geben Sie keine sensiblen personenbezogenen Daten ein. Dieser Prototyp ist nicht für den produktiven Einsatz gemäß DSGVO freigegeben.",
 		"flowProgress": "Schritt {step}/5",

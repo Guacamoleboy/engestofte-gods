@@ -22,3 +22,27 @@ export function getAiFlowDraftStatus(): AiFlowDraftStatus {
 		return 'unreadable'
 	}
 }
+
+export function getCompleteAiFlowDraft(): Record<string, unknown> | null {
+	if (getAiFlowDraftStatus() !== 'complete') return null
+	try {
+		const draft: unknown = JSON.parse(window.localStorage.getItem(AI_FLOW_DRAFT.key) ?? 'null')
+		return draft && typeof draft === 'object' ? draft as Record<string, unknown> : null
+	} catch {
+		return null
+	}
+}
+
+export function getOrCreateSubmissionId(): string {
+	const draft = getCompleteAiFlowDraft()
+	if (!draft) throw new Error('The completed enquiry draft is unavailable')
+	if (typeof draft.submissionId === 'string' && draft.submissionId) return draft.submissionId
+
+	const submissionId = window.crypto.randomUUID()
+	window.localStorage.setItem(AI_FLOW_DRAFT.key, JSON.stringify({ ...draft, submissionId }))
+	return submissionId
+}
+
+export function clearAiFlowDraft() {
+	window.localStorage.removeItem(AI_FLOW_DRAFT.key)
+}
