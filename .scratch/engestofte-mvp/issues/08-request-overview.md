@@ -4,7 +4,7 @@
 
 **Blocked by:** 07: Authenticate and submit the wedding enquiry
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -21,11 +21,11 @@
 
 ## Acceptance criteria
 
-- [ ] An authenticated customer can open `/dashboard/events/`.
-- [ ] The customer sees only requests connected to the account.
-- [ ] Each request shows date, time and current status.
-- [ ] An unapproved request does not expose the concrete event platform or internal notes.
-- [ ] The view handles no requests and backend errors clearly.
+- [x] An authenticated customer can open `/dashboard/events/`.
+- [x] The customer sees only requests connected to the account.
+- [x] Each request shows date, time and current status.
+- [x] An unapproved request does not expose the concrete event platform or internal notes.
+- [x] The view handles no requests and backend errors clearly.
 
 ## Verification
 

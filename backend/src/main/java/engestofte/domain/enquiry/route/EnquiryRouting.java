@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.get;
 
 public class EnquiryRouting {
 
@@ -22,6 +23,9 @@ public class EnquiryRouting {
 	// _________________________________________________________________________________________________________________
 
 	public EndpointGroup routes() {
-		return () -> path("/enquiries", () -> post("", enquiryController::submit));
+		return () -> path("/enquiries", () -> {
+			get("", enquiryController::listForAccount);
+			post("", enquiryController::submit);
+		});
 	}
 }

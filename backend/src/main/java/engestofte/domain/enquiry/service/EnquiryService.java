@@ -1,11 +1,14 @@
 package engestofte.domain.enquiry.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import engestofte.domain.enquiry.dao.WeddingEnquiryDAO;
 import engestofte.domain.enquiry.dto.request.EnquirySubmissionRequestDTO;
 import engestofte.domain.enquiry.dto.response.EnquirySubmissionResponseDTO;
+import engestofte.domain.enquiry.dto.response.EnquirySummaryResponseDTO;
 import engestofte.domain.enquiry.entity.EnquiryContact;
 import engestofte.domain.enquiry.entity.WeddingEnquiry;
 import engestofte.domain.enquiry.enums.EnquiryStatus;
+import engestofte.domain.enquiry.mapper.response.EnquirySummaryResponseMapper;
 import engestofte.domain.user.entity.UserAccount;
 import engestofte.exception.ApiException;
 import jakarta.persistence.EntityManager;
@@ -13,6 +16,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.exception.ConstraintViolationException;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -74,6 +78,18 @@ public class EnquiryService {
 				throw new ApiException(409, "This submission ID is already in use");
 			}
 			throw exception;
+		} finally {
+			entityManager.close();
+		}
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public List<EnquirySummaryResponseDTO> findForAccount(Integer accountId) {
+		if (accountId == null) throw new ApiException(401, "Authenticated account not found");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		try {
+			return EnquirySummaryResponseMapper.toDTOs(new WeddingEnquiryDAO(entityManager).findForAccount(accountId));
 		} finally {
 			entityManager.close();
 		}

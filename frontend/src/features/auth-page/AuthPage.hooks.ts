@@ -8,6 +8,7 @@ import { ApiError } from '../../api/client'
 import { login, register } from '../../api/endpoints/auth'
 import { submitEnquiry } from '../../api/endpoints/enquiries'
 import { clearAiFlowDraft, getAiFlowDraftStatus, getCompleteAiFlowDraft, getOrCreateSubmissionId } from '../../shared/data/aiFlowDraft'
+import { clearAuthSession } from '../../shared/data/authSession'
 
 const PENDING_SUBMISSION_KEY = 'engestofte.pendingSubmissionId'
 
@@ -40,6 +41,7 @@ export function useAuthPage(mode: 'login' | 'register') {
 					: await login(email.trim(), password)
 				window.localStorage.setItem('access_token', auth.access_token)
 				window.localStorage.setItem('refresh_token', auth.refresh_token)
+				window.localStorage.setItem('account_role', auth.account.role)
 				if (submissionId) window.localStorage.setItem(PENDING_SUBMISSION_KEY, submissionId)
 			}
 
@@ -56,9 +58,7 @@ export function useAuthPage(mode: 'login' | 'register') {
 			navigate('/dashboard/events/', { replace: true })
 		} catch (caughtError) {
 			if (caughtError instanceof ApiError && caughtError.status === 401) {
-				window.localStorage.removeItem('access_token')
-				window.localStorage.removeItem('refresh_token')
-				window.localStorage.removeItem(PENDING_SUBMISSION_KEY)
+				clearAuthSession()
 			}
 			setError(caughtError instanceof Error ? caughtError.message : 'Request failed')
 		} finally {

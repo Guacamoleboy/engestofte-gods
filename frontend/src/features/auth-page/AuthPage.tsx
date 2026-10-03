@@ -31,7 +31,7 @@ export default function AuthPage({ mode }: AuthPageProps) {
 	return <AuthForm mode={mode} />
 }
 
-function AuthForm({ mode }: Pick<AuthPageProps, 'mode'>) {
+function AuthForm({ mode }: { mode: 'login' | 'register' }) {
 	const { content } = useTranslate()
 	const text = content.auth
 	const form = useAuthPage(mode)

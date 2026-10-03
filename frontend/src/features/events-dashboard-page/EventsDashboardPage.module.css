@@ -1,0 +1,111 @@
+/* Pathing
+   _______
+   src/features/events-dashboard-page/EventsDashboardPage.module.css */
+
+.dashboard {
+	min-height: 100dvh;
+	background: var(--engestofte-surface);
+}
+
+.content { padding-block: clamp(2.5rem, 8vh, 6rem); }
+
+.header {
+	max-width: 48rem;
+	margin-bottom: var(--engestofte-space-8);
+}
+
+.header h1 {
+	margin: 0;
+	color: var(--engestofte-heading);
+	font-family: var(--engestofte-font-display);
+	font-size: clamp(2.5rem, 5vw, 4rem);
+	font-weight: 400;
+}
+
+.header > p:last-child,
+.emptyState p,
+.state p {
+	color: var(--engestofte-muted);
+	line-height: 1.6;
+}
+
+.list {
+	display: grid;
+	gap: var(--engestofte-space-4);
+}
+
+.card,
+.emptyState,
+.state {
+	border: 1px solid var(--engestofte-border);
+	padding: clamp(1.25rem, 3vw, 2rem);
+	background: var(--engestofte-white);
+	box-shadow: var(--engestofte-shadow-card);
+}
+
+.card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--engestofte-space-6);
+}
+
+.card h2,
+.emptyState h2 {
+	margin: 0;
+	color: var(--engestofte-heading);
+	font-family: var(--engestofte-font-display);
+	font-size: 1.55rem;
+	font-weight: 400;
+}
+
+.submittedAt {
+	display: grid;
+	gap: 0.25rem;
+	margin: var(--engestofte-space-4) 0 0;
+	color: var(--engestofte-muted);
+	font-size: 0.88rem;
+}
+
+.submittedAt span { font-weight: 650; }
+
+.status {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+	border: 1px solid var(--engestofte-border);
+	padding: 0.55rem 0.8rem;
+	background: var(--engestofte-warning-bg);
+	color: var(--engestofte-green-dark);
+	font-size: 0.82rem;
+	font-weight: 650;
+}
+
+.state { width: min(100%, 46rem); }
+.state p:first-child { margin-top: 0; }
+.action {
+	min-height: 2.8rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--engestofte-green-dark);
+	padding: 0.65rem 1rem;
+	background: var(--engestofte-green-dark);
+	color: var(--engestofte-white);
+	font: inherit;
+	font-weight: 650;
+	text-decoration: none;
+	cursor: pointer;
+	transition: var(--engestofte-transition-control);
+}
+
+.action:hover { background: var(--engestofte-green); }
+.action:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
+.emptyState { text-align: center; }
+.emptyState p { margin-bottom: 0; }
+
+@media (max-width: 620px) {
+	.card { align-items: flex-start; flex-direction: column; }
+	.status { align-self: flex-start; }
+}

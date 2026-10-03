@@ -10,6 +10,7 @@ import AiFlowRedirectPage from '../../features/ai-flow-redirect-page'
 import ContactPage from '../../features/contact-page'
 import AiFlowTransitionProvider from '../../features/ai-flow-transition/AiFlowTransitionProvider'
 import AuthPage from '../../features/auth-page'
+import EventsDashboardPage from '../../features/events-dashboard-page'
 
 export default function AppRouter() {
 	return (
@@ -17,7 +18,7 @@ export default function AppRouter() {
 			<Routes>
 				<Route path="/ai-flow" element={<AiFlowPage />} />
 				<Route path="/ai-flow/redirect" element={<AiFlowRedirectPage />} />
-				<Route path="/dashboard/events/" element={<PlaceholderPage route="/dashboard/events/" />} />
+				<Route path="/dashboard/events/" element={<EventsDashboardPage />} />
 				<Route path="/dashboard/events/:id" element={<PlaceholderPage route="/dashboard/events/:id" />} />
 				<Route element={<PublicLayout />}>
 					<Route path="/" element={<Navigate to="/kontakt" replace />} />
