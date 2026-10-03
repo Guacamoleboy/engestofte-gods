@@ -1,61 +1,75 @@
 # Engestofte Gods
 
-Engestofte Gods explores how a document-grounded AI solution can make it easier for potential wedding customers to submit a complete and qualified enquiry.
+This project is created for Engestofte Gods for my final AIDA Course project.
+During Engestoftes presentation at Lyngby I noted potential cases which later resulted in this product.
 
-The first MVP focuses on weddings.
+The main goal - for which I have set myself - is to give Johan more freetime and allow real customer requests without Johan having to read 1000 mails daily and answer 500 phone calls.
 
-This repository is developed as an AP Computer Science project.
+The AI flow and knowledge provided by both Johan and myself results in clear professional, yet personal feedback that handles basic responses and provides a request to Johan or any other Owner role to answer in the events dashboard provided by me aswell.
+
+This results in a place where Souce of Truth lives provided by the Customer and by Johan. If something gets updated - both Engestofte and the Customer get the same updates. Meaning there are no hidden things or things that could have been forgotten as everything is approved by both parties.
+
+---
+
+## Visual Presentation
+
+Visual showcase of the UI elements regarding my solution for Engestofte Gods.
+
+Contact Page to handle customer requests without having to spam call Johan with messages that can be handled prior resulting in free time to focus on actual custom requests.
+
+![Contact Display](docs/display/display-1.png)
+
+AI Customer interaction feed with knowledge provided and limitations + personalized yet professional feedback and results.
+
+![AI-Flow 1](docs/display/display-2.png)
+![AI-Flow 2](docs/display/display-3.png)
+
+Final Approval in order to "collect" the new customer requests and possible business in the future.\
+**COMING SOON**
+
+Dashboard Visuals - Same for alle roles - Navbar specific items per role though.\
+**COMING SOON**
+
+---
 
 ## MVP overview
 
-Customers are guided through an AI-supported question flow that collects the most important wedding details and asks relevant follow-up questions. A draft can be saved locally and continued after the customer logs in or creates an account.
+- Contact Page
+- Smiley Rapport button to comply with the fine they almost got in 2025 regarding a missing link on their website
+- Personalized images as people paying 100.000kr for a wedding wants to know what the people they book with look like.
+- Professional theme 1:1 of their original but where the issues have been fixed.
+- Language options moved from flags to letters as per request by Lisa. (Can be triggered by Cloudflare later using IP).
+- AI-Flow to handle customer requests to let Johan get more time to focus on actual customers.
+- Dashboard for the customer and johan to interact with. This is where they confirm, deny, approve and pay for the wedding itself.
+- Source of Truth instead of a Trello board. This solution provides 1 shared Source of Truth for both the customer and the owner. Nothing can be forgotten as it's right there. Entered and approved by both parties. Can later be integrated using Trello API for automatic Trello updates.
+- Staff can use the portal aswell to check for duvets, rooms, allergies, food and other misc things needed to finish the wedding. A planning tool could be implemented later on if Johan wants to proceed with the solution.
 
-```text
-engestofte-gods.dk/contact
-        ↓
-AI flow
-        ↓
-Draft saved locally
-        ↓
-Login or account creation
-        ↓
-/dashboard/events/
-        ↓
-Owner reviews the enquiry
-        ↓
-/dashboard/events/{id}
-```
+---
 
-After approval, the customer gets access to the specific event. The customer and Engestofte Gods can view event details, communicate through Messenger, suggest changes and approve agreements. The status moves from draft and submitted enquiry to approval, deposit and booking.
+## Links & Deployment
 
-The AI flow is intended to:
+Website: N/A\
+Backend: N/A\
+Tickets tracking: N/A\
+Demo video: N/A
 
-- collect the critical wedding details
-- identify missing or conflicting answers
-- present relevant, non-binding upsell suggestions
-- handle known unavailable dates honestly
-- flag uncertainty for review by the Owner
+---
 
-The raw customer draft is stored in `localStorage` until the customer logs in or creates an account. Only then is the enquiry sent to the backend and database. This is a school-prototype decision and is not production approval for GDPR or EU compliance.
+## Terms of Use
 
-## Scope
+This program has been created as a School Project for Engestofte Gods (Real Customer). Please do not use, share og exploit any parts of the solution.
 
-The MVP does not yet include:
+Sharing Photos, text, knowledge cards or other features containing Engestofte Gods **is not permitted**.
 
-- automatic calendar booking or guaranteed availability
-- real payments or a payment provider
-- binding offers, contracts or automatic booking
-- full support for parties, hunting, conferences or Christmas markets
-- automatic email delivery
-- replacement of the existing Squarespace, Trello or finance systems
-
-The deposit is simulated in the school project. Once the customer and Owner agree, the customer can mark the deposit as paid and the status becomes `Booked`.
+---
 
 ## Technology
 
 - Backend: Java 17, Maven, Javalin, Jackson, Hibernate/JPA and PostgreSQL
 - Frontend: React, Vite and React Router
 - AI: a document-grounded solution with OpenAI as a possible provider
+
+---
 
 ## Documentation
 
@@ -71,5 +85,5 @@ The deposit is simulated in the school project. Once the customer and Owner agre
 ---
 
 <div align="center">
-    <sub>Engestofte Gods — 2026</sub>
+    <sub>Engestofte Gods — Created by Jonas - 2026</sub>
 </div>

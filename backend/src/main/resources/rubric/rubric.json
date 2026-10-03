@@ -6,45 +6,42 @@
     "IN_PROGRESS": "At least one required or relevant conditional item in the current step is missing or unclear. Ask one focused follow-up and remain on the same step.",
     "STEP_COMPLETE": "All required and relevant conditional items in the current step are sufficiently clear. Used only for steps 1 through 4.",
     "DONE": "Step 5 is complete. Optional items may remain unanswered.",
-    "OUT_OF_SCOPE": "The customer clearly requests an event other than a wedding. Stop intake politely."
+    "OUT_OF_SCOPE": "The customer requests a non-wedding event, declines the 2027 cancellation waitlist, or explicitly chooses to close their enquiry after a hard-closed wedding month. Stop intake politely."
   },
   "steps": [
     {
       "step": 1,
       "name": "Contact person",
       "fields": [
-        { "id": "contact_person_name", "classification": "required", "completion_rule": "A contact person's name is explicitly provided." }
+        { "id": "contact_person_name", "classification": "required", "completion_rule": "A plausible personal name is clearly provided for addressing the customer; a first name alone is sufficient. An unrelated sentence, joke, placeholder, or ordinary word clearly not used as a person's name is insufficient. Ask what name to use and remain on step 1. Do not require a family name." }
       ]
     },
     {
       "step": 2,
       "name": "Wedding date",
       "fields": [
-        { "id": "desired_date_or_range", "classification": "required", "completion_rule": "A desired date or date range is provided. For this school project, assume all 2028 dates are unbooked in the demo calendar. A 2028 date outside July may be described as free in the project calendar, but never as a confirmed booking. Weddings are typically not held in July; for a July date, explain this and ask whether the customer wants Engestofte to check for a rare exception or prefers another date. Never promise an exception. Availability in other years is unknown and must not be inferred." }
+        { "id": "desired_date_or_range", "classification": "required", "completion_rule": "A desired date or date range is provided. November, December, January, February, and March are closed for weddings; ask the customer to provide another date or close the enquiry, stay IN_PROGRESS while they decide, and return OUT_OF_SCOPE only if they explicitly close. This hard closure takes priority over 2027 availability. Regular wedding months are May, June, August, and September. Adjacent months April, July, and October are not normally used for weddings, but customers may continue for assessment. All 2027 dates outside hard-closed months are fully booked; require explicit agreement to the cancellation waitlist before completing step 2, and explain it is not a booking or guarantee. For an adjacent month in 2027, also briefly note that weddings are not normally held then. A declined 2027 waitlist returns OUT_OF_SCOPE. For an adjacent month in other years, require explicit agreement to continue for assessment; if declined, ask whether they want another date or to close, and only return OUT_OF_SCOPE if they choose to close. Do not describe adjacent-month dates as unavailable or fully booked solely due to month. A 2028 date in a regular wedding month is unbooked only in the demo calendar, never a confirmed booking. Availability in other years is unknown. For date ranges crossing categories, ask one focused question to clarify which dates they prefer." }
       ]
     },
     {
       "step": 3,
       "name": "Guests and accommodation",
       "fields": [
-        { "id": "expected_guest_count", "classification": "required", "completion_rule": "An expected guest count is provided." },
+        { "id": "expected_guest_count", "classification": "required", "completion_rule": "An expected guest count from 1 to 150 inclusive is provided. Above 150, explain the maximum and request a corrected count; remain on step 3." },
         { "id": "accommodation_wanted", "classification": "optional", "completion_rule": "Record whether accommodation is wanted when the customer provides this information. Its absence does not block step completion." },
-        { "id": "accommodation_guest_count", "classification": "conditional_critical", "condition": "The customer wants accommodation", "completion_rule": "Collect the number of people needing accommodation, or clarify whether this is not decided yet." },
-        { "id": "accommodation_dates", "classification": "conditional_critical", "condition": "The customer wants accommodation", "completion_rule": "Collect relevant nights or a date range, or clarify whether this is not decided yet." },
-        { "id": "intimpakke_offer", "classification": "disabled_pending_business_confirmation", "condition": "Guest count is 60 or lower", "completion_rule": "Do not recommend the Intimpakke or offer a comparison based only on guest count. Contents, price, target group and value compared with the standard package are not confirmed. If the customer asks, say Engestofte can clarify whether a suitable package or quote is available. This field never blocks completion." },
-        { "id": "bus_investigation_offer", "classification": "optional_offer", "condition": "Accommodation is declined", "completion_rule": "Offer at most once to investigate bus transport between a nearby hotel and Engestofte. Do not promise availability or booking." }
+        { "id": "accommodation_guest_count", "classification": "conditional_critical", "condition": "The customer wants accommodation", "completion_rule": "Collect the number of people needing accommodation, or clarify whether this is not decided yet. Keep this separate from the total wedding guest count." },
+        { "id": "accommodation_dates", "classification": "conditional_critical", "condition": "The customer wants accommodation", "completion_rule": "Collect relevant nights or a date range, or clarify whether this is not decided yet. If the customer says all days but the known wedding date is a single day, confirm the number of nights and explicitly name that date before completing." },
+        { "id": "intim_direction_recommendation", "classification": "optional_recommendation", "condition": "Guest count is 60 or lower", "completion_rule": "At step 4, show and recommend the project Intim direction only for 60 or fewer guests. It combines the documented 2026 Standard package and reception in Værkstedet; show its localized card without prices. The card lists only included elements. This is optional and does not block completion." },
+        { "id": "bus_investigation_offer", "classification": "optional_offer", "condition": "The customer has guests and declines accommodation at Engestofte", "completion_rule": "Recommend arranging bus transport between a nearby hotel and Engestofte, and offer once to investigate it. Do not promise availability or booking." }
       ],
-      "offer_order": "Do not present the disabled Intimpakke offer. If the bus investigation is applicable, present it at most once and do not block step completion on it."
+      "offer_order": "Recommend the Intim direction at step 4 only for guest counts of 60 or fewer. If the customer declines accommodation and has guests, present the bus investigation offer at most once. Neither optional offer blocks completion."
     },
     {
       "step": 4,
-      "name": "Wedding format",
+      "name": "Wedding direction",
       "fields": [
-        { "id": "ceremony_preference", "classification": "critical", "completion_rule": "Clarify whether the customer wants a ceremony, or record that this is not decided yet." },
-        { "id": "ceremony_form_or_location", "classification": "conditional_critical", "condition": "The customer wants a ceremony", "completion_rule": "The form or location is stated, or the customer explicitly says it is not decided yet." },
-        { "id": "reception_preference", "classification": "conditional", "completion_rule": "Ask when useful; if the customer does not know, this does not block completion." },
-        { "id": "dinner_preference", "classification": "critical_for_dinner_or_party_flow", "completion_rule": "Clarify whether dinner is part of the requested event, or record that this is not decided yet." },
-        { "id": "party_preference", "classification": "conditional", "condition": "The customer wants a party after dinner", "completion_rule": "Clarify when relevant; do not block on details the customer has not decided." }
+        { "id": "wedding_direction", "classification": "required", "completion_rule": "Record one selection: Standard, Intim, or Skræddersyet/Custom. Accept selection by option number or name. The Intim direction is available only for guest counts up to 60." },
+        { "id": "ceremony_location_preference", "classification": "required", "completion_rule": "Record whether the ceremony is at Engestofte, somewhere else, or not decided. Do not ask for a specific church, town, or detailed location." }
       ]
     },
     {
@@ -61,9 +58,11 @@
   "global_rules": [
     "Use information volunteered in any conversation turn to satisfy the relevant field, even if that field belongs to a later step; never ask the customer to repeat it.",
     "Ask one focused follow-up at a time and do not repeat answered questions.",
-    "Do not invent facts or confirm availability, prices, capacity, package details, transport, or bookings.",
-    "For this school project, 2028 is assumed unbooked in the demo calendar; this is not a claim about Engestofte's real calendar. The usual July wedding closure still applies and rare exceptions require Engestofte to assess them. Availability in other years is unknown.",
-    "The 2026 standard wedding package price list is historical and must not be presented as a current quote. Intimpakke contents and price are unconfirmed; do not recommend it or invent a comparison.",
+    "When values for the same field conflict, state the conflicting values neutrally and ask which is correct. Do not choose, overwrite, or discard either value. A critical conflict blocks completion until clarified; an optional conflict does not block completion.",
+    "Do not invent facts, prices or bookings. The localized package cards define the school-project proposal and show package contents only, not prices.",
+    "The documented regular wedding months are May, June, August, and September. April, July, and October are adjacent months: weddings are not normally held then, but enquiries may continue for manual assessment. November, December, January, February, and March are closed for weddings; customers may choose another date or close the enquiry. The 2028 demo-calendar assumption does not override month rules; availability in other years is unknown.",
+    "For this school project, 2027 is fully booked for weddings. A customer with a 2027 date may continue the enquiry only after explicitly agreeing to be considered for a cancellation waitlist; never imply that the waitlist guarantees a date or booking. If they decline, stop the enquiry and return them to /kontakt.",
+    "The 2026 Standard package and reception prices are internal historical references and must not be shown on customer-facing cards. The Intim direction is a project proposal combining those documented components; it must only be offered for 60 or fewer guests. The Custom direction is priced by Johan after clarification.",
     "The application controls step advancement and presents the fixed localized introduction after STEP_COMPLETE."
   ]
 }

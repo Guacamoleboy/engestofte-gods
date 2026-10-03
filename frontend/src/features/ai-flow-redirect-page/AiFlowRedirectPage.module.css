@@ -1,0 +1,89 @@
+.page {
+	min-height: 100dvh;
+	display: grid;
+	place-items: center;
+	padding: clamp(1.25rem, 5vw, 4rem);
+	background: var(--engestofte-green);
+	color: var(--engestofte-white);
+}
+
+.content {
+	width: min(100%, 44rem);
+	text-align: center;
+}
+
+.logo {
+	width: min(13rem, 65vw);
+	display: block;
+	margin: 0 auto clamp(2rem, 5vw, 3rem);
+}
+
+.content h1 {
+	margin: 0 0 1rem;
+	color: inherit;
+	font-size: clamp(1.55rem, 4vw, 2.2rem);
+}
+
+.content p {
+	max-width: 42rem;
+	margin: 0 0 1rem;
+	line-height: 1.65;
+}
+
+.actions {
+	width: 100%;
+	display: flex;
+	gap: 0.75rem;
+	align-items: stretch;
+	margin-top: 2rem;
+}
+
+.createAccount,
+.sendEmail,
+.cancelEnquiry {
+	min-height: 3.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--engestofte-white);
+	border-radius: var(--engestofte-radius-sharp);
+	padding: 0.75rem 1rem;
+	font: inherit;
+	font-weight: 700;
+	text-align: center;
+	text-decoration: none;
+}
+
+.createAccount {
+	background: var(--engestofte-white);
+	color: var(--engestofte-green-dark);
+}
+
+.sendEmail {
+	background: transparent;
+	color: var(--engestofte-white);
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+
+.createAccount,
+.sendEmail,
+.cancelEnquiry { flex: 1 1 0; }
+
+.cancelEnquiry {
+	background: transparent;
+	color: var(--engestofte-white);
+}
+
+.createAccount:focus-visible,
+.cancelEnquiry:focus-visible {
+	outline: 3px solid var(--engestofte-focus);
+	outline-offset: 3px;
+}
+
+@media (max-width: 620px) {
+	.actions { gap: 0.4rem; }
+	.createAccount,
+	.sendEmail,
+	.cancelEnquiry { padding-inline: 0.4rem; font-size: 0.76rem; }
+}

@@ -7,6 +7,7 @@ import InputText from '../../shared/components/input-text/InputText'
 import PageContainer from '../../shared/components/PageContainer'
 import Submit from '../../shared/components/submit/Submit'
 import { useTranslate } from '../../shared/hooks/useTranslate'
+import { useAiFlowTransition } from '../ai-flow-transition/AiFlowTransitionContext'
 import { useContactPage } from './ContactPage.hooks'
 import styles from './ContactPage.module.css'
 
@@ -37,6 +38,7 @@ const contactPeople = [
 export default function ContactPage() {
 	const { content: copy } = useTranslate()
 	const { submitContactMessage } = useContactPage()
+	const { startEntryTransition } = useAiFlowTransition()
 
 	return (
 		<PageContainer>
@@ -46,7 +48,7 @@ export default function ContactPage() {
 					<h1 id="contact-title">{copy.contact.heroTitle}</h1>
 					<p className={styles['contact-hero__intro']}>{copy.contact.heroIntro}</p>
 					<div className={styles['contact-hero__actions']}>
-						<Button as="link" to="/ai-flow" variant="primary">{copy.contact.startEnquiry}</Button>
+						<Button variant="primary" onClick={startEntryTransition}>{copy.contact.startEnquiry}</Button>
 						<a className="ui-button ui-button--secondary" href="mailto:mail@engestofte.dk">{copy.contact.contactUs}</a>
 					</div>
 					<p className={styles['contact-hero__note']}>{copy.contact.heroNote}</p>

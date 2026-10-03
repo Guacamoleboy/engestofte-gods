@@ -2,16 +2,36 @@
 // _______
 // src/features/ai-flow-page/AiFlowPage.tsx
 
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslate } from '../../shared/hooks/useTranslate'
+import { useAiFlowTransition } from '../ai-flow-transition/AiFlowTransitionContext'
 import AiFlowMessage from './AiFlowMessage'
 import { useAiFlow } from './AiFlowPage.hooks'
 import styles from './AiFlowPage.module.css'
 
 export default function AiFlowPage() {
+	const navigate = useNavigate()
 	const { content, language } = useTranslate()
 	const copy = content.aiFlow
-	const { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finished, copy.customerName, copy.aiUnavailable, language)
+	const { startFinalTransition } = useAiFlowTransition()
+	const { answer, currentStep, customerName, expectedGuestCount, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finalMessage, copy.customerName, copy.aiUnavailable, language)
+	const progressLabel = isComplete
+		? copy.flowComplete
+		: copy.flowProgress.replace('{step}', String(currentStep))
+
+	useEffect(() => {
+		if (!isOutOfScope) return
+
+		const redirectTimeout = window.setTimeout(() => navigate('/kontakt'), 5000)
+		return () => window.clearTimeout(redirectTimeout)
+	}, [isOutOfScope, navigate])
+
+	useEffect(() => {
+		if (!isComplete) return
+		const redirectTimeout = window.setTimeout(() => startFinalTransition(customerName), 4000)
+		return () => window.clearTimeout(redirectTimeout)
+	}, [customerName, isComplete, startFinalTransition])
 
 	return (
 		<main className={`page-container ${styles.page}`}>
@@ -23,7 +43,7 @@ export default function AiFlowPage() {
 					<div className={styles.messengerHeading}>
 						<h2 id="ai-flow-messenger-title">{copy.assistantName}</h2>
 					</div>
-					<p className={styles.flowProgress}>{copy.flowProgress.replace('{step}', String(currentStep))}</p>
+					<p className={styles.flowProgress} aria-live="polite">{progressLabel}</p>
 				</div>
 
 				<div className={styles.messageList} role="log" aria-live="polite" aria-relevant="additions text" aria-busy={isPending}>
@@ -42,7 +62,7 @@ export default function AiFlowPage() {
 							<div className={styles.messageGroup} key={message.id}>
 								{message.flowChanged && (
 									<div className={styles.flowDivider} role="separator">
-										<span>{copy.flowProgress.replace('{step}', String(message.step ?? currentStep))}</span>
+										<span>{message.step && message.step > 5 ? copy.flowComplete : copy.flowProgress.replace('{step}', String(message.step ?? currentStep))}</span>
 									</div>
 								)}
 								<article className={`${styles.messageRow} ${isAssistant ? styles.assistantRow : styles.customerRow}`}>
@@ -51,7 +71,7 @@ export default function AiFlowPage() {
 											<img src="/images/shared/logo-white.png" alt="" />
 										</div>
 									)}
-									<div className={`${styles.messageContent} ${message.id === 0 ? styles.introMessageContent : ''}`}>
+									<div className={`${styles.messageContent} ${message.id === 0 ? styles.introMessageContent : ''} ${message.flowChanged && message.step === 4 ? styles.weddingDirectionMessageContent : ''}`}>
 										<div className={styles.messageMeta}>
 											<strong>{senderName}</strong>
 											<time dateTime={message.createdAt.toISOString()}>{formatMessageTime(message.createdAt)}</time>
@@ -59,10 +79,23 @@ export default function AiFlowPage() {
 										{isAssistant
 											? <>
 												<AiFlowMessage text={message.text} animate={message.animate ?? false} />
+												{message.flowChanged && message.step === 4 && currentStep === 4 && (
+													<div className={styles.weddingDirectionCards} role="group" aria-label={copy.weddingDirectionOptionsLabel}>
+														{copy.weddingDirectionOptions.map((option, index) => {
+															if (index === 1 && !(expectedGuestCount !== null && expectedGuestCount <= 60)) return null
+															return (
+																<button className={styles.weddingDirectionCard} type="button" key={option.choice} onClick={() => setAnswer(option.choice)}>
+																	<strong>{option.title}</strong>
+																	<span>{option.description}</span>
+																	{index === 1 && expectedGuestCount !== null && expectedGuestCount <= 60 && <small>{copy.intimateRecommendation}</small>}
+																</button>
+															)
+														})}
+													</div>
+												)}
 												{message.id === 0 && (
 													<div className={styles.introContactLinks}>
 														<Link to="/kontakt">{copy.contactViaWebsite}</Link>
-														<a href="mailto:mail@engestofte.dk">{copy.emailUs}</a>
 													</div>
 												)}
 											</>

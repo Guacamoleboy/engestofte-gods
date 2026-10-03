@@ -19,7 +19,7 @@ type Message = {
 	status: 'sending' | 'sent' | 'received' | 'new' | 'failed'
 }
 
-export function useAiFlow(introMessage: string, stepQuestions: string[], completionMessage: string, defaultCustomerName: string, aiUnavailableMessage: string, language: Language) {
+export function useAiFlow(introMessage: string, stepQuestions: string[], finalMessage: string, defaultCustomerName: string, aiUnavailableMessage: string, language: Language) {
 	const nextMessageId = useRef(2)
 	const customerName = useRef('')
 	const conversation = useRef<AiConversationTurn[]>([])
@@ -43,6 +43,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 	])
 	const [question, setQuestion] = useState(stepQuestions[0])
 	const [currentStep, setCurrentStep] = useState(1)
+	const [expectedGuestCount, setExpectedGuestCount] = useState<number | null>(null)
 	const [answer, setAnswer] = useState('')
 	const [isPending, setIsPending] = useState(false)
 	const [isComplete, setIsComplete] = useState(false)
@@ -101,6 +102,8 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 			)
 			if (result.customer_name) customerName.current = result.customer_name
 			conversation.current = [...conversation.current, submittedTurn]
+			const guestCount = findExpectedGuestCount(conversation.current) ?? result.expected_guest_count
+			if (typeof guestCount === 'number' && guestCount > 0) setExpectedGuestCount(guestCount)
 
 			let nextStep = currentStep
 			let nextQuestion = ''
@@ -110,7 +113,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 			} else if (result.status === 'DONE') {
 				nextStep = 6
 				setIsComplete(true)
-				nextQuestion = completionMessage
+				nextQuestion = finalMessage.replace('{name}', customerName.current || defaultCustomerName)
 			} else if (result.status === 'OUT_OF_SCOPE') {
 				setIsOutOfScope(true)
 			} else {
@@ -119,10 +122,23 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 
 			const flowChanged = nextStep > currentStep
 			setCurrentStep(nextStep)
-			const assistantText = result.status === 'STEP_COMPLETE'
-				? nextQuestion
-				: [result.acknowledgement, nextQuestion].filter(Boolean).join('\n\n')
-			setMessages((currentMessages) => [...currentMessages.map((message) =>
+			const acknowledgement = result.acknowledgement.trimEnd()
+			const followUp = nextQuestion.trim()
+			const acknowledgementAlreadyAsksFollowUp = result.status === 'IN_PROGRESS'
+				&& followUp.length > 0
+				&& acknowledgement.toLocaleLowerCase(language).endsWith(followUp.toLocaleLowerCase(language))
+			const dateAcknowledgementRepeatsUnavailableYear = currentStep === 2
+				&& result.status === 'IN_PROGRESS'
+				&& /\b2027\b/.test(submittedAnswer)
+			const responseAcknowledgement = dateAcknowledgementRepeatsUnavailableYear
+				? ''
+				: currentStep === 1 && result.status === 'STEP_COMPLETE'
+					? ''
+				: acknowledgementAlreadyAsksFollowUp
+					? acknowledgement.slice(0, -followUp.length).trimEnd()
+					: acknowledgement
+			const assistantText = [responseAcknowledgement, nextQuestion].filter(Boolean).join('\n\n')
+			setMessages((currentMessages) => [...currentMessages.map((message): Message =>
 				message.id === outgoingId ? { ...message, senderName: customerName.current || senderName, status: 'sent' } : message,
 			), {
 				id: nextMessageId.current++,
@@ -158,7 +174,23 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 		}
 	}
 
-	return { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
+	return { answer, currentStep, customerName: customerName.current || defaultCustomerName, expectedGuestCount, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
+}
+
+function findExpectedGuestCount(conversation: AiConversationTurn[]) {
+	for (const turn of [...conversation].reverse()) {
+		const question = turn.question.toLocaleLowerCase()
+		const askedGuestCount = /(gæst|guest|gäste|personen).*(forvent|expect|erwart|rechn)/.test(question)
+		const range = turn.answer.match(/\b\d{1,3}\s*(?:-|–|til|to)\s*(\d{1,3})\s*(?:gæster|guest(?:s)?|gäste|personer?)\b/i)
+		const explicitCount = turn.answer.match(/\b(\d{1,3})\s*(?:gæster|guest(?:s)?|gäste|personer?)\b/i)
+		if (!askedGuestCount && !range && !explicitCount) continue
+		const count = range?.[1] ?? explicitCount?.[1] ?? (/^\d{1,3}$/.test(turn.answer.trim()) ? turn.answer.trim() : null)
+		if (!count) continue
+
+		const parsedCount = Number(count)
+		if (parsedCount >= 1 && parsedCount <= 150) return parsedCount
+	}
+	return null
 }
 
 export function useAiMessageTyping(text: string, animate: boolean) {

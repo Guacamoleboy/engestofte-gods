@@ -4,16 +4,21 @@
 
 **Blocked by:** 04: Harden AI flow behavior and guardrails
 
-**Status:** ready-for-agent
+**Status:** complete; review passed; tests declined and runtime behavior not exercised per owner instruction
 
 ## In scope
 
-- Step 1: basic information.
-- Step 2: wedding, ceremony, reception, dinner and party.
-- Step 3: food, drinks, cake, cocktails, late-night food and extras.
-- Step 4: overnight stay and transport.
-- Step 5: additional information, allergies, special wishes, practical notes and budget where offered.
-- Visible progress and one relevant question at a time.
+- Follow the authoritative sequence and field classifications in `docs/grilling/flow-definition.md`:
+	1. Contact person's name.
+	2. Desired wedding date or date range.
+	3. Expected guest count and accommodation needs.
+	4. Wedding format: ceremony, reception, dinner, party and ceremony location/form.
+	5. Food, drink, dietary needs, optional extras, practical wishes and budget.
+- Localize the fixed introductory question for each step in Danish, English and German.
+- Show progress through five steps, then a distinct completed state.
+- Preserve question/answer turns and show a final personalized message before the redirect handoff.
+- Ask one relevant follow-up at a time; keep required, conditional and optional classifications from the rubric.
+- Surface conflicting values and ask the customer to resolve them without discarding either answer.
 
 ## Out of scope
 
@@ -23,16 +28,18 @@
 
 ## Acceptance criteria
 
-- [ ] The customer can move through all five steps and see current progress.
-- [ ] Critical fields block completion when missing or unresolved.
-- [ ] Conditional fields become relevant only when the customer’s answers require them.
-- [ ] Optional fields do not block completion.
-- [ ] Conflicting values are shown without silently choosing a winner.
-- [ ] The customer receives a readable summary before completion.
+- [x] The customer can move through all five steps and see current progress.
+- [x] Critical fields block completion when missing or unresolved.
+- [x] Conditional fields become relevant only when the customer’s answers require them.
+- [x] Optional fields do not block completion.
+- [x] Conflicting values are surfaced without silently choosing a winner.
+- [x] The customer receives a final message, then a redirect page with the next-step actions; no Q/A summary is shown.
+- [x] Step order matches `docs/grilling/flow-definition.md` in all supported languages.
+- [x] Completion is shown as a distinct final state rather than as a sixth enquiry step.
 
 ## Verification
 
-Complete one normal wedding path, one path with optional omissions, one path with a conditional overnight requirement and one path with a conflict.
+The owner declined tests for this ticket. Static JSON parsing and `git diff --check` pass. Runtime paths, including conditional follow-ups and conflict handling, were not exercised.
 
 ## Stop and ask if
 

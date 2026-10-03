@@ -48,5 +48,8 @@ public class AiFlowResponseDTO {
 
 	@JsonProperty("status")
 	private AiFlowStatus status;
+
+	@JsonProperty("expected_guest_count")
+	private Integer expectedGuestCount;
 	
 }
