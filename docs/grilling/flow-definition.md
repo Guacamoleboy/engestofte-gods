@@ -15,7 +15,7 @@ Samtalen præsenterer de godkendte oplysninger i denne personlige rækkefølge. 
 
 1. Kontaktpersonens navn.
 2. Ønsket bryllupsdato eller datointerval. Datoens ledighed er ikke bekræftet, før Engestofte har undersøgt den.
-3. Forventet gæsteantal og overnatningsbehov. Hvis kunden ønsker overnatning, afklares antal personer og datoer. Ved 60 eller færre gæster må AI'en én gang spørge, om kunden ønsker et ikke-bindende tilbud, der sammenligner Intimpakken med standardbryllupspakken. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Pakkeindhold, pris og transportmulighed bekræftes af Engestofte.
+3. Forventet gæsteantal og overnatningsbehov. Hvis kunden ønsker overnatning, afklares antal personer og datoer. Intimpakken må ikke anbefales alene ud fra gæsteantal, da dens indhold, pris og forskel fra standardpakken ikke er dokumenteret. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte.
 4. Brylluppets grundform: vielse, reception, middag, fest og vielsesform/-sted.
 5. Mad, drikke, relevante kosthensyn, tilvalg og øvrige særlige ønsker. Budget er frivilligt.
 
@@ -32,9 +32,9 @@ Introspørgsmålene er faste og lokaliserede. AI'en stiller personlige opfølgen
 
 ### Mersalg ved 60 eller færre gæster
 
-Ved 60 eller færre gæster spørger AI'en én gang, om kunden ønsker et ikke-bindende tilbud, der sammenligner Intimpakken med standardbryllupspakken. AI'en oplyser ikke en pris eller ubekræftede pakkevilkår; Engestofte bekræfter tilbuddet.
+Ved 60 eller færre gæster må AI'en ikke automatisk anbefale Intimpakken. Der mangler godkendt viden om pakkens indhold, pris og værdi sammenlignet med standardpakken. Afvent en aktuel produktbeskrivelse og pris fra Engestofte, før sammenligningsforslaget aktiveres. Se [faktagrundlaget for AI-flowet](ai-flow-factual-context.md).
 
-Hvis en dato er eksplicit kendt som umulig eller blokeret, skal kunden informeres og spørges, om forespørgslen stadig skal fortsætte med menneskelig hjælp til at finde en anden dato. AI'en må ikke love, at en anden dato er ledig.
+I skoleprojektets demo antages alle datoer i 2028 at være ubeskrevne. AI'en må sige, at en dato uden for juli står fri i projektkalenderen, men må ikke love en booking. Juli holdes typisk fri for bryllupper, også i 2028, men Johan har nævnt sjældne undtagelser nær månedens start eller slutning. Ved en juliønskning skal kunden få valget mellem at fortsætte, så Engestofte kan vurdere en undtagelse, eller overveje en anden dato. AI'en må ikke love en undtagelse. Belægning i andre år er ukendt og må ikke udledes af generelle bookingmønstre. Se [faktagrundlaget for AI-flowet](ai-flow-factual-context.md).
 
 ## Brylluppets program
 

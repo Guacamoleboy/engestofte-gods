@@ -1,46 +1,14 @@
-Evaluate the following student internship report using the provided rubric.
+Evaluate the latest customer answer for the current wedding enquiry step using the supplied conversation and rubric. The fixed introductory questions are owned and displayed by the application; only provide a follow-up question when the current step remains IN_PROGRESS.
 
-Use the rubric as the only basis for the assessment.
+Return fields matching the required response schema:
+- acknowledgement: concise response to the customer's latest answer, in the requested language.
+- next_question: one focused follow-up in the requested language only for IN_PROGRESS; otherwise an empty string.
+- customer_name: the explicitly stated name if available, otherwise preserve the supplied name or use an empty string.
+- step: the current step number, unchanged.
+- status: IN_PROGRESS, STEP_COMPLETE, OUT_OF_SCOPE, or DONE according to the system prompt and rubric.
 
-Evaluate every criterion individually.
+CURRENT REQUEST (JSON):
+{{REQUEST}}
 
-For each criterion:
-- Provide a score from 0.0 to 10.0.
-- Use exactly one decimal place.
-- Provide a short, professional comment explaining the score.
-- Do not invent information that is not present in the student report.
-- If evidence is missing, treat the lack of evidence as part of the feedback.
-
-Provide:
-- An overall qualitative assessment of the report.
-- Strengths and weaknesses within the overall assessment.
-- Exactly 4 to 6 actionable suggestions or questions that can be used for further dialogue with the student.
-
-Do not calculate the final overall score. Set overall_score to 0.0 because the application will calculate the final overall score.
-
-Return only valid JSON. Do not add Markdown fences, headings, or explanatory text before or after the JSON.
-Use this exact structure. The suggestions array must contain strings, not objects:
-
-{
-  "overall_score": 0.0,
-  "overall_assessment": "Overall qualitative assessment, including strengths and weaknesses.",
-  "criteria": [
-    {
-      "criterion_name": "Criterion name from the rubric",
-      "score": 0.0,
-      "comment": "Short professional comment"
-    }
-  ],
-  "suggestions": [
-    "Actionable suggestion or question 1",
-    "Actionable suggestion or question 2",
-    "Actionable suggestion or question 3",
-    "Actionable suggestion or question 4"
-  ]
-}
-
-RUBRIC:
+FLOW RUBRIC (JSON):
 {{RUBRIC}}
-
-STUDENT REPORT:
-{{STUDENT_REPORT}}

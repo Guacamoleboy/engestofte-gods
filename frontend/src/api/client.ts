@@ -11,14 +11,23 @@ type ErrorResponse = {
 
 export class ApiError extends Error {
 	readonly status: number
+	readonly code: number
 	readonly data: unknown
 
 	constructor(message: string, status: number, data: unknown) {
 		super(message)
 		this.name = 'ApiError'
 		this.status = status
+		this.code = getErrorCode(data, status)
 		this.data = data
 	}
+}
+
+function getErrorCode(data: unknown, status: number) {
+	if (typeof data === 'object' && data !== null && 'code' in data && typeof data.code === 'number') {
+		return data.code
+	}
+	return status
 }
 
 export async function client<T>(endpoint: string, options: RequestInit = {}): Promise<T> {

@@ -7,7 +7,6 @@ import engestofte.domain.aiflow.dto.response.AiFlowResponseDTO;
 import engestofte.domain.aiflow.entity.AiFlow;
 import engestofte.domain.aiflow.mapper.request.AiFlowRequestMapper;
 import engestofte.domain.aiflow.provider.AiFlowProvider;
-import engestofte.domain.aiflow.provider.LocalAiFlowProvider;
 import engestofte.domain.aiflow.provider.OpenAiFlowProvider;
 import engestofte.exception.ApiException;
 import engestofte.service.EntityManagerService;
@@ -28,16 +27,17 @@ public class AiFlowService extends EntityManagerService<AiFlow> {
 		super(new AiFlowDAO(em), AiFlow.class);
 		this.aiFlowDAO = (AiFlowDAO) this.entityManagerDAO;
 		String apiKey = DotEnv.getOptional("OPENAI_API_KEY");
-		this.provider = apiKey == null || apiKey.isBlank()
-				? new LocalAiFlowProvider()
-				: new OpenAiFlowProvider(apiKey);
-		LOGGER.info("AI flow provider selected: {}", apiKey == null || apiKey.isBlank() ? "local fallback" : "OpenAI");
+		this.provider = apiKey == null || apiKey.isBlank() ? null : new OpenAiFlowProvider(apiKey);
+		LOGGER.info("AI flow provider selected: {}", this.provider == null ? "unavailable (missing API key)" : "OpenAI");
 	}
 
 	// _________________________________________________________________________________________________________________
 
 	public AiFlow interact(AiFlowRequestDTO request) {
 		validateRequest(request);
+		if (provider == null) {
+			throw new ApiException(500, "AI service is unavailable");
+		}
 		AiFlow aiFlow = AiFlowRequestMapper.toEntity(request);
 		AiFlowResponseDTO response = provider.respond(request);
 		aiFlow.setAcknowledgement(response.getAcknowledgement());

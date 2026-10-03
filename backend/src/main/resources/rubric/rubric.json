@@ -1,120 +1,69 @@
 {
-  "title": "AIDA Internship Report Rubric",
-  "score_scale": {
-    "minimum": 0.0,
-    "maximum": 10.0,
-    "aggregation": "sum",
-    "aggregation_note": "The source rubric does not specify criterion weights or a final-score calculation."
+  "title": "Engestofte Gods Wedding Enquiry Flow Rubric",
+  "version": 1,
+  "purpose": "Determine whether each of the application's five wedding enquiry steps has enough clear information to continue. Classifications define completion requirements, not scores.",
+  "statuses": {
+    "IN_PROGRESS": "At least one required or relevant conditional item in the current step is missing or unclear. Ask one focused follow-up and remain on the same step.",
+    "STEP_COMPLETE": "All required and relevant conditional items in the current step are sufficiently clear. Used only for steps 1 through 4.",
+    "DONE": "Step 5 is complete. Optional items may remain unanswered.",
+    "OUT_OF_SCOPE": "The customer clearly requests an event other than a wedding. Stop intake politely."
   },
-  "score_bands": [
+  "steps": [
     {
-      "min_score": 0.0,
-      "max_score": 2.9,
-      "level": "Very Limited",
-      "description": "The criterion is met to a very limited extent, or the student fails to provide substantial evidence needed for grading."
+      "step": 1,
+      "name": "Contact person",
+      "fields": [
+        { "id": "contact_person_name", "classification": "required", "completion_rule": "A contact person's name is explicitly provided." }
+      ]
     },
     {
-      "min_score": 3.0,
-      "max_score": 4.9,
-      "level": "Low",
-      "description": "The criterion is partially met, while documentation, reflection, or other important grading criteria have not been met with sufficient confidence or valid arguments."
+      "step": 2,
+      "name": "Wedding date",
+      "fields": [
+        { "id": "desired_date_or_range", "classification": "required", "completion_rule": "A desired date or date range is provided. For this school project, assume all 2028 dates are unbooked in the demo calendar. A 2028 date outside July may be described as free in the project calendar, but never as a confirmed booking. Weddings are typically not held in July; for a July date, explain this and ask whether the customer wants Engestofte to check for a rare exception or prefers another date. Never promise an exception. Availability in other years is unknown and must not be inferred." }
+      ]
     },
     {
-      "min_score": 5.0,
-      "max_score": 6.9,
-      "level": "Acceptable",
-      "description": "The criterion is met at an acceptable level, but the student could have provided greater content or content at a higher level given the learning objectives and criteria."
+      "step": 3,
+      "name": "Guests and accommodation",
+      "fields": [
+        { "id": "expected_guest_count", "classification": "required", "completion_rule": "An expected guest count is provided." },
+        { "id": "accommodation_wanted", "classification": "optional", "completion_rule": "Record whether accommodation is wanted when the customer provides this information. Its absence does not block step completion." },
+        { "id": "accommodation_guest_count", "classification": "conditional_critical", "condition": "The customer wants accommodation", "completion_rule": "Collect the number of people needing accommodation, or clarify whether this is not decided yet." },
+        { "id": "accommodation_dates", "classification": "conditional_critical", "condition": "The customer wants accommodation", "completion_rule": "Collect relevant nights or a date range, or clarify whether this is not decided yet." },
+        { "id": "intimpakke_offer", "classification": "disabled_pending_business_confirmation", "condition": "Guest count is 60 or lower", "completion_rule": "Do not recommend the Intimpakke or offer a comparison based only on guest count. Contents, price, target group and value compared with the standard package are not confirmed. If the customer asks, say Engestofte can clarify whether a suitable package or quote is available. This field never blocks completion." },
+        { "id": "bus_investigation_offer", "classification": "optional_offer", "condition": "Accommodation is declined", "completion_rule": "Offer at most once to investigate bus transport between a nearby hotel and Engestofte. Do not promise availability or booking." }
+      ],
+      "offer_order": "Do not present the disabled Intimpakke offer. If the bus investigation is applicable, present it at most once and do not block step completion on it."
     },
     {
-      "min_score": 7.0,
-      "max_score": 8.9,
-      "level": "Good",
-      "description": "The criterion is met at a more than satisfactory level. The student demonstrates relevant analysis, reflection, and documentation in a professional manner."
+      "step": 4,
+      "name": "Wedding format",
+      "fields": [
+        { "id": "ceremony_preference", "classification": "critical", "completion_rule": "Clarify whether the customer wants a ceremony, or record that this is not decided yet." },
+        { "id": "ceremony_form_or_location", "classification": "conditional_critical", "condition": "The customer wants a ceremony", "completion_rule": "The form or location is stated, or the customer explicitly says it is not decided yet." },
+        { "id": "reception_preference", "classification": "conditional", "completion_rule": "Ask when useful; if the customer does not know, this does not block completion." },
+        { "id": "dinner_preference", "classification": "critical_for_dinner_or_party_flow", "completion_rule": "Clarify whether dinner is part of the requested event, or record that this is not decided yet." },
+        { "id": "party_preference", "classification": "conditional", "condition": "The customer wants a party after dinner", "completion_rule": "Clarify when relevant; do not block on details the customer has not decided." }
+      ]
     },
     {
-      "min_score": 9.0,
-      "max_score": 10.0,
-      "level": "Very High",
-      "description": "The criterion is met at a substantially high level. The student demonstrates clear documentation and understanding of the learning objectives at a very high level and presents their progress and professional development in a clear and valid manner."
+      "step": 5,
+      "name": "Food, drink and other wishes",
+      "fields": [
+        { "id": "food_and_drink_wishes", "classification": "optional", "completion_rule": "Collect when offered; a decline or undecided answer is valid." },
+        { "id": "allergies_or_dietary_needs", "classification": "conditional_optional", "condition": "Relevant to the customer's response", "completion_rule": "Ask or record when relevant; a decline or undecided answer is valid." },
+        { "id": "extras_practical_wishes_and_budget", "classification": "optional", "completion_rule": "Collect if volunteered; never block completion for missing details, a decline, or undecided answer." }
+      ],
+      "completion_rule": "Step 5 can finish without optional details. Optional information is never mandatory."
     }
   ],
-  "criteria": [
-    {
-      "id": "understanding-company-professional-practice",
-      "name": "Understanding of the Company and Professional Practice",
-      "descriptors": {
-        "0.0-2.9": "Shows little understanding of the company or the student's role.",
-        "3.0-4.9": "Shows a basic understanding of the company and the student's role.",
-        "5.0-6.9": "Shows a good basic understanding of the company and professional practice.",
-        "7.0-8.9": "Clearly connects the internship, the company and the student's role.",
-        "9.0-10.0": "Shows a strong and detailed understanding of the company and professional practice."
-      }
-    },
-    {
-      "id": "professional-technical-application",
-      "name": "Professional and Technical Application",
-      "descriptors": {
-        "0.0-2.9": "Shows little use of relevant technical or analytical skills.",
-        "3.0-4.9": "Shows some use of relevant skills, but connections to theory are limited.",
-        "5.0-6.9": "Uses relevant technical skills and connects some work to theory.",
-        "7.0-8.9": "Clearly applies relevant technical skills and theory to practical work.",
-        "9.0-10.0": "Strongly connects technical skills, theory and practical work with clear examples."
-      }
-    },
-    {
-      "id": "problem-solving-professional-reflection",
-      "name": "Problem-Solving and Professional Reflection",
-      "descriptors": {
-        "0.0-2.9": "Mainly describes tasks without meaningful problem-solving or reflection.",
-        "3.0-4.9": "Identifies some problems, but solutions and reflection are limited.",
-        "5.0-6.9": "Identifies problems and gives reasonable solutions with some reflection.",
-        "7.0-8.9": "Clearly analyses problems, solutions and the choices made.",
-        "9.0-10.0": "Shows strong and thoughtful problem-solving with well-supported reflections."
-      }
-    },
-    {
-      "id": "personal-professional-development-dare",
-      "name": "Personal and Professional Development (DARE)",
-      "descriptors": {
-        "0.0-2.9": "Shows little reflection on personal or professional development.",
-        "3.0-4.9": "Mentions some learning or challenges, but reflection is limited.",
-        "5.0-6.9": "Reflects on learning, development and areas for improvement.",
-        "7.0-8.9": "Clearly shows initiative, learning and development through practical experience.",
-        "9.0-10.0": "Shows strong and thoughtful development, initiative and learning from challenges."
-      }
-    },
-    {
-      "id": "collaboration-knowledge-sharing-share",
-      "name": "Collaboration and Knowledge Sharing (SHARE)",
-      "descriptors": {
-        "0.0-2.9": "Shows little evidence of collaboration or knowledge sharing.",
-        "3.0-4.9": "Describes some collaboration, but reflection is limited.",
-        "5.0-6.9": "Shows good participation in teamwork and some knowledge sharing.",
-        "7.0-8.9": "Clearly shows active collaboration, communication and knowledge sharing.",
-        "9.0-10.0": "Shows strong collaboration and meaningful contributions to the team."
-      }
-    },
-    {
-      "id": "professional-responsibility-care",
-      "name": "Professional Responsibility (CARE)",
-      "descriptors": {
-        "0.0-2.9": "Shows little awareness of professional responsibility.",
-        "3.0-4.9": "Shows some awareness, but reflection is limited.",
-        "5.0-6.9": "Shows a good understanding of professional responsibility and own role.",
-        "7.0-8.9": "Clearly reflects on responsibility, relationships and own actions.",
-        "9.0-10.0": "Shows strong and thoughtful reflection on responsibility and professional behaviour."
-      }
-    },
-    {
-      "id": "formal-requirements-report-structure",
-      "name": "Formal Requirements and Report Structure",
-      "descriptors": {
-        "0.0-2.9": "Many requirements are missing or not followed.",
-        "3.0-4.9": "Some requirements are missing or not followed.",
-        "5.0-6.9": "Most requirements are met and the report is easy to follow.",
-        "7.0-8.9": "Requirements are met and the report is well structured and focused.",
-        "9.0-10.0": "All requirements are met and the report is very clear, focused and well structured."
-      }
-    }
+  "global_rules": [
+    "Use information volunteered in any conversation turn to satisfy the relevant field, even if that field belongs to a later step; never ask the customer to repeat it.",
+    "Ask one focused follow-up at a time and do not repeat answered questions.",
+    "Do not invent facts or confirm availability, prices, capacity, package details, transport, or bookings.",
+    "For this school project, 2028 is assumed unbooked in the demo calendar; this is not a claim about Engestofte's real calendar. The usual July wedding closure still applies and rare exceptions require Engestofte to assess them. Availability in other years is unknown.",
+    "The 2026 standard wedding package price list is historical and must not be presented as a current quote. Intimpakke contents and price are unconfirmed; do not recommend it or invent a comparison.",
+    "The application controls step advancement and presents the fixed localized introduction after STEP_COMPLETE."
   ]
 }

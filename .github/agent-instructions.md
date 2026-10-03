@@ -19,7 +19,6 @@ Use the smallest relevant set of documents for the task. Start with the project 
 - [.scratch/engestofte-mvp/spec.md](../.scratch/engestofte-mvp/spec.md) is the consolidated, buildable MVP specification when it is relevant to implementation.
 - [docs/standards/architecture-and-file-conventions.md](../docs/standards/architecture-and-file-conventions.md) contains implementation conventions and must be read before creating or modifying implementation files.
 - [docs/forventet/](../docs/forventet/) contains the expected domain, database and frontend model. Read the relevant file before changing that area.
-- [RAG/](../RAG/) contains source material and prompt-grounding material for AI-related work.
 - [CONTRIBUTING.md](../CONTRIBUTING.md) contains repository contribution guidance.
 
 For a frontend task, inspect the relevant route, page, feature and shared component under `frontend/src/`. For a backend task, inspect the relevant domain under `backend/src/main/java/engestofte/` and its resources under `backend/src/main/resources/`. Search for existing definitions and usages before introducing new structures.

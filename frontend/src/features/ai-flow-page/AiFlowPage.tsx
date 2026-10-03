@@ -11,7 +11,7 @@ import styles from './AiFlowPage.module.css'
 export default function AiFlowPage() {
 	const { content, language } = useTranslate()
 	const copy = content.aiFlow
-	const { answer, currentStep, error, formatMessageTime, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finished, copy.customerName, language)
+	const { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finished, copy.customerName, copy.aiUnavailable, language)
 
 	return (
 		<main className={`page-container ${styles.page}`}>
@@ -100,7 +100,11 @@ export default function AiFlowPage() {
 					<div className={styles.composer}>
 						<Link className={styles.contactButton} to="/kontakt">{copy.outOfScopeContact}</Link>
 					</div>
-				) : !isComplete && (
+				) : isAiUnavailable ? (
+					<div className={styles.composer}>
+						<Link className={styles.cancelLink} to="/kontakt">{copy.goBack}</Link>
+					</div>
+				) : !isComplete && !isAiUnavailable && (
 				<form className={styles.composer} onSubmit={submitAnswer}>
 					<label className="visually-hidden" htmlFor="ai-answer">{copy.answerLabel}</label>
 					<textarea

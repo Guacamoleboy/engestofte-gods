@@ -9,7 +9,7 @@
 ## In scope
 
 - Owner request list and request detail.
-- Structured answers, AI summary, source references, uncertainty, conflicts and upsell suggestions.
+- Structured answers, AI summary, missing information, uncertainty, conflicts and upsell suggestions.
 - Internal notes and customer-facing clarification questions.
 - Neutral review statuses and next action.
 
@@ -23,7 +23,7 @@
 
 - [ ] Owner can find a submitted request and see its structured information.
 - [ ] Owner can distinguish customer-visible information from internal notes.
-- [ ] Owner can see the AI summary, source basis, uncertainty and upsell opportunities.
+- [ ] Owner can see the AI summary, identified missing information, uncertainty and upsell opportunities.
 - [ ] Owner can ask the customer for clarification.
 - [ ] The customer sees an understandable review status and any customer-facing question.
 

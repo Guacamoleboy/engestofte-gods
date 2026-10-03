@@ -73,7 +73,7 @@ AI-flowet er den centrale intake-oplevelse. Det skal:
 - stille relevante opfølgende spørgsmål
 - opdage manglende, uklare og modstridende svar
 - markere usikkerhed og eskalere til Owner i stedet for at gætte
-- håndtere kendt utilgængelige datoer ærligt
+- forklare, at datoers ledighed ikke kontrolleres i MVP'en og skal bekræftes af Engestofte
 - vise relevante, ikke-bindende mersalgsforslag
 
 De fem trin er:
@@ -133,7 +133,7 @@ Den kontaktperson, som oprettede forespørgslen, er primær kontaktperson og har
 Owner har fuld adgang til:
 
 - forespørgsler og events
-- AI-opsummeringer, kilder og interne vurderinger
+- AI-opsummeringer, manglende oplysninger, konflikter, usikkerheder og interne vurderinger
 - Messenger
 - kontaktpersoner
 - ændringsforslag og approvals
@@ -161,22 +161,21 @@ AI’en må:
 - stille næste relevante spørgsmål
 - udtrække strukturerede felter
 - opdage mangler og konflikter
-- bruge godkendte Engestofte-kilder
-- vise relevante source references
-- markere usikkerhed
+- følge de godkendte systeminstruktioner, rubric og oplysninger i den aktuelle forespørgsel
+- forklare usikkerhed og bede Engestofte bekræfte oplysninger, som ikke findes i det aktuelle flowgrundlag
 - foreslå relevante og ikke-bindende tilvalg
 - skrive tydeligt markerede interne udkast til Owner
 
 AI’en må ikke:
 
-- love tilgængelighed eller booking
+- love tilgængelighed eller booking. Datoers ledighed kontrolleres ikke i MVP'en, så kunden kan fortsætte, mens Engestofte undersøger datoen.
 - opfinde priser, kapacitet, faciliteter eller regler
 - sende bindende tilbud
 - godkende ændringer eller booking på Owner eller kundens vegne
 - sende en Messenger-besked som om den var en person
 - bruge én kundes data til at svare en anden kunde
 
-OpenAI kan integreres som AI-provider i backend, men provider-valget må ikke ændre på kravene om struktureret output, kildegrundlag, usikkerhed og menneskelig godkendelse.
+OpenAI kan integreres som AI-provider i backend, men provider-valget må ikke ændre på kravene om struktureret output, tydelige vidensgrænser, usikkerhed og menneskelig godkendelse. MVP'en bruger ikke RAG, Dify, en separat knowledge base eller kildehenvisninger i AI-svar. Modellen må kun bruge reglerne i systeminstruktionerne og rubric samt oplysningerne i den aktuelle forespørgsel. Spørgsmål om aktuelle venue-forhold, som ikke er dækket dér, sendes videre til Engestofte.
 
 ## 6. Mersalg
 
@@ -252,7 +251,7 @@ Depositum er kun simuleret i skoleprojektet. Knappen `Betal depositum` viser `De
 - localStorage-kladde før login/register
 - login, register og password reset
 - forespørgselsoversigt under `/dashboard/events/`
-- Owner-gennemgang, AI-opsummering, kilder og afklaringer
+- Owner-gennemgang, AI-opsummering, usikkerheder og afklaringer
 - godkendt event-platform under `/dashboard/events/{id}`
 - event-scoped Messenger
 - kontaktpersoner og roller

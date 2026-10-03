@@ -2,7 +2,7 @@
 
 **What to build:** A customer can complete the agreed five-step wedding enquiry with critical, conditional and optional information.
 
-**Blocked by:** 04: Add source grounding and AI guardrails
+**Blocked by:** 04: Harden AI flow behavior and guardrails
 
 **Status:** ready-for-agent
 

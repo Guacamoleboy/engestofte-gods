@@ -3,6 +3,7 @@
 		"introMessage": "Derzeit bieten wir KI-gestützte Anfragen nur für Hochzeiten an. Für Preise, Antworten oder Kontakt zu einer anderen Veranstaltung erreichen Sie uns über die Website oder unter mail@engestofte.dk.\n\nIch bin ein KI-Assistent, kein Mensch. Ihre Nachrichten werden im Anfrageverlauf von Gut Engestofte gespeichert. Geben Sie keine sensiblen personenbezogenen Daten ein. Dieser Prototyp ist nicht für den produktiven Einsatz gemäß DSGVO freigegeben.",
 		"flowProgress": "Ablauf {step}/6",
 		"cancelRequest": "Anfrage abbrechen",
+		"goBack": "Zurück",
 		"stepQuestions": [
 			"Unter welchem Namen soll die Anfrage angelegt werden?",
 			"Hallo, {name} 😃\n\nWann planen Sie Ihre Hochzeit?",
@@ -19,6 +20,7 @@
 		"statusReceived": "Antwort erhalten",
 		"statusNew": "Neue Nachricht",
 		"statusFailed": "Nicht gesendet · erneut versuchen",
+		"aiUnavailable": "Unser KI-Assistent macht gerade eine Pause. Bitte schauen Sie später wieder vorbei.",
 		"error": "Wir konnten gerade keine Antwort abrufen. Bitte versuchen Sie es erneut.",
 		"pending": "Wird verarbeitet...",
 		"submit": "Antwort senden",
