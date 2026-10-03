@@ -16,7 +16,7 @@
 ## Out of scope
 
 - The complete five-step flow.
-- RAG retrieval, authentication, complete wedding-enquiry submission or Owner review.
+- Authentication, complete wedding-enquiry submission or Owner review.
 - Storing real secrets in source control or browser code.
 - Persisting the complete wedding-enquiry aggregate; this ticket stores only the submitted AI interaction and its structured result.
 
@@ -31,7 +31,7 @@
 
 ## Verification
 
-Demonstrate one successful question/answer cycle and one provider-error recovery path. Use a safe local/mock response when credentials are unavailable; do not expose credentials.
+Demonstrate one successful question/answer cycle and one provider-error path. When OpenAI credentials or access are unavailable, the backend returns an error and the frontend presents its localized pause state; do not use a local/mock provider or expose credentials.
 
 ## Stop and ask if
 

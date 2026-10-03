@@ -86,4 +86,4 @@ The following choices remain open and must be resolved before the first persiste
 3. Exact migration tool and naming convention.
 4. Whether `UserRole` is needed for multiple roles per account.
 5. Retention and deletion behavior for cancelled requests and messages.
-6. Whether AI source references are stored locally or only returned by the AI provider.
+6. Which structured AI assessment metadata should be persisted and how long it should be retained.

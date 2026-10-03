@@ -602,3 +602,25 @@ Valgt model: Ved 60 eller færre gæster må AI'en én gang spørge, om kunden �
 ### D53 — Mersalg #1 og transport er ikke-bindende forespørgsler
 
 Tærsklen for Mersalg #1 er 60 eller færre gæster. AI'en tilbyder at få Engestofte til at udarbejde et sammenlignende tilbud; den oplyser ikke selv priser eller ubekræftede pakkevilkår. Ved fravalgt overnatning kan AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Tilbud, priser og transportmuligheder bekræftes af Engestofte, og kunden kan afslå uden at blokere forespørgslen.
+
+### Q54 — Skal MVP'ens AI-flow bruge RAG/Dify og vise kildehenvisninger?
+
+Valgt model: Nej. AI-flowet skal fokusere på at forstå og validere kundens svar ud fra systeminstruktionerne, rubricen og den aktuelle forespørgsel. MVP'en implementerer ikke RAG, Dify, separat dokumentretrieval eller kildehenvisninger.
+
+
+
+### D54 — AI-flowet bruger modelinstruktioner og rubric, ikke retrieval
+
+AI'en må kun behandle regler, der er eksplicit angivet i systeminstruktionerne og rubricen, samt oplysninger fra kundens aktuelle forespørgsel. Den må ikke påstå at have slået aktuelle venue-forhold op eller bekræftet en pris, facilitet, kapacitet, policy eller dato. Hvis et faktaspørgsmål ikke kan besvares ud fra flowgrundlaget, skal AI'en sige det tydeligt og henvise kunden til Engestofte.
+
+En dato må kun markeres som utilgængelig, hvis et betroet runtime-context udtrykkeligt angiver blokeringen. MVP'en indeholder ingen kalender- eller dokumentopslag, og AI'en må ikke udlede kalenderstatus fra generelle bookingmønstre. Kunden kan fortsætte med forespørgslen for menneskelig opfølgning.
+
+D54 erstatter den operationelle del af D36-D39 om kildehenvisninger, dokumentversioner, kildebaserede datoblokeringer og kildekonflikter i MVP'ens AI-flow. De tidligere beslutninger bevares som historik; en senere dokument- eller kalenderintegration kræver en særskilt beslutning.
+
+### D55 — Juli-praksis må kommunikeres, men belægning og Intimpakke må ikke gættes
+
+Faktagrundlaget i `docs/grilling/ai-flow-factual-context.md` skelner mellem bekræftede oplysninger og åbne afklaringer. Bryllupper afholdes typisk ikke i juli; Johan har nævnt sjældne undtagelser ved månedens start eller slutning. Ved en juliønskning må AI'en tilbyde at lade Engestofte undersøge en mulig undtagelse eller lade kunden overveje en anden dato. AI'en må ikke love undtagelsen.
+
+Skoleprojektet antager, at alle datoer i 2028 står ubeskrevne i demoens kalender; det er ikke en påstand om den virkelige kalender. Juli holdes stadig typisk fri for bryllupper. For andre år må AI'en ikke udlede kalenderstatus fra generelle bookingmønstre. Standardbryllupsmaterialet fra 2026 er historisk og ikke en aktuel prisbekræftelse. Intimpakkens indhold, pris og sammenligningsværdi er ikke dokumenteret; den må ikke automatisk anbefales ved 60 eller færre gæster, før Johan har godkendt de oplysninger.
+
+D55 præciserer og tilsidesætter den kundevendte Intimpakke-anbefaling i Q53/D53, indtil produktinformationen er godkendt. Busundersøgelsen ved fravalgt overnatning består. D54 gælder fortsat for kalenderadgang og AI'ens generelle faktagrænser.

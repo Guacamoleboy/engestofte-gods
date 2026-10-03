@@ -3,6 +3,7 @@
 		"introMessage": "Vi tilbyder kun AI-hjælp med bryllupsforespørgsler lige nu. Ønsker du pris, svar eller kontakt i forbindelse med et andet arrangement, kan du kontakte os via hjemmesiden eller på mail@engestofte.dk.\n\nJeg er en AI-assistent, ikke et menneske. Dine beskeder gemmes i Engestofte Gods’ forespørgselshistorik. Del ikke følsomme personoplysninger. Dette er en prototype og ikke godkendt til produktionsbrug under GDPR.",
 		"flowProgress": "Flow {step}/6",
 		"cancelRequest": "Annullér forespørgsel",
+		"goBack": "Gå tilbage",
 		"stepQuestions": [
 			"Hvad navn skal forespørgslen oprettes i?",
 			"Hej, {name} 😃\n\nHvornår planlægger du, at jeres bryllup skal holdes?",
@@ -19,6 +20,7 @@
 		"statusReceived": "Svar modtaget",
 		"statusNew": "Ny besked",
 		"statusFailed": "Ikke sendt · prøv igen",
+		"aiUnavailable": "Vores AI-assistent holder pause lige nu. Kig gerne tilbage senere.",
 		"error": "Vi kunne ikke hente et svar lige nu. Prøv igen.",
 		"pending": "Tænker...",
 		"submit": "Send svar",

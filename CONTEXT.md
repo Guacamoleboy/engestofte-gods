@@ -68,7 +68,7 @@ Et forslag om et relevant ekstra produkt, tilvalg eller en service, der udspring
 
 AI'en kan vise ikke-bindende mersalgsforslag under kundens flow og samtidig vise dem i Johans interne forespørgselsvisning. Johan godkender eller justerer den endelige løsning.
 
-AI'en må vise priser fra aktuelle og godkendte kilder som vejledende, ikke-bindende prisinformation. Johan skal godkende den endelige pris eller løsning.
+AI'en må kun vise en pris, hvis den er udtrykkeligt leveret i godkendte systeminstruktioner eller betroet kontekst. Ellers skal AI'en sige, at Engestofte skal bekræfte prisen. Johan skal godkende den endelige pris eller løsning.
 
 ### Bryllupstilbud ved lavt gæsteantal og transportforslag
 
@@ -156,8 +156,8 @@ Kundens valgte sprog for AI-flow, event-portal, status og beskeder. Første vers
 
 Dansk er standardsproget. Automatisk sprogforslag ud fra IP eller entry-lokation er en fremtidig mulighed, ikke en del af skoleprojektets implementering.
 
-## Kildehenvisning
+## AI'ens vidensgrænse
 
-En sporbar reference til det dokumentgrundlag, som et AI-svar bygger på. Kunden får en enkel kildehenvisning, mens Johan og Owner kan se fuld kilde og dokumentversion.
+I MVP'en vurderer AI'en kundens svar ud fra systeminstruktionerne, rubricen og oplysningerne i den aktuelle forespørgsel. Den søger ikke i eksterne eller interne dokumenter og viser ikke kildehenvisninger. Hvis et spørgsmål kræver aktuelle venue-oplysninger, som ikke findes i flowgrundlaget, skal AI'en sige, at Engestofte skal bekræfte det, og undlade at gætte.
 
-Ved konflikt mellem et officielt dokument og en eksplicit Owner-beslutning har Owner-beslutningen øverste autoritet. Konflikten bør stadig være synlig internt.
+AI'en må ikke fremstille en oplysning som kontrolleret eller bekræftet, medmindre den er udtrykkeligt leveret som betroet kontekst.

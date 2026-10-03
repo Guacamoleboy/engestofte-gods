@@ -4,6 +4,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { submitAiAnswer, type AiConversationTurn, type AiInteractionResponse } from '../../api/endpoints/aiFlow'
+import { ApiError } from '../../api/client'
 import type { Language } from '../../shared/data/i18n/types'
 
 type Message = {
@@ -18,7 +19,7 @@ type Message = {
 	status: 'sending' | 'sent' | 'received' | 'new' | 'failed'
 }
 
-export function useAiFlow(introMessage: string, stepQuestions: string[], completionMessage: string, defaultCustomerName: string, language: Language) {
+export function useAiFlow(introMessage: string, stepQuestions: string[], completionMessage: string, defaultCustomerName: string, aiUnavailableMessage: string, language: Language) {
 	const nextMessageId = useRef(2)
 	const customerName = useRef('')
 	const conversation = useRef<AiConversationTurn[]>([])
@@ -46,6 +47,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 	const [isPending, setIsPending] = useState(false)
 	const [isComplete, setIsComplete] = useState(false)
 	const [isOutOfScope, setIsOutOfScope] = useState(false)
+	const [isAiUnavailable, setIsAiUnavailable] = useState(false)
 	const [error, setError] = useState('')
 
 	useEffect(() => {
@@ -64,7 +66,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 	async function submitAnswer(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault()
 		const submittedAnswer = answer.trim()
-		if (!submittedAnswer || isPending || isComplete || isOutOfScope) return
+		if (!submittedAnswer || isPending || isComplete || isOutOfScope || isAiUnavailable) return
 
 		const retryMessage = [...messages].reverse().find((message) =>
 			message.sender === 'customer' && message.status === 'failed' && message.text === submittedAnswer,
@@ -135,17 +137,28 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 			}])
 			if (result.status === 'IN_PROGRESS') setQuestion(result.next_question)
 			else if (result.status === 'STEP_COMPLETE') setQuestion(nextQuestion)
-		} catch {
+		} catch (error) {
 			setMessages((currentMessages) => currentMessages.map((message) =>
 				message.id === outgoingId ? { ...message, status: 'failed' } : message,
 			))
-			setError('request-failed')
+			if (!(error instanceof ApiError) || error.code >= 500) {
+				setIsAiUnavailable(true)
+				setMessages((currentMessages) => [...currentMessages, {
+					id: nextMessageId.current++,
+					sender: 'assistant',
+					text: aiUnavailableMessage,
+					createdAt: new Date(),
+					status: 'received',
+				}])
+			} else {
+				setError('request-failed')
+			}
 		} finally {
 			setIsPending(false)
 		}
 	}
 
-	return { answer, currentStep, error, formatMessageTime, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
+	return { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
 }
 
 export function useAiMessageTyping(text: string, animate: boolean) {

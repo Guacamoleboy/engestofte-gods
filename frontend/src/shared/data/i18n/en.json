@@ -3,6 +3,7 @@
 		"introMessage": "We currently offer AI-assisted enquiries for weddings only. For prices, answers or contact about another type of event, please reach us through the website or at mail@engestofte.dk.\n\nI am an AI assistant, not a person. Your messages are stored in Engestofte Estate’s enquiry history. Do not share sensitive personal information. This is a prototype and is not approved for production use under GDPR.",
 		"flowProgress": "Flow {step}/6",
 		"cancelRequest": "Cancel enquiry",
+		"goBack": "Go back",
 		"stepQuestions": [
 			"What name should the enquiry be created under?",
 			"Hi, {name} 😃\n\nWhen are you planning to hold your wedding?",
@@ -19,6 +20,7 @@
 		"statusReceived": "Reply received",
 		"statusNew": "New message",
 		"statusFailed": "Not sent · try again",
+		"aiUnavailable": "Our AI assistant is taking a break right now. Please check back later.",
 		"error": "We could not get a response right now. Please try again.",
 		"pending": "Thinking...",
 		"submit": "Send answer",

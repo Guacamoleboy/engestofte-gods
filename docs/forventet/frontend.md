@@ -28,7 +28,7 @@ Frontend bygges med React, TypeScript og Vite. Nye frontend-filer skal være `.t
 | Route | Page | Formål |
 |---|---|---|
 | `/owner/requests/` | `OwnerRequestsPage` | Owners oversigt over indsendte forespørgsler. |
-| `/owner/requests/:id` | `OwnerRequestPage` | Gennemgang, AI-opsummering, kilder, konflikter og godkendelse. |
+| `/owner/requests/:id` | `OwnerRequestPage` | Gennemgang, AI-opsummering, mangler, usikkerheder, konflikter og godkendelse. |
 | `/staff/events/:id` | `StaffEventPage` | Read-only operationel eventvisning uden Messenger og direkte persondata. |
 
 Routes kan ændres, hvis den eksisterende router eller en senere ticket fastlægger et bedre navn, men den rollebaserede adgang må ikke fjernes.
@@ -129,7 +129,6 @@ Event-routes skal kontrollere, at den aktuelle bruger faktisk er tilknyttet det 
 - `OwnerRequestList`
 - `OwnerRequestSummary`
 - `AiAssessmentPanel`
-- `SourceReferenceList`
 - `InternalNoteEditor`
 - `CustomerQuestionComposer`
 - `OwnerApprovalPanel`

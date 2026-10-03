@@ -15,10 +15,11 @@ The AI provider is an external service. Its credentials and wire protocol must n
 - The Java backend owns the connection to OpenAI and holds provider credentials in backend environment configuration.
 - The frontend calls application endpoints and exchanges application-owned request and response DTOs. It does not call OpenAI directly.
 - The backend translates between the application contract and the selected AI provider behind a replaceable provider interface.
-- The database is the system of record for submitted enquiries and the structured answers, assessments and source references needed to review them. Provider output is mapped into these application-owned records; the database does not store arbitrary provider wire payloads as the domain contract.
+- The database is the system of record for submitted enquiries and the structured answers and assessments needed to review them. Provider output is mapped into these application-owned records; the database does not store arbitrary provider wire payloads as the domain contract.
 - The AI interaction endpoint persists each submitted answer together with its current question, language and structured AI result as an application-owned interaction record. This is not the complete submitted wedding enquiry; that aggregate and its authentication/submission workflow remain a later scope.
 - The frontend may keep a resumable draft before authentication and final submission in browser storage. Each answer sent to the AI endpoint is also persisted as an interaction record; the complete wedding-enquiry aggregate is persisted after authentication and submission.
 - Provider response state is not retained by OpenAI for the interaction (`store: false`). Provider data handling must still be reviewed before real customer enquiries are used.
+- The MVP does not use RAG, Dify, external knowledge retrieval or AI source citations. The model is constrained to the system instructions, rubric and data supplied with the current enquiry; unsupported venue facts and date availability are referred to Engestofte for confirmation.
 - AI output is assistive. Owner review and customer confirmation remain explicit workflow steps; AI output does not approve availability, pricing or a booking.
 
 ## Alternatives

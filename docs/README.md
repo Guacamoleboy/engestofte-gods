@@ -31,6 +31,8 @@ De øvrige dokumenter er baggrund, kilder eller undervisningsmateriale. De bør 
 
 ## Kildemateriale
 
+AI-flowets vedligeholdte fakta og åbne forretningsafklaringer findes i [faktagrundlaget for AI-flowet](grilling/ai-flow-factual-context.md).
+
 De oprindelige noter er bevaret i [kilder](kilder/). De er ikke nødvendigvis sprogligt eller faktuelt kvalitetssikrede, men de skal bruges som sporbar baggrund for de redigerede dokumenter.
 
 - [Mødenoter](kilder/1009-notes.md)

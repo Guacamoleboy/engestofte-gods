@@ -42,7 +42,7 @@ The primary external user is a potential wedding customer. The primary internal 
 ## Goals
 
 - Make it easy to begin a wedding enquiry without early authentication friction.
-- Collect a complete, structured and source-aware enquiry.
+- Collect a complete, structured wedding enquiry with clear handling of missing, conflicting and uncertain answers.
 - Reduce repeated manual clarification for Johan.
 - Preserve human control over availability, pricing, upsell and approval.
 - Give the customer a trustworthy status and event experience after approval.
@@ -84,10 +84,10 @@ The primary external user is a potential wedding customer. The primary internal 
 ## Content requirements
 
 - Customer-facing information must use Engestofte’s personal, clear and trustworthy tone.
-- AI answers based on project material must expose an appropriate source reference.
+- The AI must distinguish customer-provided facts and explicitly supplied flow rules from unsupported venue facts. It must state uncertainty and direct the customer to Engestofte when confirmation is needed.
 - Commercial suggestions must be labelled as non-binding proposals.
 - Internal notes and AI assessments must not be shown to customers.
-- The interface must explain uncertainty, unavailable dates, approval states and cancellation consequences.
+- The interface must explain uncertainty about date availability, approval states and cancellation consequences.
 - The interface must support Danish, English and German, with Danish as default.
 
 ## Design requirements
@@ -113,7 +113,7 @@ The primary external user is a potential wedding customer. The primary internal 
 ## Testable boundaries
 
 - Public boundary: `/kontakt` to `/ai-flow` navigation and language behavior.
-- AI boundary: structured question/answer, source grounding, uncertainty and non-binding suggestions.
+- AI boundary: structured question/answer, field validation, conflict handling, uncertainty and non-binding suggestions.
 - Persistence boundary: local draft, authentication handoff and request creation.
 - Authorization boundary: customer, primary contact person, Owner and Staff access to the same event.
 - State boundary: request review, approval, change proposals, unread escalation, depositum, booking and cancellation.
@@ -140,8 +140,8 @@ The primary external user is a potential wedding customer. The primary internal 
 17. As a potential wedding customer, I want the AI to identify missing critical information, so that I know what must be clarified before submission.
 18. As a potential wedding customer, I want the AI to show conflicting answers clearly, so that I can choose the correct value instead of the system guessing.
 19. As a potential wedding customer, I want the AI to explain when it is uncertain, so that I can trust the boundary between known and unknown information.
-20. As a potential wedding customer, I want the AI to identify an explicitly unavailable date, so that I do not waste Owner’s or my own time on an obviously impossible request.
-21. As a potential wedding customer, I want to continue after an unavailable-date warning if I wish, so that Owner can help find an alternative date.
+20. As a potential wedding customer, I want the AI to explain that date availability has not been checked, so that I do not mistake my preferred date for a confirmed booking.
+21. As a potential wedding customer, I want to continue while Engestofte checks my preferred date, so that I can complete the rest of my enquiry without a calendar integration.
 22. As a potential wedding customer, I want to see relevant non-binding suggestions, so that I can discover options that may improve our day.
 23. As a potential wedding customer, I want a lower guest count to be eligible for an intimate-wedding suggestion, so that I can hear about a relevant Engestofte opportunity.
 24. As a potential wedding customer, I want overnight needs to trigger relevant breakfast or transport suggestions, so that practical solutions are visible.
@@ -157,7 +157,7 @@ The primary external user is a potential wedding customer. The primary internal 
 34. As Owner, I want to receive submitted enquiries, so that I can review potential customers in one place.
 35. As Owner, I want a structured summary, so that I do not need to reconstruct the customer’s answers manually.
 36. As Owner, I want to see missing information, conflicts and uncertainty, so that I know what requires human judgement.
-37. As Owner, I want to see the AI’s source references and source versions, so that I can assess the basis for an answer.
+37. As Owner, I want to see which answers are missing, conflicting or uncertain, so that I can judge where human follow-up is needed.
 38. As Owner, I want to see AI upsell suggestions, so that I can follow up on relevant opportunities for additional revenue.
 39. As Owner, I want to add internal notes, so that private assessments are kept separate from customer-facing information.
 40. As Owner, I want to ask the customer for clarification, so that an unclear request can move forward.
@@ -214,8 +214,7 @@ The primary external user is a potential wedding customer. The primary internal 
 - Every event-data change is represented as a field-level proposal with old value, proposed value, proposing party, approval state and history.
 - Rejected proposals preserve the previous approved value and require an explanation.
 - Owner is the final authority when official documents conflict with an explicit Owner decision. The conflict remains visible internally and the Owner gives a reason for the override.
-- The AI must not guess unavailable dates, prices, facilities, capacity or rules.
-- Known unavailable dates are communicated to the customer, who may continue so Owner can help find an alternative.
+- The AI must not guess or claim date availability, prices, facilities, capacity or rules. The MVP has no trusted calendar input; Engestofte must confirm date availability separately.
 - AI upsell is permitted both during the customer flow and in the Owner view, but suggestions are non-binding until Owner approves the final solution and price.
 - Danish is the default language. Danish, English and German are available through a dropdown, and the selected language belongs to the request.
 - IP-based language detection is a future possibility and is not implemented in the school project.
@@ -235,7 +234,7 @@ The primary external user is a potential wedding customer. The primary internal 
 - The same journey should verify that an unauthenticated draft remains local, that authentication persists it, and that the customer cannot access the concrete event before approval.
 - Role behavior should be verified at the boundary: contact person, primary contact person, Owner and Staff must see and change only what their role permits.
 - Domain behavior should be verified for conflicts, field-level approvals, unread messages, seven-day escalation, depositum simulation and irreversible customer cancellation.
-- AI behavior should be verified through observable structured outcomes: required fields, uncertainty markers, unavailable-date handling, source references and non-binding upsell suggestions.
+- AI behavior should be verified through observable structured outcomes: required and conditional fields, optional omissions, conflict handling, uncertainty about unsupported venue facts and unverified date availability, and non-binding upsell suggestions.
 - No test, lint, typecheck, build or Maven command is run by the agent unless the prompt explicitly requests it.
 - No existing project test prior art was used as a basis for this documentation-only spec; the implementation phase should first identify the highest existing browser/API seam before adding new test infrastructure.
 
