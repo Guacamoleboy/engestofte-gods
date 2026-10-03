@@ -30,4 +30,15 @@ public class EnquiryController {
 			return enquiryService.submit(accountId, context.bodyAsClass(EnquirySubmissionRequestDTO.class));
 		}, "Enquiry submitted");
 	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void listForAccount(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			String token = ContextHelper.extractBearerToken(context);
+			if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");
+			Integer accountId = JwtService.getClaimAccountId(token);
+			return enquiryService.findForAccount(accountId);
+		}, "Enquiries loaded");
+	}
 }

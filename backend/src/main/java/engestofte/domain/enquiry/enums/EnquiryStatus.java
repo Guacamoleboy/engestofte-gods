@@ -1,5 +1,9 @@
 package engestofte.domain.enquiry.enums;
 
 public enum EnquiryStatus {
-	SUBMITTED
+	SUBMITTED,
+	UNDER_REVIEW,
+	AWAITING_CUSTOMER,
+	APPROVED,
+	CANCELLED_BY_CUSTOMER
 }

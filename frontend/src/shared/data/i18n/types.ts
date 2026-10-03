@@ -24,6 +24,30 @@ export type TranslationContent = {
 		haveAccount: string
 		needAccount: string
 	}
+	eventsDashboard: {
+		title: string
+		description: string
+		brand: string
+		navCustomerRequests: string
+		navStaffEvents: string
+		navOwnerRequests: string
+		toFront: string
+		logout: string
+		loading: string
+		unauthenticated: string
+		login: string
+		error: string
+		retry: string
+		emptyTitle: string
+		emptyDescription: string
+		requestTitle: string
+		submittedAt: string
+		statusSubmitted: string
+		statusUnderReview: string
+		statusAwaitingCustomer: string
+		statusApproved: string
+		statusCancelled: string
+	}
 	aiFlow: {
 		introMessage: string
 		flowProgress: string
