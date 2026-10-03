@@ -4,7 +4,7 @@
 
 **Blocked by:** 06: Persist the local draft and complete the DONE state
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -21,11 +21,11 @@
 
 ## Acceptance criteria
 
-- [ ] The customer can choose login or register after `DONE`.
-- [ ] A successful login/register submits the local draft exactly once.
-- [ ] The request is persisted with its primary contact person and selected language.
-- [ ] Failed authentication leaves the local draft available for retry.
-- [ ] Password reset is treated separately from leaving or cancelling an event.
+- [X] The customer can choose login or register after `DONE`.
+- [X] A successful login/register submits the local draft exactly once.
+- [X] The request is persisted with its primary contact person and selected language.
+- [X] Failed authentication leaves the local draft available for retry.
+- [X] Password reset is treated separately from leaving or cancelling an event.
 
 ## Verification
 

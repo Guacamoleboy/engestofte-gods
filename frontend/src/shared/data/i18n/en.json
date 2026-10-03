@@ -1,4 +1,23 @@
 {
+	"auth": {
+		"eyebrow": "Engestofte Estate · wedding enquiry",
+		"loginTitle": "Log in",
+		"loginDescription": "Log in to submit your completed enquiry.",
+		"registerTitle": "Create an account",
+		"registerDescription": "Create an account so we can save your enquiry.",
+		"forgotTitle": "Forgot password",
+		"forgotDescription": "Automatic password reset is not enabled in this prototype. Contact us at mail@engestofte.dk for help.",
+		"name": "Name",
+		"email": "Email",
+		"password": "Password",
+		"loginSubmit": "Log in and submit enquiry",
+		"registerSubmit": "Create account and submit enquiry",
+		"submitting": "Submitting…",
+		"forgotLink": "Forgot password?",
+		"backToLogin": "Back to login",
+		"haveAccount": "Already have an account? Log in",
+		"needAccount": "Don’t have an account? Create one"
+	},
 	"aiFlow": {
 		"introMessage": "We currently offer AI-assisted enquiries for weddings only. For prices, answers or contact about another type of event, please reach us through the website or at mail@engestofte.dk.\n\nI am an AI assistant, not a person. Your messages are stored in Engestofte Estate’s enquiry history. Do not share sensitive personal information. This is a prototype and is not approved for production use under GDPR.",
 		"flowProgress": "Step {step}/5",

@@ -1,4 +1,23 @@
 {
+	"auth": {
+		"eyebrow": "Engestofte Gods · bryllupsforespørgsel",
+		"loginTitle": "Log ind",
+		"loginDescription": "Log ind for at sende jeres færdige forespørgsel.",
+		"registerTitle": "Opret konto",
+		"registerDescription": "Opret en konto, så vi kan gemme jeres forespørgsel.",
+		"forgotTitle": "Glemt adgangskode",
+		"forgotDescription": "Automatisk nulstilling er ikke aktiveret i prototypen. Kontakt os på mail@engestofte.dk for hjælp.",
+		"name": "Navn",
+		"email": "E-mail",
+		"password": "Adgangskode",
+		"loginSubmit": "Log ind og send forespørgsel",
+		"registerSubmit": "Opret konto og send forespørgsel",
+		"submitting": "Sender…",
+		"forgotLink": "Glemt adgangskode?",
+		"backToLogin": "Tilbage til login",
+		"haveAccount": "Har du allerede en konto? Log ind",
+		"needAccount": "Har du ikke en konto? Opret en"
+	},
 	"aiFlow": {
 		"introMessage": "Vi tilbyder kun AI-hjælp med bryllupsforespørgsler lige nu. Ønsker du pris, svar eller kontakt i forbindelse med et andet arrangement, kan du kontakte os via hjemmesiden eller på mail@engestofte.dk.\n\nJeg er en AI-assistent, ikke et menneske. Dine beskeder gemmes i Engestofte Gods’ forespørgselshistorik. Del ikke følsomme personoplysninger. Dette er en prototype og ikke godkendt til produktionsbrug under GDPR.",
 		"flowProgress": "Trin {step}/5",

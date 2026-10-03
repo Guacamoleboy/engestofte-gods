@@ -5,6 +5,25 @@
 export type Language = 'da' | 'en' | 'de'
 
 export type TranslationContent = {
+	auth: {
+		eyebrow: string
+		loginTitle: string
+		loginDescription: string
+		registerTitle: string
+		registerDescription: string
+		forgotTitle: string
+		forgotDescription: string
+		name: string
+		email: string
+		password: string
+		loginSubmit: string
+		registerSubmit: string
+		submitting: string
+		forgotLink: string
+		backToLogin: string
+		haveAccount: string
+		needAccount: string
+	}
 	aiFlow: {
 		introMessage: string
 		flowProgress: string
