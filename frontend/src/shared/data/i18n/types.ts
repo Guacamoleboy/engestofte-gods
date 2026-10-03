@@ -9,12 +9,12 @@ export type TranslationContent = {
 		introMessage: string
 		flowProgress: string
 		flowComplete: string
-		summaryTitle: string
-		summaryQuestion: string
-		summaryAnswer: string
 		cancelRequest: string
 		goBack: string
 		stepQuestions: string[]
+		weddingDirectionOptions: { title: string; description: string; choice: string }[]
+		weddingDirectionOptionsLabel: string
+		intimateRecommendation: string
 		answerLabel: string
 		answerPlaceholder: string
 		assistantName: string
@@ -29,9 +29,16 @@ export type TranslationContent = {
 		pending: string
 		submit: string
 		outOfScopeContact: string
-		finished: string
+		finalMessage: string
 		contactViaWebsite: string
-		emailUs: string
+		redirect: {
+			title: string
+			description: string
+			contactExplanation: string
+			createAccount: string
+			sendEmail: string
+			cancelEnquiry: string
+		}
 	}
 	navigation: {
 		label: string

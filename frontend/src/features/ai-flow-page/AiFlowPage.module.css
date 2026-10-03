@@ -7,7 +7,7 @@
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	padding: clamp(0.75rem, 2vh, 1.5rem) clamp(0.75rem, 4vw, 3.5rem);
+	padding: clamp(0.75rem, 4vw, 3.5rem);
 }
 
 :global(.page-container).page {
@@ -123,7 +123,12 @@
 	gap: var(--engestofte-space-5);
 	overflow-y: auto;
 	padding: var(--engestofte-space-6) 0;
-	scrollbar-color: var(--engestofte-green-light) var(--engestofte-surface);
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.messageList::-webkit-scrollbar {
+	display: none;
 }
 
 .messageGroup {
@@ -140,6 +145,7 @@
 	color: var(--engestofte-green-dark);
 	font-size: 0.75rem;
 	font-weight: 700;
+	opacity: 0.2;
 }
 
 .flowDivider::before,
@@ -148,35 +154,6 @@
 	height: 2px;
 	flex: 1;
 	background: var(--engestofte-green);
-}
-
-.summaryCard {
-	width: min(100%, 52rem);
-	align-self: center;
-	border: 1px solid var(--engestofte-border);
-	padding: var(--engestofte-space-5);
-	background: var(--engestofte-surface);
-	color: var(--engestofte-text);
-}
-
-.summaryCard h3 {
-	margin: 0 0 var(--engestofte-space-4);
-	color: var(--engestofte-heading);
-	font-size: 1rem;
-}
-
-.summaryCard ol {
-	margin: 0;
-	padding-left: 1.25rem;
-}
-
-.summaryCard li + li { margin-top: var(--engestofte-space-4); }
-
-.summaryCard p {
-	margin: 0.2rem 0;
-	line-height: 1.5;
-	white-space: pre-wrap;
-	word-break: break-word;
 }
 
 .messageRow {
@@ -197,6 +174,11 @@
 .introMessageContent {
 	width: 76%;
 	max-width: 76%;
+}
+
+.weddingDirectionMessageContent {
+	width: min(90%, 56rem);
+	max-width: min(90%, 56rem);
 }
 
 .customerRow .messageContent { margin-left: auto; }
@@ -227,6 +209,40 @@
 }
 
 .assistantBubble { background: var(--engestofte-white); }
+
+.weddingDirectionCards {
+	width: min(100%, 44rem);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+	gap: var(--engestofte-space-3);
+	margin-top: var(--engestofte-space-3);
+}
+
+.weddingDirectionCard {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.55rem;
+	border: 1px solid var(--engestofte-border);
+	border-radius: var(--engestofte-radius-sharp);
+	padding: var(--engestofte-space-4);
+	background: var(--engestofte-surface);
+	color: var(--engestofte-text);
+	text-align: left;
+	cursor: pointer;
+}
+
+.weddingDirectionCard:hover,
+.weddingDirectionCard:focus-visible {
+	border-color: var(--engestofte-green);
+	background: var(--engestofte-tint);
+}
+
+.weddingDirectionCard:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+.weddingDirectionCard strong { color: var(--engestofte-heading); font-size: 0.9rem; }
+.weddingDirectionCard span { font-size: 0.8rem; line-height: 1.5; }
+.weddingDirectionCard small { color: var(--engestofte-green-dark); font-weight: 700; }
 
 .introContactLinks {
 	display: flex;

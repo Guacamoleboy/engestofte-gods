@@ -10,6 +10,7 @@ export type AiInteractionResponse = {
 	next_question: string
 	customer_name: string
 	step: number
+	expected_guest_count: number | null
 	status: 'IN_PROGRESS' | 'STEP_COMPLETE' | 'OUT_OF_SCOPE' | 'DONE'
 }
 

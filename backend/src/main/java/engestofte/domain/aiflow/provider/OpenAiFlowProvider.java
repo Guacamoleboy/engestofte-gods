@@ -56,15 +56,16 @@ public class OpenAiFlowProvider implements AiFlowProvider {
 							"name", "wedding_enquiry_flow_state",
 							"strict", true,
 							"schema", Map.of(
-									"type", "object",
-									"properties", Map.of(
-											"acknowledgement", Map.of("type", "string"),
-											"next_question", Map.of("type", "string"),
-											"customer_name", Map.of("type", "string"),
-											"step", Map.of("type", "integer", "minimum", 1, "maximum", 5),
-											"status", Map.of("type", "string", "enum", new String[]{"IN_PROGRESS", "STEP_COMPLETE", "OUT_OF_SCOPE", "DONE"})
-									),
-									"required", new String[]{"acknowledgement", "next_question", "customer_name", "step", "status"},
+											"type", "object",
+											"properties", Map.of(
+													"acknowledgement", Map.of("type", "string"),
+													"next_question", Map.of("type", "string"),
+													"customer_name", Map.of("type", "string"),
+													"step", Map.of("type", "integer", "minimum", 1, "maximum", 5),
+													"expected_guest_count", Map.of("type", "integer", "minimum", 0, "maximum", 150),
+													"status", Map.of("type", "string", "enum", new String[]{"IN_PROGRESS", "STEP_COMPLETE", "OUT_OF_SCOPE", "DONE"})
+											),
+											"required", new String[]{"acknowledgement", "next_question", "customer_name", "step", "expected_guest_count", "status"},
 									"additionalProperties", false
 							)
 					))
@@ -121,6 +122,7 @@ public class OpenAiFlowProvider implements AiFlowProvider {
 			customerName = request.getCustomerName();
 		}
 		int step = structured.path("step").asInt(0);
+		int expectedGuestCount = structured.path("expected_guest_count").asInt(0);
 		AiFlowStatus status;
 		try {
 			status = AiFlowStatus.valueOf(structured.path("status").asText());
@@ -128,6 +130,7 @@ public class OpenAiFlowProvider implements AiFlowProvider {
 			throw new ApiException(500, "AI service is unavailable");
 		}
 		if (acknowledgement.isBlank() || customerName.length() > 160 || step != request.getStep()
+				|| expectedGuestCount < 0 || expectedGuestCount > 150
 				|| (status == AiFlowStatus.IN_PROGRESS && nextQuestion.isBlank())
 				|| (status != AiFlowStatus.IN_PROGRESS && !nextQuestion.isBlank())
 				|| (status == AiFlowStatus.DONE && request.getStep() != 5)
@@ -141,6 +144,7 @@ public class OpenAiFlowProvider implements AiFlowProvider {
 		result.setCustomerName(customerName);
 		result.setStep(step);
 		result.setStatus(status);
+		result.setExpectedGuestCount(expectedGuestCount == 0 ? null : expectedGuestCount);
 		return result;
 	}
 }

@@ -3,16 +3,13 @@
 		"introMessage": "Vi tilbyder kun AI-hjælp med bryllupsforespørgsler lige nu. Ønsker du pris, svar eller kontakt i forbindelse med et andet arrangement, kan du kontakte os via hjemmesiden eller på mail@engestofte.dk.\n\nJeg er en AI-assistent, ikke et menneske. Dine beskeder gemmes i Engestofte Gods’ forespørgselshistorik. Del ikke følsomme personoplysninger. Dette er en prototype og ikke godkendt til produktionsbrug under GDPR.",
 		"flowProgress": "Trin {step}/5",
 		"flowComplete": "Forespørgslen er klar",
-		"summaryTitle": "Jeres opsummering",
-		"summaryQuestion": "Spørgsmål",
-		"summaryAnswer": "Jeres svar",
 		"cancelRequest": "Annullér forespørgsel",
 		"goBack": "Gå tilbage",
 		"stepQuestions": [
 			"Hvad navn skal forespørgslen oprettes i?",
 			"Hej, {name} 😃\n\nHvornår planlægger du, at jeres bryllup skal holdes?",
-			"Det lyder som en dejlig dato. Jeg har noteret den som jeres ønske, ikke som en booking.\n\nHvor mange gæster regner I med til festen? Har I behov for overnatning hos os, og i så fald til hvor mange?",
-			"Hvordan forestiller I jer jeres bryllupsdag? Skal der være vielse, reception, middag og fest – og hvor ønsker I vielsen?",
+			"Hvor mange gæster forventer I? Skal der bookes overnatning hos Engestofte Gods til alle gæsterne i hele perioden?",
+			"Så er der styr på det grundlæggende! 😊\n\nVælg den retning, der passer bedst til jeres bryllup. Skriv for eksempel “Mulighed 1”. I kan altid ændre jeres valg senere.",
 			"Hvad ønsker I jer af mad og drikke? Er der allergier eller særlige kosthensyn, vi skal tage højde for? Har I særlige ønsker til tilvalg, praktiske forhold eller budget? Det er helt frivilligt."
 		],
 		"answerLabel": "Jeres svar",
@@ -29,9 +26,23 @@
 		"pending": "Tænker...",
 		"submit": "Send svar",
 		"outOfScopeContact": "Kontakt Engestofte Gods",
-		"finished": "Tak. Vi har samlet oplysningerne til jeres bryllupsforespørgsel.",
+		"finalMessage": "Tak {name}!\n\nVi har nu alle oplysninger og sender dig videre til næste step 😊",
 		"contactViaWebsite": "Kontakt via hjemmesiden",
-		"emailUs": "Skriv til mail@engestofte.dk"
+		"weddingDirectionOptionsLabel": "Vælg brylluppets retning",
+		"intimateRecommendation": "Anbefalet til selskaber på højst 60 gæster",
+		"weddingDirectionOptions": [
+			{"title":"Mulighed 1 · Standardbryllup","description":"Grundpakken med velkomstdrink, 3-retters middag med vinmenu, kaffe og sødt, softbar, koordinering, 9 timers fest og overnatning i brudesuite.","choice":"Mulighed 1"},
+			{"title":"Mulighed 2 · Intimt bryllup","description":"Standardbrylluppet kombineret med en reception i Værkstedet med tapas, kaffe/te samt øl, vand og crémant.","choice":"Mulighed 2"},
+			{"title":"Mulighed 3 · Skræddersyet","description":"En sammensætning af de dele, der passer til jer. Engestofte hjælper med planlægningen, og Johan afklarer indholdet sammen med jer.","choice":"Mulighed 3"}
+		],
+		"redirect": {
+			"title":"{name}, jeres forespørgsel er klar!",
+			"description":"Vi har samlet jeres oplysninger, og forespørgslen er klar til at blive sendt til en leder til behandling.",
+			"contactExplanation":"For at Engestofte kan kontakte jer senere, bedes I vælge en mulighed herunder.",
+			"createAccount":"Opret bruger",
+			"sendEmail":"Send mail",
+			"cancelEnquiry":"Annullér forespørgsel"
+		}
 	},
 	"navigation": {
 		"label": "Hovednavigation",

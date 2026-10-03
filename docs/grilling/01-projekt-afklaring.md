@@ -597,11 +597,11 @@ En forespørgsel med status `Annulleret af kunde` kan ikke genåbnes, heller ikk
 
 ### Q53 — Skal et lavt gæsteantal udløse et sammenlignende tilbud, og hvad tilbydes ved fravalgt overnatning?
 
-Valgt model: Ved 60 eller færre gæster må AI'en én gang spørge, om kunden ønsker et tilbud, der sammenligner Intimpakken med standardbryllupspakken. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte.
+Tidligere valgt model: Ved 60 eller færre gæster tilbydes en sammenligning af Intimpakken og standardpakken. Den er erstattet af D57, som definerer et konkret Intim-projektforslag og valgbare kort. Hvis kunden ikke ønsker overnatning, må AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte.
 
 ### D53 — Mersalg #1 og transport er ikke-bindende forespørgsler
 
-Tærsklen for Mersalg #1 er 60 eller færre gæster. AI'en tilbyder at få Engestofte til at udarbejde et sammenlignende tilbud; den oplyser ikke selv priser eller ubekræftede pakkevilkår. Ved fravalgt overnatning kan AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Tilbud, priser og transportmuligheder bekræftes af Engestofte, og kunden kan afslå uden at blokere forespørgslen.
+D57 fastlægger, at Intim-kortet kun vises ved højst 60 gæster og bygger på standardpakken kombineret med reception i Værkstedet. Kortets referencepriser er fra 2026; det er et skoleprojektforslag, ikke et aktuelt tilbud. Ved fravalgt overnatning kan AI'en tilbyde at undersøge bus mellem et nærliggende hotel og Engestofte. Tilbud, priser og transportmuligheder bekræftes af Engestofte, og kunden kan afslå uden at blokere forespørgslen.
 
 ### Q54 — Skal MVP'ens AI-flow bruge RAG/Dify og vise kildehenvisninger?
 
@@ -617,10 +617,26 @@ En dato må kun markeres som utilgængelig, hvis et betroet runtime-context udtr
 
 D54 erstatter den operationelle del af D36-D39 om kildehenvisninger, dokumentversioner, kildebaserede datoblokeringer og kildekonflikter i MVP'ens AI-flow. De tidligere beslutninger bevares som historik; en senere dokument- eller kalenderintegration kræver en særskilt beslutning.
 
-### D55 — Juli-praksis må kommunikeres, men belægning og Intimpakke må ikke gættes
+### D55 — Juli-praksis må kommunikeres, og 2026-priser er historiske referencepriser
 
 Faktagrundlaget i `docs/grilling/ai-flow-factual-context.md` skelner mellem bekræftede oplysninger og åbne afklaringer. Bryllupper afholdes typisk ikke i juli; Johan har nævnt sjældne undtagelser ved månedens start eller slutning. Ved en juliønskning må AI'en tilbyde at lade Engestofte undersøge en mulig undtagelse eller lade kunden overveje en anden dato. AI'en må ikke love undtagelsen.
 
-Skoleprojektet antager, at alle datoer i 2028 står ubeskrevne i demoens kalender; det er ikke en påstand om den virkelige kalender. Juli holdes stadig typisk fri for bryllupper. For andre år må AI'en ikke udlede kalenderstatus fra generelle bookingmønstre. Standardbryllupsmaterialet fra 2026 er historisk og ikke en aktuel prisbekræftelse. Intimpakkens indhold, pris og sammenligningsværdi er ikke dokumenteret; den må ikke automatisk anbefales ved 60 eller færre gæster, før Johan har godkendt de oplysninger.
+Skoleprojektet antager, at alle datoer i 2028 står ubeskrevne i demoens kalender; det er ikke en påstand om den virkelige kalender. Juli holdes stadig typisk fri for bryllupper. For andre år må AI'en ikke udlede kalenderstatus fra generelle bookingmønstre. Standardbryllupsmaterialet og receptionspriserne fra 2026 er historiske referencepriser, ikke et aktuelt tilbud. Skoleprojektet definerer en Intim-retning ved højst 60 gæster som Standardpakken kombineret med reception i Værkstedet; den vises kun til denne målgruppe og mærkes som et projektforslag.
 
-D55 præciserer og tilsidesætter den kundevendte Intimpakke-anbefaling i Q53/D53, indtil produktinformationen er godkendt. Busundersøgelsen ved fravalgt overnatning består. D54 gælder fortsat for kalenderadgang og AI'ens generelle faktagrænser.
+D55 fastlægger, at projektets Intim-retning kun tilbydes ved højst 60 gæster og består af dokumenterede standard- og receptionsdele med historiske priser. Busundersøgelsen ved fravalgt overnatning består. D54 gælder fortsat for kalenderadgang og AI'ens generelle faktagrænser.
+
+### D56 — 2027 er fuldt booket i skoleprojektet, og kunden kan vælge venteliste
+
+Skoleprojektets kalenderantagelse er, at alle bryllupsdatoer i 2027 er fuldt bookede. Når kunden angiver en 2027-dato, må AI'en ikke gå videre automatisk. Den skal fortælle kunden, at året er fuldt booket, og tilbyde at fortsætte forespørgslen, så ønsket kan noteres til overvejelse ved et eventuelt afbud. Det er ikke en booking eller garanti for en plads. Spørgsmålet på dansk er: `Ønsker du at fortsætte forespørgslen, {navn}? 🙂` Ved et tydeligt ja kan forespørgslen fortsætte; ved et nej afsluttes den venligt, og kunden sendes tilbage til `/kontakt` i stedet for at blive spurgt om en ny dato.
+
+D56 er en skoleprojektantagelse, ikke en påstand om den aktuelle kalender. Den supplerer D55 for 2027; antagelsen om frie datoer i 2028 består, ligesom den sædvanlige juli-praksis.
+
+### D57 — Bryllupsretning vælges med kort, og Intim vises kun ved højst 60 gæster
+
+Trin 4 viser valgbare kort for Standard, Intim og Skræddersyet. Kortene beskriver kun indhold, ikke priser. Kunden vælger med et kort eller ved at skrive “Mulighed 1/2/3”; valget kan ændres senere. Standardkortet følger bryllupssidens dokumenterede 2026-grundpakke. Intim er et skoleprojektforslag, ikke et eksisterende Engestofte-produkt: Standardpakken kombineres med reception i Værkstedet. Med referencepriserne fra 2026 er summen 2.085 kr. pr. kuvert og 20.275 kr. i samlet lokaleleje. Intimkortet vises og anbefales kun ved højst 60 gæster; det må ikke foreslås over grænsen. Beløbene er intern 2026-reference; kortene viser ikke priser. Skræddersyet har ingen fast pris; Johan afklarer indhold og tilbud.
+
+Flowet spørger kun, om vielsen ønskes på Engestofte, et andet sted eller endnu ikke er besluttet. Reception, middag, fest, kirke/by og detaljeret tidsplan afklares senere. I trin 3 afklares overnatning for et kendt antal personer og en konkret periode; “alle dage” skal bekræftes mod den kendte bryllupsdato. Hvis gæsterne ikke overnatter på godset, anbefaler AI'en at arrangere bus og tilbyder at undersøge muligheden uden at love en bus.
+
+### D58 — Bryllupsmåneder håndteres som normalsæson, nabosæson og lukket sæson
+
+Noterne angiver maj, juni, august og september som de normale bryllupsmåneder; juli holdes normalt fri. April, juli og oktober er nabomåneder, hvor kunden får at vide, at Engestofte normalt ikke afholder bryllupper, men kan fortsætte forespørgslen efter et tydeligt ja. November, december, januar, februar og marts behandles som lukkede for bryllupper; kunden kan vælge en ny dato eller afslutte forespørgslen. 2027-reglen om fuld booking gælder for datoer i normale måneder og nabomåneder; lukkede måneder har forrang. 2028-demokalenderens ubeskrevne datoer tilsidesætter ikke månedsreglen. Den detaljerede kilde og kundevendte adfærd står i `docs/grilling/ai-flow-factual-context.md`.

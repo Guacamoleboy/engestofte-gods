@@ -3,16 +3,13 @@
 		"introMessage": "We currently offer AI-assisted enquiries for weddings only. For prices, answers or contact about another type of event, please reach us through the website or at mail@engestofte.dk.\n\nI am an AI assistant, not a person. Your messages are stored in Engestofte Estate’s enquiry history. Do not share sensitive personal information. This is a prototype and is not approved for production use under GDPR.",
 		"flowProgress": "Step {step}/5",
 		"flowComplete": "Enquiry complete",
-		"summaryTitle": "Your summary",
-		"summaryQuestion": "Question",
-		"summaryAnswer": "Your answer",
 		"cancelRequest": "Cancel enquiry",
 		"goBack": "Go back",
 		"stepQuestions": [
 			"What name should the enquiry be created under?",
 			"Hi, {name} 😃\n\nWhen are you planning to hold your wedding?",
-			"That sounds like a lovely date. I have noted it as your preference, not as a booking.\n\nHow many guests are you expecting? Will you need accommodation with us, and if so, for how many people?",
-			"How do you picture your wedding day? Would you like a ceremony, reception, dinner and party — and where would you like the ceremony?",
+			"How many guests do you expect? Should accommodation at Engestofte Gods be booked for all guests for the entire period?",
+			"That covers the essentials! 😊\n\nChoose the direction that best suits your wedding. For example, reply “Option 1”. You can change your choice later.",
 			"What would you like for food and drinks? Are there any allergies or dietary needs we should know about? Do you have any optional extras, practical wishes or a budget in mind? Those details are optional."
 		],
 		"answerLabel": "Your answer",
@@ -29,9 +26,23 @@
 		"pending": "Thinking...",
 		"submit": "Send answer",
 		"outOfScopeContact": "Contact Engestofte Estate",
-		"finished": "Thank you. We have collected the details for your wedding enquiry.",
+		"finalMessage": "Thank you, {name}!\n\nWe have all the information and are taking you to the next step 😊",
 		"contactViaWebsite": "Contact us through the website",
-		"emailUs": "Email mail@engestofte.dk"
+		"intimateRecommendation": "Recommended for weddings with up to 60 guests",
+		"weddingDirectionOptionsLabel": "Choose the wedding style",
+		"weddingDirectionOptions": [
+			{"title":"Option 1 · Standard wedding","description":"The basic package with welcome drink, three-course dinner with wine menu, coffee and sweets, soft bar, coordination, a nine-hour celebration and bridal-suite stay.","choice":"Option 1"},
+			{"title":"Option 2 · Intimate wedding","description":"The standard wedding combined with a reception in the Workshop, including tapas, coffee/tea, beer, water and crémant.","choice":"Option 2"},
+			{"title":"Option 3 · Tailored wedding","description":"A combination of the elements that suit you. Engestofte can help plan the day and Johan can clarify the details with you.","choice":"Option 3"}
+		],
+		"redirect": {
+			"title":"{name}, your enquiry is ready!",
+			"description":"We have gathered your details, and the enquiry is ready to be sent to a manager for review.",
+			"contactExplanation":"So Engestofte can contact you later, please choose one of the options below.",
+			"createAccount":"Create account",
+			"sendEmail":"Send email",
+			"cancelEnquiry":"Cancel enquiry"
+		}
 	},
 	"navigation": {
 		"label": "Main navigation",

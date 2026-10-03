@@ -4,6 +4,7 @@ Return fields matching the required response schema:
 - acknowledgement: concise response to the customer's latest answer, in the requested language.
 - next_question: one focused follow-up in the requested language only for IN_PROGRESS; otherwise an empty string.
 - customer_name: the explicitly stated name if available, otherwise preserve the supplied name or use an empty string.
+- expected_guest_count: the expected guest count known from the conversation (0 if none is valid or known).
 - step: the current step number, unchanged.
 - status: IN_PROGRESS, STEP_COMPLETE, OUT_OF_SCOPE, or DONE according to the system prompt and rubric.
 

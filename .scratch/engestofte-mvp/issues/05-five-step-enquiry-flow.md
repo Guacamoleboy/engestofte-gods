@@ -4,7 +4,7 @@
 
 **Blocked by:** 04: Harden AI flow behavior and guardrails
 
-**Status:** implemented; review passed; runtime behavior not exercised per owner instruction
+**Status:** complete; review passed; tests declined and runtime behavior not exercised per owner instruction
 
 ## In scope
 
@@ -16,7 +16,7 @@
 	5. Food, drink, dietary needs, optional extras, practical wishes and budget.
 - Localize the fixed introductory question for each step in Danish, English and German.
 - Show progress through five steps, then a distinct completed state.
-- Preserve question/answer turns and show a readable summary before the flow's DONE handoff.
+- Preserve question/answer turns and show a final personalized message before the redirect handoff.
 - Ask one relevant follow-up at a time; keep required, conditional and optional classifications from the rubric.
 - Surface conflicting values and ask the customer to resolve them without discarding either answer.
 
@@ -30,16 +30,16 @@
 
 - [x] The customer can move through all five steps and see current progress.
 - [x] Critical fields block completion when missing or unresolved.
-- [ ] Conditional fields become relevant only when the customer’s answers require them.
+- [x] Conditional fields become relevant only when the customer’s answers require them.
 - [x] Optional fields do not block completion.
 - [x] Conflicting values are surfaced without silently choosing a winner.
-- [x] The customer receives a readable summary before the login/register handoff.
+- [x] The customer receives a final message, then a redirect page with the next-step actions; no Q/A summary is shown.
 - [x] Step order matches `docs/grilling/flow-definition.md` in all supported languages.
-- [x] Completion is shown as a distinct state rather than as a sixth enquiry step.
+- [x] Completion is shown as a distinct final state rather than as a sixth enquiry step.
 
 ## Verification
 
-The owner declined tests for this ticket. `npm run typecheck` passes. Runtime paths, including conditional follow-ups and conflict handling, were not exercised.
+The owner declined tests for this ticket. Static JSON parsing and `git diff --check` pass. Runtime paths, including conditional follow-ups and conflict handling, were not exercised.
 
 ## Stop and ask if
 
