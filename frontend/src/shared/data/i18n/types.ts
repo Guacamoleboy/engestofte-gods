@@ -9,6 +9,13 @@ export type TranslationContent = {
 		introMessage: string
 		flowProgress: string
 		flowComplete: string
+		draftResumeNotice: string
+		draftUnreadableNotice: string
+		draftCompleteNotice: string
+		startNewDraft: string
+		confirmNewDraft: string
+		continueDraft: string
+		draftStorageNotice: string
 		cancelRequest: string
 		goBack: string
 		stepQuestions: string[]
@@ -36,6 +43,7 @@ export type TranslationContent = {
 			description: string
 			contactExplanation: string
 			createAccount: string
+			login: string
 			sendEmail: string
 			cancelEnquiry: string
 		}

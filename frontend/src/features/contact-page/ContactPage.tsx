@@ -6,6 +6,7 @@ import { Button } from '../../shared/components/ui'
 import InputText from '../../shared/components/input-text/InputText'
 import PageContainer from '../../shared/components/PageContainer'
 import Submit from '../../shared/components/submit/Submit'
+import { getAiFlowDraftStatus } from '../../shared/data/aiFlowDraft'
 import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useAiFlowTransition } from '../ai-flow-transition/AiFlowTransitionContext'
 import { useContactPage } from './ContactPage.hooks'
@@ -38,7 +39,16 @@ const contactPeople = [
 export default function ContactPage() {
 	const { content: copy } = useTranslate()
 	const { submitContactMessage } = useContactPage()
-	const { startEntryTransition } = useAiFlowTransition()
+	const { startEntryTransition, startFinalTransition } = useAiFlowTransition()
+
+	function startEnquiry() {
+		const draftStatus = getAiFlowDraftStatus()
+		if (draftStatus !== 'none') {
+			startFinalTransition('', draftStatus)
+			return
+		}
+		startEntryTransition()
+	}
 
 	return (
 		<PageContainer>
@@ -48,7 +58,7 @@ export default function ContactPage() {
 					<h1 id="contact-title">{copy.contact.heroTitle}</h1>
 					<p className={styles['contact-hero__intro']}>{copy.contact.heroIntro}</p>
 					<div className={styles['contact-hero__actions']}>
-						<Button variant="primary" onClick={startEntryTransition}>{copy.contact.startEnquiry}</Button>
+						<Button variant="primary" onClick={startEnquiry}>{copy.contact.startEnquiry}</Button>
 						<a className="ui-button ui-button--secondary" href="mailto:mail@engestofte.dk">{copy.contact.contactUs}</a>
 					</div>
 					<p className={styles['contact-hero__note']}>{copy.contact.heroNote}</p>

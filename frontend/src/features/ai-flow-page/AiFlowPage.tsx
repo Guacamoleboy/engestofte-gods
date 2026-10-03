@@ -3,7 +3,7 @@
 // src/features/ai-flow-page/AiFlowPage.tsx
 
 import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useAiFlowTransition } from '../ai-flow-transition/AiFlowTransitionContext'
 import AiFlowMessage from './AiFlowMessage'
@@ -12,13 +12,23 @@ import styles from './AiFlowPage.module.css'
 
 export default function AiFlowPage() {
 	const navigate = useNavigate()
+	const location = useLocation()
 	const { content, language } = useTranslate()
 	const copy = content.aiFlow
 	const { startFinalTransition } = useAiFlowTransition()
-	const { answer, currentStep, customerName, expectedGuestCount, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finalMessage, copy.customerName, copy.aiUnavailable, language)
+	const { answer, currentStep, customerName, expectedGuestCount, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finalMessage, copy.customerName, copy.aiUnavailable, language)
 	const progressLabel = isComplete
 		? copy.flowComplete
 		: copy.flowProgress.replace('{step}', String(currentStep))
+
+	useEffect(() => {
+		if (location.state?.resumeDraft === true) return
+		if (!hasResumedDraft && !hasUnrecognizedDraft) return
+		navigate('/ai-flow/redirect', {
+			replace: true,
+			state: { customerName, draftNotice: hasUnrecognizedDraft ? 'unreadable' : isComplete ? 'complete' : 'saved' },
+		})
+	}, [customerName, hasResumedDraft, hasUnrecognizedDraft, isComplete, location.state, navigate])
 
 	useEffect(() => {
 		if (!isOutOfScope) return
@@ -137,7 +147,7 @@ export default function AiFlowPage() {
 					<div className={styles.composer}>
 						<Link className={styles.cancelLink} to="/kontakt">{copy.goBack}</Link>
 					</div>
-				) : !isComplete && !isAiUnavailable && (
+				) : !isComplete && !isAiUnavailable && !hasUnrecognizedDraft && (
 				<form className={styles.composer} onSubmit={submitAnswer}>
 					<label className="visually-hidden" htmlFor="ai-answer">{copy.answerLabel}</label>
 					<textarea

@@ -3,6 +3,13 @@
 		"introMessage": "We currently offer AI-assisted enquiries for weddings only. For prices, answers or contact about another type of event, please reach us through the website or at mail@engestofte.dk.\n\nI am an AI assistant, not a person. Your messages are stored in Engestofte Estate’s enquiry history. Do not share sensitive personal information. This is a prototype and is not approved for production use under GDPR.",
 		"flowProgress": "Step {step}/5",
 		"flowComplete": "Enquiry complete",
+		"draftResumeNotice": "Your draft is saved in this browser. You can return and continue later. This is a prototype: local storage of personal data has not been approved for GDPR compliant production use.",
+		"draftUnreadableNotice": "A draft from another version was found but cannot be opened. It has been preserved. Start over only if you want to delete it.",
+		"draftCompleteNotice": "Your completed enquiry is saved locally. Continue by logging in or creating an account below.",
+		"startNewDraft": "Start a new enquiry",
+		"confirmNewDraft": "Starting a new enquiry will delete this draft from the browser. Continue?",
+		"continueDraft": "Continue draft",
+		"draftStorageNotice": "Your draft is saved locally and is not sent to Engestofte as a request until you log in or create an account.",
 		"cancelRequest": "Cancel enquiry",
 		"goBack": "Go back",
 		"stepQuestions": [
@@ -40,6 +47,7 @@
 			"description":"We have gathered your details, and the enquiry is ready to be sent to a manager for review.",
 			"contactExplanation":"So Engestofte can contact you later, please choose one of the options below.",
 			"createAccount":"Create account",
+			"login":"Log in",
 			"sendEmail":"Send email",
 			"cancelEnquiry":"Cancel enquiry"
 		}

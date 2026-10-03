@@ -35,6 +35,7 @@
 	--engestofte-radius-sharp: 0.12rem;
 	--engestofte-shadow-card: 0 0.7rem 2.2rem rgba(35, 45, 35, 0.055);
 	--engestofte-shadow-dialog: 0 1.2rem 4rem rgba(17, 26, 19, 0.2);
+	--engestofte-transition-control: all 0.2s ease-in-out;
 	font-family: var(--engestofte-font-body);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -74,6 +75,15 @@ select {
 	-webkit-tap-highlight-color: transparent;
 }
 
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+select,
+.ui-button {
+	transition: var(--engestofte-transition-control);
+}
+
 img {
 	display: block;
 	max-width: 100%;
@@ -101,7 +111,7 @@ a {
 	font-weight: 650;
 	text-align: center;
 	text-decoration: none;
-	transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+	transition: var(--engestofte-transition-control);
 	cursor: pointer;
 }
 

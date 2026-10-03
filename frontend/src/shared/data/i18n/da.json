@@ -3,6 +3,13 @@
 		"introMessage": "Vi tilbyder kun AI-hjælp med bryllupsforespørgsler lige nu. Ønsker du pris, svar eller kontakt i forbindelse med et andet arrangement, kan du kontakte os via hjemmesiden eller på mail@engestofte.dk.\n\nJeg er en AI-assistent, ikke et menneske. Dine beskeder gemmes i Engestofte Gods’ forespørgselshistorik. Del ikke følsomme personoplysninger. Dette er en prototype og ikke godkendt til produktionsbrug under GDPR.",
 		"flowProgress": "Trin {step}/5",
 		"flowComplete": "Forespørgslen er klar",
+		"draftResumeNotice": "Din kladde er gemt i denne browser. Du kan vende tilbage og fortsætte senere. Dette er en prototype: lokal lagring af personoplysninger er ikke godkendt til produktionsbrug under GDPR.",
+		"draftUnreadableNotice": "Der findes en kladde fra en anden version, som ikke kan åbnes. Den er bevaret. Start kun forfra, hvis du vil slette den.",
+		"draftCompleteNotice": "Din færdige forespørgsel er gemt lokalt. Fortsæt med at logge ind eller oprette en konto nedenfor.",
+		"startNewDraft": "Start en ny forespørgsel",
+		"confirmNewDraft": "Hvis du starter en ny forespørgsel, slettes denne kladde fra browseren. Vil du fortsætte?",
+		"continueDraft": "Fortsæt kladden",
+		"draftStorageNotice": "Din kladde gemmes kun lokalt og sendes ikke til Engestofte som en sag, før du logger ind eller opretter en konto.",
 		"cancelRequest": "Annullér forespørgsel",
 		"goBack": "Gå tilbage",
 		"stepQuestions": [
@@ -40,6 +47,7 @@
 			"description":"Vi har samlet jeres oplysninger, og forespørgslen er klar til at blive sendt til en leder til behandling.",
 			"contactExplanation":"For at Engestofte kan kontakte jer senere, bedes I vælge en mulighed herunder.",
 			"createAccount":"Opret bruger",
+			"login":"Log ind",
 			"sendEmail":"Send mail",
 			"cancelEnquiry":"Annullér forespørgsel"
 		}

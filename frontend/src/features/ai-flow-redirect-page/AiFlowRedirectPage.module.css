@@ -12,6 +12,40 @@
 	text-align: center;
 }
 
+.draftToast {
+	position: fixed;
+	top: max(1rem, env(safe-area-inset-top));
+	left: 50%;
+	z-index: 5;
+	width: min(calc(100% - 2rem), 48rem);
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	border: 1px solid var(--engestofte-border);
+	padding: 0.85rem 1rem;
+	background: var(--engestofte-white);
+	box-shadow: var(--engestofte-shadow-card);
+	color: var(--engestofte-text);
+	text-align: left;
+}
+
+.draftToast p { margin: 0; font-size: 0.82rem; line-height: 1.45; }
+.toastActions { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.toastActions button {
+	border: 1px solid var(--engestofte-green);
+	padding: 0.5rem 0.65rem;
+	background: var(--engestofte-white);
+	color: var(--engestofte-green-dark);
+	font: inherit;
+	font-size: 0.76rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+.toastActions button:hover { background: var(--engestofte-tint); }
+.toastActions button:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+
 .logo {
 	width: min(13rem, 65vw);
 	display: block;
@@ -52,6 +86,7 @@
 	font-weight: 700;
 	text-align: center;
 	text-decoration: none;
+	transition: var(--engestofte-transition-control);
 }
 
 .createAccount {
@@ -59,12 +94,14 @@
 	color: var(--engestofte-green-dark);
 }
 
+.createAccount:hover { background: var(--engestofte-green-dark); color: var(--engestofte-white); }
+
 .sendEmail {
 	background: transparent;
 	color: var(--engestofte-white);
-	opacity: 0.55;
-	cursor: not-allowed;
 }
+
+.sendEmail:hover { background: var(--engestofte-white); color: var(--engestofte-green-dark); }
 
 .createAccount,
 .sendEmail,
@@ -75,7 +112,10 @@
 	color: var(--engestofte-white);
 }
 
+.cancelEnquiry:hover { border-color: var(--engestofte-danger); background: var(--engestofte-danger); color: var(--engestofte-white); }
+
 .createAccount:focus-visible,
+.sendEmail:focus-visible,
 .cancelEnquiry:focus-visible {
 	outline: 3px solid var(--engestofte-focus);
 	outline-offset: 3px;
@@ -83,6 +123,8 @@
 
 @media (max-width: 620px) {
 	.actions { gap: 0.4rem; }
+	.draftToast { align-items: stretch; flex-direction: column; }
+	.toastActions { justify-content: flex-start; }
 	.createAccount,
 	.sendEmail,
 	.cancelEnquiry { padding-inline: 0.4rem; font-size: 0.76rem; }
