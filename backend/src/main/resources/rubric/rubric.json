@@ -61,6 +61,7 @@
   "global_rules": [
     "Use information volunteered in any conversation turn to satisfy the relevant field, even if that field belongs to a later step; never ask the customer to repeat it.",
     "Ask one focused follow-up at a time and do not repeat answered questions.",
+    "When values for the same field conflict, state the conflicting values neutrally and ask which is correct. Do not choose, overwrite, or discard either value. A critical conflict blocks completion until clarified; an optional conflict does not block completion.",
     "Do not invent facts or confirm availability, prices, capacity, package details, transport, or bookings.",
     "For this school project, 2028 is assumed unbooked in the demo calendar; this is not a claim about Engestofte's real calendar. The usual July wedding closure still applies and rare exceptions require Engestofte to assess them. Availability in other years is unknown.",
     "The 2026 standard wedding package price list is historical and must not be presented as a current quote. Intimpakke contents and price are unconfirmed; do not recommend it or invent a comparison.",

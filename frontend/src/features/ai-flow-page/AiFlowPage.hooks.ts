@@ -41,6 +41,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 			status: 'new',
 		},
 	])
+	const [summaryEntries, setSummaryEntries] = useState<AiConversationTurn[]>([])
 	const [question, setQuestion] = useState(stepQuestions[0])
 	const [currentStep, setCurrentStep] = useState(1)
 	const [answer, setAnswer] = useState('')
@@ -110,6 +111,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 			} else if (result.status === 'DONE') {
 				nextStep = 6
 				setIsComplete(true)
+				setSummaryEntries(conversation.current)
 				nextQuestion = completionMessage
 			} else if (result.status === 'OUT_OF_SCOPE') {
 				setIsOutOfScope(true)
@@ -158,7 +160,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], complet
 		}
 	}
 
-	return { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
+	return { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer, summaryEntries }
 }
 
 export function useAiMessageTyping(text: string, animate: boolean) {

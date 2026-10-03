@@ -8,6 +8,10 @@ export type TranslationContent = {
 	aiFlow: {
 		introMessage: string
 		flowProgress: string
+		flowComplete: string
+		summaryTitle: string
+		summaryQuestion: string
+		summaryAnswer: string
 		cancelRequest: string
 		goBack: string
 		stepQuestions: string[]

@@ -150,6 +150,35 @@
 	background: var(--engestofte-green);
 }
 
+.summaryCard {
+	width: min(100%, 52rem);
+	align-self: center;
+	border: 1px solid var(--engestofte-border);
+	padding: var(--engestofte-space-5);
+	background: var(--engestofte-surface);
+	color: var(--engestofte-text);
+}
+
+.summaryCard h3 {
+	margin: 0 0 var(--engestofte-space-4);
+	color: var(--engestofte-heading);
+	font-size: 1rem;
+}
+
+.summaryCard ol {
+	margin: 0;
+	padding-left: 1.25rem;
+}
+
+.summaryCard li + li { margin-top: var(--engestofte-space-4); }
+
+.summaryCard p {
+	margin: 0.2rem 0;
+	line-height: 1.5;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
 .messageRow {
 	width: 100%;
 	display: flex;

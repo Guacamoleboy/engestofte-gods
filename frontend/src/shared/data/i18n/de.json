@@ -1,15 +1,19 @@
 {
 	"aiFlow": {
 		"introMessage": "Derzeit bieten wir KI-gestützte Anfragen nur für Hochzeiten an. Für Preise, Antworten oder Kontakt zu einer anderen Veranstaltung erreichen Sie uns über die Website oder unter mail@engestofte.dk.\n\nIch bin ein KI-Assistent, kein Mensch. Ihre Nachrichten werden im Anfrageverlauf von Gut Engestofte gespeichert. Geben Sie keine sensiblen personenbezogenen Daten ein. Dieser Prototyp ist nicht für den produktiven Einsatz gemäß DSGVO freigegeben.",
-		"flowProgress": "Ablauf {step}/6",
+		"flowProgress": "Schritt {step}/5",
+		"flowComplete": "Anfrage vollständig",
+		"summaryTitle": "Ihre Zusammenfassung",
+		"summaryQuestion": "Frage",
+		"summaryAnswer": "Ihre Antwort",
 		"cancelRequest": "Anfrage abbrechen",
 		"goBack": "Zurück",
 		"stepQuestions": [
 			"Unter welchem Namen soll die Anfrage angelegt werden?",
 			"Hallo, {name} 😃\n\nWann planen Sie Ihre Hochzeit?",
-			"Das ist ein schöner Tag zum Heiraten! Wir müssen noch prüfen, ob der Termin verfügbar ist.\n\nMit wie vielen Gästen rechnen Sie? Benötigen Sie eine Übernachtung bei uns, und wenn ja, für wie viele Personen?",
+			"Das klingt nach einem schönen Datum. Ich habe es als Ihren Wunschtermin notiert, nicht als Buchung.\n\nMit wie vielen Gästen rechnen Sie? Benötigen Sie eine Übernachtung bei uns, und wenn ja, für wie viele Personen?",
 			"Wie stellen Sie sich Ihren Hochzeitstag vor? Wünschen Sie eine Trauung, einen Empfang, ein Abendessen und eine Feier — und wo soll die Trauung stattfinden?",
-			"Was wünschen Sie sich beim Essen und bei den Getränken? Gibt es Allergien oder besondere Ernährungsbedürfnisse?"
+			"Was wünschen Sie sich beim Essen und bei den Getränken? Gibt es Allergien oder besondere Ernährungsbedürfnisse? Haben Sie optionale Wünsche, praktische Anliegen oder ein Budget? Diese Angaben sind freiwillig."
 		],
 		"answerLabel": "Ihre Antwort",
 		"answerPlaceholder": "Nachricht senden...",

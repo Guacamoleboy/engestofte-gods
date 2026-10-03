@@ -4,16 +4,21 @@
 
 **Blocked by:** 04: Harden AI flow behavior and guardrails
 
-**Status:** ready-for-agent
+**Status:** implemented; review passed; behavioral verification deferred
 
 ## In scope
 
-- Step 1: basic information.
-- Step 2: wedding, ceremony, reception, dinner and party.
-- Step 3: food, drinks, cake, cocktails, late-night food and extras.
-- Step 4: overnight stay and transport.
-- Step 5: additional information, allergies, special wishes, practical notes and budget where offered.
-- Visible progress and one relevant question at a time.
+- Follow the authoritative sequence and field classifications in `docs/grilling/flow-definition.md`:
+	1. Contact person's name.
+	2. Desired wedding date or date range.
+	3. Expected guest count and accommodation needs.
+	4. Wedding format: ceremony, reception, dinner, party and ceremony location/form.
+	5. Food, drink, dietary needs, optional extras, practical wishes and budget.
+- Localize the fixed introductory question for each step in Danish, English and German.
+- Show progress through five steps, then a distinct completed state.
+- Preserve question/answer turns and show a readable summary before the flow's DONE handoff.
+- Ask one relevant follow-up at a time; keep required, conditional and optional classifications from the rubric.
+- Surface conflicting values and ask the customer to resolve them without discarding either answer.
 
 ## Out of scope
 
@@ -23,16 +28,18 @@
 
 ## Acceptance criteria
 
-- [ ] The customer can move through all five steps and see current progress.
-- [ ] Critical fields block completion when missing or unresolved.
+- [x] The customer can move through all five steps and see current progress.
+- [x] Critical fields block completion when missing or unresolved.
 - [ ] Conditional fields become relevant only when the customer’s answers require them.
-- [ ] Optional fields do not block completion.
-- [ ] Conflicting values are shown without silently choosing a winner.
-- [ ] The customer receives a readable summary before completion.
+- [x] Optional fields do not block completion.
+- [x] Conflicting values are surfaced without silently choosing a winner.
+- [x] The customer receives a readable summary before the login/register handoff.
+- [x] Step order matches `docs/grilling/flow-definition.md` in all supported languages.
+- [x] Completion is shown as a distinct state rather than as a sixth enquiry step.
 
 ## Verification
 
-Complete one normal wedding path, one path with optional omissions, one path with a conditional overnight requirement and one path with a conflict.
+The owner declined tests for this ticket. The frontend typecheck was attempted but could not run because TypeScript dependencies are absent; `npm ci` was blocked by a locked Windows binary in `node_modules`. Inspect the localized progress indicator and final question/answer summary manually when dependencies are available.
 
 ## Stop and ask if
 

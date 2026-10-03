@@ -11,7 +11,10 @@ import styles from './AiFlowPage.module.css'
 export default function AiFlowPage() {
 	const { content, language } = useTranslate()
 	const copy = content.aiFlow
-	const { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finished, copy.customerName, copy.aiUnavailable, language)
+	const { answer, currentStep, error, formatMessageTime, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer, summaryEntries } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finished, copy.customerName, copy.aiUnavailable, language)
+	const progressLabel = isComplete
+		? copy.flowComplete
+		: copy.flowProgress.replace('{step}', String(currentStep))
 
 	return (
 		<main className={`page-container ${styles.page}`}>
@@ -23,7 +26,7 @@ export default function AiFlowPage() {
 					<div className={styles.messengerHeading}>
 						<h2 id="ai-flow-messenger-title">{copy.assistantName}</h2>
 					</div>
-					<p className={styles.flowProgress}>{copy.flowProgress.replace('{step}', String(currentStep))}</p>
+					<p className={styles.flowProgress} aria-live="polite">{progressLabel}</p>
 				</div>
 
 				<div className={styles.messageList} role="log" aria-live="polite" aria-relevant="additions text" aria-busy={isPending}>
@@ -42,7 +45,7 @@ export default function AiFlowPage() {
 							<div className={styles.messageGroup} key={message.id}>
 								{message.flowChanged && (
 									<div className={styles.flowDivider} role="separator">
-										<span>{copy.flowProgress.replace('{step}', String(message.step ?? currentStep))}</span>
+										<span>{message.step && message.step > 5 ? copy.flowComplete : copy.flowProgress.replace('{step}', String(message.step ?? currentStep))}</span>
 									</div>
 								)}
 								<article className={`${styles.messageRow} ${isAssistant ? styles.assistantRow : styles.customerRow}`}>
@@ -90,6 +93,19 @@ export default function AiFlowPage() {
 								<span /><span /><span />
 							</div>
 						</div>
+					)}
+					{isComplete && (
+						<section className={styles.summaryCard} aria-labelledby="ai-flow-summary-title">
+							<h3 id="ai-flow-summary-title">{copy.summaryTitle}</h3>
+							<ol>
+								{summaryEntries.map((entry, index) => (
+									<li key={`${index}-${entry.question}`}>
+										<p><strong>{copy.summaryQuestion}:</strong> {entry.question}</p>
+										<p><strong>{copy.summaryAnswer}:</strong> {entry.answer}</p>
+									</li>
+								))}
+							</ol>
+						</section>
 					)}
 					<div ref={messagesEndRef} />
 				</div>
