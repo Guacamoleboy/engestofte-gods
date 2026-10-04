@@ -30,6 +30,43 @@ public class EventController {
 
 	// _________________________________________________________________________________________________________________
 
+	public void findForOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			requireOwner(context);
+			return eventService.findForOwner(parseId(context.pathParam("id")));
+		}, "Owner event loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void findForStaff(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			requireStaff(context);
+			return eventService.findForStaff(parseId(context.pathParam("id")));
+		}, "Operational event loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void findMessagesForOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			requireOwner(context);
+			return eventService.findMessagesForOwner(parseId(context.pathParam("id")));
+		}, "Owner event messages loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void sendOwnerMessage(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer ownerAccountId = requireOwner(context);
+			EventMessageRequestDTO request = context.bodyAsClass(EventMessageRequestDTO.class);
+			return eventService.sendOwnerMessage(parseId(context.pathParam("id")), ownerAccountId, request.getContent());
+		}, "Owner event message sent");
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public void findMessagesForAccount(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> eventService.findMessagesForAccount(parseId(context.pathParam("id")), requireCustomer(context)), "Event messages loaded");
 	}
@@ -56,6 +93,23 @@ public class EventController {
 		if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");
 		if (!"CUSTOMER".equals(JwtService.getClaimRole(token))) throw new ApiException(403, "Customer access is required");
 		return JwtService.getClaimAccountId(token);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static Integer requireOwner(Context context) {
+		String token = ContextHelper.extractBearerToken(context);
+		if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");
+		if (!"OWNER".equals(JwtService.getClaimRole(token))) throw new ApiException(403, "Owner access is required");
+		return JwtService.getClaimAccountId(token);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static void requireStaff(Context context) {
+		String token = ContextHelper.extractBearerToken(context);
+		if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");
+		if (!"STAFF".equals(JwtService.getClaimRole(token))) throw new ApiException(403, "Staff access is required");
 	}
 
 	// _________________________________________________________________________________________________________________

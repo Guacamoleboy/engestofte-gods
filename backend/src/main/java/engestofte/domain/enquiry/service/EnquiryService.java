@@ -148,6 +148,18 @@ public class EnquiryService extends EntityManagerService<WeddingEnquiry> {
 
 	// _________________________________________________________________________________________________________________
 
+	public void closeByCustomer(String submissionId, Integer accountId) {
+		WeddingEnquiry enquiry = weddingEnquiryDAO.findBySubmissionId(submissionId);
+		if (enquiry == null || !weddingEnquiryDAO.hasPrimaryContact(enquiry.getId(), accountId)) throw new ApiException(404, "Enquiry not found");
+		if (enquiry.getStatus() == EnquiryStatus.APPROVED || isClosed(enquiry.getStatus())) throw new ApiException(409, "An approved or closed enquiry cannot be declined");
+		Event event = eventDAO.findByEnquiryId(enquiry.getId());
+		if (event != null && event.getApprovedAt() != null) throw new ApiException(409, "An approved or closed enquiry cannot be declined");
+		if (event == null) weddingEnquiryDAO.closeByCustomer(enquiry);
+		else eventDAO.close(event, EventStatus.CLOSED_BY_CUSTOMER, EnquiryStatus.CLOSED_BY_CUSTOMER);
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public EventApprovalResponseDTO approveOwnerEnquiry(Integer id, String customerNote) {
 		WeddingEnquiry enquiry = getById(id);
 		if (enquiry == null) throw new ApiException(404, "Enquiry not found");
@@ -157,14 +169,6 @@ public class EnquiryService extends EntityManagerService<WeddingEnquiry> {
 		if (isClosed(enquiry.getStatus()) || existingEvent != null && isClosed(existingEvent.getStatus())) {
 			throw new ApiException(409, "A closed enquiry cannot be approved");
 		}
-		if (enquiry.getStatus() == EnquiryStatus.AWAITING_CUSTOMER) {
-			throw new ApiException(409, "The customer must answer the clarification question before approval");
-		}
-		if (existingEvent != null && existingEvent.getStatus() == EventStatus.FOLLOW_UP_REQUIRED) {
-			throw new ApiException(409, "The customer must respond to the follow-up before approval");
-		}
-		validateApprovalReadiness(enquiry);
-
 		Event event = existingEvent;
 		if (event == null) {
 			event = new Event();
@@ -217,7 +221,9 @@ public class EnquiryService extends EntityManagerService<WeddingEnquiry> {
 			event.setCreatedAt(Instant.now());
 			eventDAO.createForOwnerFollowUp(enquiry, event, message);
 		} else {
-			eventDAO.addMessage(event, message, EventStatus.FOLLOW_UP_REQUIRED, EnquiryStatus.FOLLOW_UP_REQUIRED);
+			EventStatus eventStatus = event.getApprovedAt() == null ? EventStatus.FOLLOW_UP_REQUIRED : EventStatus.APPROVED;
+			EnquiryStatus enquiryStatus = event.getApprovedAt() == null ? EnquiryStatus.FOLLOW_UP_REQUIRED : EnquiryStatus.APPROVED;
+			eventDAO.addMessage(event, message, eventStatus, enquiryStatus);
 		}
 		return EventMessageResponseMapper.toDTO(message);
 	}
@@ -228,11 +234,23 @@ public class EnquiryService extends EntityManagerService<WeddingEnquiry> {
 		WeddingEnquiry enquiry = getById(enquiryId);
 		if (enquiry == null) throw new ApiException(404, "Enquiry not found");
 		Event event = eventDAO.findByEnquiryId(enquiryId);
-		if (event == null || event.getApprovedAt() != null || event.getStatus() != EventStatus.OWNER_FOLLOW_UP_REQUIRED) {
-			throw new ApiException(409, "The customer must reply before an unapproved request can be closed");
+		if (isClosed(enquiry.getStatus()) || enquiry.getStatus() == EnquiryStatus.APPROVED
+				|| event != null && event.getApprovedAt() != null) {
+			throw new ApiException(409, "An approved or closed event cannot be declined");
 		}
-		EventMessage message = createMessage(ownerAccountId, EventMessageSender.OWNER, reason);
-		eventDAO.addMessage(event, message, EventStatus.CLOSED_BY_OWNER, EnquiryStatus.CLOSED_BY_OWNER);
+		EventMessage message = reason == null || reason.isBlank() ? null : createMessage(ownerAccountId, EventMessageSender.OWNER, reason);
+		if (event == null) {
+			event = new Event();
+			event.setCategory(EventCategory.WEDDING);
+			event.setStatus(EventStatus.CLOSED_BY_OWNER);
+			event.setEventData(enquiry.getRawDraft().deepCopy());
+			event.setGuestAccessTokenHash(EventAccessToken.createHash());
+			event.setCreatedAt(Instant.now());
+			eventDAO.createForOwnerClosure(enquiry, event, message);
+		} else {
+			if (message == null) eventDAO.closeByOwner(event);
+			else eventDAO.addMessage(event, message, EventStatus.CLOSED_BY_OWNER, EnquiryStatus.CLOSED_BY_OWNER);
+		}
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -261,28 +279,6 @@ public class EnquiryService extends EntityManagerService<WeddingEnquiry> {
 
 	private static boolean isClosed(EventStatus status) {
 		return status == EventStatus.CLOSED_BY_OWNER || status == EventStatus.CLOSED_BY_CUSTOMER;
-	}
-
-	// _________________________________________________________________________________________________________________
-
-	private static void validateApprovalReadiness(WeddingEnquiry enquiry) {
-		JsonNode draft = enquiry.getRawDraft();
-		JsonNode assessment = enquiry.getAiAssessment();
-		if (!draft.path("isComplete").asBoolean(false)
-				|| draft.path("customerName").asText().isBlank()
-					|| draft.path("expectedGuestCount").asInt(0) < 1
-					|| draft.path("expectedGuestCount").asInt(0) > 150
-					|| !draft.path("conversation").isArray()
-					|| draft.path("conversation").isEmpty()) {
-			throw new ApiException(409, "The enquiry is missing required customer information");
-		}
-		if (assessment == null
-				|| !assessment.path("missing_information").isArray()
-				|| !assessment.path("missing_information").isEmpty()
-				|| !assessment.path("conflicts").isArray()
-				|| !assessment.path("conflicts").isEmpty()) {
-			throw new ApiException(409, "Resolve the required information and conflicts before approval");
-		}
 	}
 
 	// _________________________________________________________________________________________________________________

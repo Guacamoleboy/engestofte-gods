@@ -12,6 +12,8 @@ export type OwnerEnquirySummary = {
 	customer_name: string
 	summary: string
 	status: OpenOwnerEnquiryStatus
+	event_id: number | null
+	event_approved_at: string | null
 	submitted_at: string
 }
 

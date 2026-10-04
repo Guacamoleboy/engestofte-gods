@@ -15,7 +15,7 @@ public class EventMessageResponseMapper {
 
 	// _________________________________________________________________________________________________________________
 
-	private static EventMessageResponseDTO toDTO(EventMessage message) {
+	public static EventMessageResponseDTO toDTO(EventMessage message) {
 		EventMessageResponseDTO response = new EventMessageResponseDTO();
 		response.setId(message.getId());
 		response.setSenderType(message.getSenderType());

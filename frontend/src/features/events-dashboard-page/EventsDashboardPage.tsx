@@ -54,7 +54,7 @@ export default function EventsDashboardPage() {
 }
 
 function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; language: string; copy: ReturnType<typeof useTranslate>['content']['eventsDashboard'] }) {
-	const isClickable = enquiry.event_id !== null
+	const isClickable = true
 	const cardContent = (
 		<>
 			<div className={styles.cardContent}>
@@ -64,14 +64,14 @@ function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; lan
 					<span>{copy.submittedAt}</span>
 					<time dateTime={enquiry.submitted_at}>{new Intl.DateTimeFormat(language, { dateStyle: 'long', timeStyle: 'short' }).format(new Date(enquiry.submitted_at))}</time>
 				</p>
-				{enquiry.customer_question && <p className={styles.customerQuestion}><strong>{copy.customerQuestion}</strong><br />{enquiry.customer_question}</p>}
+				{enquiry.status === 'FOLLOW_UP_REQUIRED' && <p className={styles.customerQuestion}>{copy.ownerReplied}</p>}
 			</div>
 			{isClickable && <span className={styles.cardIndicator} aria-hidden="true">→</span>}
 		</>
 	)
 
 	return isClickable
-		? <Link className={`${styles.card} ${styles.clickableCard}`} to={`/dashboard/events/${enquiry.event_id}`}>{cardContent}</Link>
+		? <Link className={`${styles.card} ${styles.clickableCard}`} to={enquiry.status === 'APPROVED' && enquiry.event_id ? `/dashboard/events/${enquiry.event_id}` : `/dashboard/approval/${enquiry.submission_id}`}>{cardContent}</Link>
 		: <article className={styles.card}>{cardContent}</article>
 }
 

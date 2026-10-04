@@ -9,6 +9,7 @@ import AiFlowLayout from '../layouts/AiFlowLayout'
 import PlaceholderPage from '../pages/PlaceholderPage'
 import EventsDashboardPage from '../pages/EventsDashboardPage'
 import EventPage from '../pages/EventPage'
+import CustomerApprovalPage from '../pages/CustomerApprovalPage'
 import OwnerRequestsPage from '../pages/OwnerRequestsPage'
 import OwnerRequestPage from '../pages/OwnerRequestPage'
 import AiFlowPage from '../../features/ai-flow-page'
@@ -37,6 +38,7 @@ export default function AppRoutes() {
 				<Route element={<ProtectedRoute allowedRoles={['CUSTOMER']} />}>
 					<Route element={<DashboardLayout />}>
 						<Route path="/dashboard/events/" element={<EventsDashboardPage />} />
+						<Route path="/dashboard/approval/:id" element={<CustomerApprovalPage />} />
 						<Route path="/dashboard/events/:id" element={<EventPage />} />
 					</Route>
 				</Route>
@@ -44,11 +46,13 @@ export default function AppRoutes() {
 					<Route element={<DashboardLayout />}>
 						<Route path="/owner/requests" element={<OwnerRequestsPage />} />
 						<Route path="/owner/requests/:id" element={<OwnerRequestPage />} />
+						<Route path="/owner/events/:id" element={<EventPage />} />
 					</Route>
 				</Route>
 				<Route element={<ProtectedRoute allowedRoles={['STAFF']} />}>
 					<Route element={<DashboardLayout />}>
 						<Route path="/staff/events" element={<PlaceholderPage route="/staff/events" />} />
+						<Route path="/staff/events/:id" element={<EventPage />} />
 					</Route>
 				</Route>
 			</Routes>

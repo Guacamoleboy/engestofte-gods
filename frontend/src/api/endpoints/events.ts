@@ -17,9 +17,30 @@ export type CustomerEvent = {
 	event_data: {
 		customer_name?: string
 		expected_guest_count?: number
-		conversation: EventConversationTurn[]
+		requested_date?: string
 	}
 	customer_note: string | null
+	created_at: string
+}
+
+export type OwnerEvent = {
+	event_id: number
+	status: 'APPROVED'
+	approved_at: string
+	customer_name: string
+	customer_email: string
+	expected_guest_count: number | null
+	requested_date: string | null
+	created_at: string
+}
+
+export type StaffEvent = {
+	event_id: number
+	category: 'WEDDING'
+	status: 'APPROVED'
+	approved_at: string
+	expected_guest_count: number | null
+	requested_date: string | null
 	created_at: string
 }
 
@@ -53,5 +74,28 @@ export async function sendEventMessage(id: number, content: string) {
 
 export async function closeEvent(id: number) {
 	const response = await client<ApiEnvelope<CustomerEvent>>(`/events/${id}/close`, { method: 'POST' })
+	return response.data
+}
+
+export async function getOwnerEvent(id: number) {
+	const response = await client<ApiEnvelope<OwnerEvent>>(`/events/owner/${id}`)
+	return response.data
+}
+
+export async function getStaffEvent(id: number) {
+	const response = await client<ApiEnvelope<StaffEvent>>(`/events/staff/${id}`)
+	return response.data
+}
+
+export async function getOwnerEventMessages(id: number) {
+	const response = await client<ApiEnvelope<EventMessage[]>>(`/events/owner/${id}/messages`)
+	return response.data
+}
+
+export async function sendOwnerEventMessage(id: number, content: string) {
+	const response = await client<ApiEnvelope<EventMessage>>(`/events/owner/${id}/messages`, {
+		method: 'POST',
+		body: JSON.stringify({ content }),
+	})
 	return response.data
 }

@@ -38,7 +38,7 @@ public class WeddingEnquiryDAO extends EntityManagerDAO<WeddingEnquiry> {
 
 	public List<WeddingEnquiry> findForOwnerReview() {
 		return executeQuery(() -> em.createQuery(
-				"SELECT enquiry FROM WeddingEnquiry enquiry WHERE enquiry.status IN :statuses ORDER BY enquiry.createdAt ASC",
+				"SELECT DISTINCT enquiry FROM WeddingEnquiry enquiry LEFT JOIN FETCH enquiry.event WHERE enquiry.status IN :statuses ORDER BY enquiry.createdAt ASC",
 				WeddingEnquiry.class)
 			.setParameter("statuses", List.of(
 					EnquiryStatus.SUBMITTED,
@@ -70,5 +70,15 @@ public class WeddingEnquiryDAO extends EntityManagerDAO<WeddingEnquiry> {
 			.setParameter("accountId", accountId)
 			.getSingleResult());
 		return matchingContacts > 0;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public WeddingEnquiry closeByCustomer(WeddingEnquiry enquiry) {
+		return executeQuery(() -> {
+			WeddingEnquiry managedEnquiry = em.merge(enquiry);
+			managedEnquiry.setStatus(EnquiryStatus.CLOSED_BY_CUSTOMER);
+			return managedEnquiry;
+		});
 	}
 }

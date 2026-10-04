@@ -2,8 +2,8 @@
 // _______
 // src/app/pages/EventPage.tsx
 
-import EventPageContent from '../../features/event-page/EventPage'
+import SharedEventView from '../../features/shared-event-page/SharedEventView'
 
 export default function EventPage() {
-	return <EventPageContent />
+	return <SharedEventView />
 }

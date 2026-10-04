@@ -76,6 +76,18 @@ public class EnquiryController {
 
 	// _________________________________________________________________________________________________________________
 
+	public void closeByCustomer(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			String token = ContextHelper.extractBearerToken(context);
+			if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");
+			Integer accountId = JwtService.getClaimAccountId(token);
+			enquiryService.closeByCustomer(context.pathParam("submissionId"), accountId);
+			return "closed";
+		}, "Enquiry closed");
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public void approveOwnerEnquiry(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
 			requireOwner(context);

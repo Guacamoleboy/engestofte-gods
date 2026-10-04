@@ -7,6 +7,7 @@ import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.entity.EventMessage;
 import engestofte.domain.event.enums.EventMessageSender;
 import engestofte.domain.event.enums.EventStatus;
+import engestofte.domain.useraccount.entity.UserAccount;
 import jakarta.persistence.EntityManager;
 
 public class EventDAO extends EntityManagerDAO<Event> {
@@ -26,6 +27,30 @@ public class EventDAO extends EntityManagerDAO<Event> {
 				"SELECT event FROM Event event WHERE event.weddingEnquiry.id = :enquiryId",
 				Event.class)
 			.setParameter("enquiryId", enquiryId)
+			.getResultStream()
+			.findFirst()
+			.orElse(null));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public Event findForOwner(Integer eventId) {
+		return executeQuery(() -> em.createQuery(
+				"SELECT event FROM Event event JOIN FETCH event.weddingEnquiry WHERE event.id = :eventId",
+				Event.class)
+			.setParameter("eventId", eventId)
+			.getResultStream()
+			.findFirst()
+			.orElse(null));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public UserAccount findPrimaryContactForEvent(Integer eventId) {
+		return executeQuery(() -> em.createQuery(
+				"SELECT account FROM Event event JOIN event.weddingEnquiry enquiry JOIN EnquiryContact contact ON contact.enquiry = enquiry JOIN contact.userAccount account WHERE event.id = :eventId AND contact.primary = true",
+				UserAccount.class)
+			.setParameter("eventId", eventId)
 			.getResultStream()
 			.findFirst()
 			.orElse(null));
@@ -87,6 +112,32 @@ public class EventDAO extends EntityManagerDAO<Event> {
 			em.persist(message);
 			return event;
 		});
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public Event createForOwnerClosure(WeddingEnquiry enquiry, Event event, EventMessage message) {
+		return executeQuery(() -> {
+			WeddingEnquiry managedEnquiry = em.merge(enquiry);
+			managedEnquiry.setStatus(EnquiryStatus.CLOSED_BY_OWNER);
+			managedEnquiry.setCustomerQuestion(null);
+			event.setWeddingEnquiry(managedEnquiry);
+			event.setStatus(EventStatus.CLOSED_BY_OWNER);
+		em.persist(event);
+		if (message != null) {
+			em.flush();
+			message.setEvent(event);
+			message.setSenderType(EventMessageSender.OWNER);
+			em.persist(message);
+		}
+			return event;
+		});
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public Event closeByOwner(Event event) {
+		return close(event, EventStatus.CLOSED_BY_OWNER, EnquiryStatus.CLOSED_BY_OWNER);
 	}
 
 	// _________________________________________________________________________________________________________________

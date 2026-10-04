@@ -4,6 +4,8 @@ import engestofte.domain.event.dao.EventDAO;
 import engestofte.domain.event.dao.EventMessageDAO;
 import engestofte.domain.event.dto.response.EventCustomerResponseDTO;
 import engestofte.domain.event.dto.response.EventMessageResponseDTO;
+import engestofte.domain.event.dto.response.EventOwnerResponseDTO;
+import engestofte.domain.event.dto.response.EventOperationalResponseDTO;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.entity.EventMessage;
 import engestofte.domain.event.enums.EventMessageSender;
@@ -48,6 +50,37 @@ public class EventService extends EntityManagerService<Event> {
 
 	// _________________________________________________________________________________________________________________
 
+	public EventOwnerResponseDTO findForOwner(Integer eventId) {
+		Event event = findApprovedEvent(eventId);
+		UserAccount primaryContact = eventDAO.findPrimaryContactForEvent(eventId);
+		if (primaryContact == null) throw new ApiException(404, "Event not found");
+		return EventResponseMapper.toOwnerDTO(event, primaryContact);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public EventOperationalResponseDTO findForStaff(Integer eventId) {
+		return EventResponseMapper.toOperationalDTO(findApprovedEvent(eventId));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public java.util.List<EventMessageResponseDTO> findMessagesForOwner(Integer eventId) {
+		Event event = findApprovedEvent(eventId);
+		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public EventMessageResponseDTO sendOwnerMessage(Integer eventId, Integer ownerAccountId, String content) {
+		Event event = findApprovedEvent(eventId);
+		EventMessage message = createMessage(ownerAccountId, EventMessageSender.OWNER, content);
+		eventDAO.addMessage(event, message, EventStatus.APPROVED, EnquiryStatus.APPROVED);
+		return EventMessageResponseMapper.toDTO(message);
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public java.util.List<EventMessageResponseDTO> findMessagesForAccount(Integer eventId, Integer accountId) {
 		Event event = findEventForAccount(eventId, accountId);
 		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()));
@@ -57,11 +90,13 @@ public class EventService extends EntityManagerService<Event> {
 
 	public EventMessageResponseDTO sendCustomerMessage(Integer eventId, Integer accountId, String content) {
 		Event event = findEventForAccount(eventId, accountId);
-		if (event.getStatus() != EventStatus.FOLLOW_UP_REQUIRED && event.getStatus() != EventStatus.APPROVED) {
-			throw new ApiException(409, "A customer reply is not currently required");
+		if (event.getApprovedAt() == null && (event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER)) {
+			throw new ApiException(409, "A closed request cannot receive messages");
 		}
 		EventMessage message = createMessage(accountId, EventMessageSender.CUSTOMER, content);
-		eventDAO.addMessage(event, message, EventStatus.OWNER_FOLLOW_UP_REQUIRED, EnquiryStatus.OWNER_FOLLOW_UP_REQUIRED);
+		EventStatus eventStatus = event.getApprovedAt() == null ? EventStatus.OWNER_FOLLOW_UP_REQUIRED : EventStatus.APPROVED;
+		EnquiryStatus enquiryStatus = event.getApprovedAt() == null ? EnquiryStatus.OWNER_FOLLOW_UP_REQUIRED : EnquiryStatus.APPROVED;
+		eventDAO.addMessage(event, message, eventStatus, enquiryStatus);
 		return EventMessageResponseMapper.toDTO(message);
 	}
 
@@ -69,8 +104,8 @@ public class EventService extends EntityManagerService<Event> {
 
 	public EventCustomerResponseDTO closeByCustomer(Integer eventId, Integer accountId) {
 		Event event = findEventForAccount(eventId, accountId);
-		if (event.getStatus() != EventStatus.FOLLOW_UP_REQUIRED || event.getApprovedAt() != null) {
-			throw new ApiException(409, "Only an unapproved request awaiting a customer response can be closed");
+		if (event.getApprovedAt() != null || event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER) {
+			throw new ApiException(409, "Only an open, unapproved request can be closed");
 		}
 		eventDAO.close(event, EventStatus.CLOSED_BY_CUSTOMER, EnquiryStatus.CLOSED_BY_CUSTOMER);
 		return EventResponseMapper.toCustomerDTO(eventDAO.findForAccount(eventId, accountId));
@@ -82,6 +117,16 @@ public class EventService extends EntityManagerService<Event> {
 		if (accountId == null) throw new ApiException(401, "Authenticated account not found");
 		Event event = eventDAO.findForAccount(eventId, accountId);
 		if (event == null) throw new ApiException(404, "Event not found");
+		return event;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private Event findApprovedEvent(Integer eventId) {
+		Event event = eventDAO.findForOwner(eventId);
+		if (event == null || event.getApprovedAt() == null) {
+			throw new ApiException(404, "Approved event not found");
+		}
 		return event;
 	}
 

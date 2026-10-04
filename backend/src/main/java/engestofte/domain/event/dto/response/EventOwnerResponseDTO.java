@@ -2,8 +2,6 @@ package engestofte.domain.event.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import engestofte.domain.event.enums.EventCategory;
 import engestofte.domain.event.enums.EventStatus;
 import lombok.Data;
 
@@ -11,18 +9,19 @@ import java.time.Instant;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EventCustomerResponseDTO {
+public class EventOwnerResponseDTO {
 
 	// Expected JSON Output
 	// ____________________
 	//
 	//		{
 	//			"event_id": 18,
-	//			"category": "WEDDING",
-	//			"event_data": { "customer_name": "Alex", "expected_guest_count": 60, "requested_date": "June 2027" },
 	//			"status": "APPROVED",
 	//			"approved_at": "2026-10-04T12:30:00Z",
-	//			"customer_note": "We look forward to helping with your wedding.",
+	//			"customer_name": "Alex Morgan",
+	//			"customer_email": "alex@example.com",
+	//			"expected_guest_count": 60,
+	//			"requested_date": "June 2027",
 	//			"created_at": "2026-10-04T12:30:00Z"
 	//		}
 	//
@@ -35,20 +34,23 @@ public class EventCustomerResponseDTO {
 	@JsonProperty("event_id")
 	private Integer eventId;
 
-	@JsonProperty("category")
-	private EventCategory category;
-
 	@JsonProperty("status")
 	private EventStatus status;
 
 	@JsonProperty("approved_at")
 	private Instant approvedAt;
 
-	@JsonProperty("event_data")
-	private JsonNode eventData;
+	@JsonProperty("customer_name")
+	private String customerName;
 
-	@JsonProperty("customer_note")
-	private String customerNote;
+	@JsonProperty("customer_email")
+	private String customerEmail;
+
+	@JsonProperty("expected_guest_count")
+	private Integer expectedGuestCount;
+
+	@JsonProperty("requested_date")
+	private String requestedDate;
 
 	@JsonProperty("created_at")
 	private Instant createdAt;

@@ -1,14 +1,19 @@
 package engestofte.config;
 
+import engestofte.domain.enquiry.enums.EnquiryStatus;
 import engestofte.exception.ResourceNotFoundException;
 import engestofte.util.Util;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class HibernateConfig {
 
@@ -106,13 +111,36 @@ public class HibernateConfig {
                     .build();
 
             SessionFactory sf = configuration.buildSessionFactory(serviceRegistry);
-            return sf.unwrap(EntityManagerFactory.class);
+            EntityManagerFactory entityManagerFactory = sf.unwrap(EntityManagerFactory.class);
+            if (!forTest) updateEnquiryStatusConstraint(entityManagerFactory);
+            return entityManagerFactory;
 
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
 
+    }
+
+    // _________________________________________________________________________________________________________________
+
+    private static void updateEnquiryStatusConstraint(EntityManagerFactory entityManagerFactory) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        String statuses = Arrays.stream(EnquiryStatus.values())
+                .map(status -> "'" + status.name() + "'")
+                .collect(Collectors.joining(", "));
+        try {
+            transaction.begin();
+            entityManager.createNativeQuery("ALTER TABLE wedding_enquiries DROP CONSTRAINT IF EXISTS wedding_enquiries_status_check").executeUpdate();
+            entityManager.createNativeQuery("ALTER TABLE wedding_enquiries ADD CONSTRAINT wedding_enquiries_status_check CHECK (status IN (" + statuses + "))").executeUpdate();
+            transaction.commit();
+        } catch (RuntimeException exception) {
+            if (transaction.isActive()) transaction.rollback();
+            throw exception;
+        } finally {
+            entityManager.close();
+        }
     }
 
 }

@@ -21,7 +21,8 @@ Frontend bygges med React, TypeScript og Vite. Nye frontend-filer skal være `.t
 | Route | Page | Formål |
 |---|---|---|
 | `/dashboard/events/` | `EventsDashboardPage` | Liste over kundens forespørgsler og statusser. |
-| `/dashboard/events/:id` | `EventPage` | Kundens godkendte event med eventdata og event-scoped Messenger. |
+| `/dashboard/approval/:id` | `CustomerApprovalPage` | Kundens beskedtråd for en eventforespørgsel, der afventer svar før godkendelse. |
+| `/dashboard/events/:id` | `EventPage` | Fælles visning af et godkendt event med eventoplysninger og rollebestemt adgang til Messenger. |
 | `/events/:id?access={access}` | `GuestInvitationPage` | Offentlig, skrivebeskyttet invitation med godkendt gæsteinformation for ét event. |
 
 ### Protected internal routes
@@ -30,7 +31,8 @@ Frontend bygges med React, TypeScript og Vite. Nye frontend-filer skal være `.t
 |---|---|---|
 | `/owner/requests/` | `OwnerRequestsPage` | Owners oversigt over indsendte forespørgsler. |
 | `/owner/requests/:id` | `OwnerRequestPage` | Gennemgang, AI-opsummering, mangler, usikkerheder, konflikter og godkendelse. |
-| `/staff/events/:id` | `StaffEventPage` | Read-only operationel eventvisning uden Messenger og direkte persondata. |
+| `/owner/events/:id` | `EventPage` | Fælles godkendt eventvisning med Owner-Messenger og kontaktoplysninger. |
+| `/staff/events/:id` | `EventPage` | Samme godkendte eventvisning i skrivebeskyttet, operationel tilstand uden Messenger og direkte persondata. |
 
 Routes kan ændres, hvis den eksisterende router eller en senere ticket fastlægger et bedre navn, men den rollebaserede adgang må ikke fjernes.
 
@@ -172,7 +174,8 @@ Component-specific styling belongs in sibling `.module.css` files. Shared design
 - [ ] `/ai-flow` supports the five-step wedding flow and local draft.
 - [ ] `/login`, `/register` and `/forgot-password` support the authentication handoff.
 - [ ] `/dashboard/events/` shows customer request status.
-- [ ] `/dashboard/events/:id` shows event data and Messenger after approval.
+- [ ] `/dashboard/approval/:id` lets the customer reply to Owner messages or close an unapproved request.
+- [ ] `/dashboard/events/:id`, `/owner/events/:id` and `/staff/events/:id` share the approved event page with role-appropriate data and actions.
 - [ ] `/events/:id?access={access}` shows only approved guest-facing information through an event-scoped invitation capability, without account access or dashboard controls.
 - [ ] Invitation pages share one structure and select a category-specific theme; wedding is the only themed category in the MVP.
 - [ ] Owner can review and approve through the internal pages.
