@@ -1,0 +1,123 @@
+/* Pathing
+   _______
+   src/app/layouts/DashboardNavigation.module.css */
+
+.header {
+	background: var(--engestofte-green);
+	color: var(--engestofte-white);
+}
+
+.inner {
+	min-height: 6rem;
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: center;
+	gap: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.brand {
+	display: inline-flex;
+	align-items: center;
+}
+
+.brand img {
+	width: 12rem;
+	max-height: 4.4rem;
+	object-fit: contain;
+	object-position: left center;
+}
+
+.workspace,
+.navigation,
+.actions {
+	display: flex;
+	align-items: center;
+}
+
+.workspace {
+	min-width: 0;
+	justify-content: space-between;
+	gap: clamp(0.75rem, 1.5vw, 1.5rem);
+}
+
+.navigation,
+.actions {
+	gap: 0.65rem;
+}
+
+.link,
+.activeLink,
+.action,
+.language select {
+	color: var(--engestofte-white);
+	font: inherit;
+	font-size: var(--engestofte-font-size-control);
+	line-height: 1.25;
+}
+
+.link,
+.activeLink,
+.action {
+	position: relative;
+	min-height: 2.8rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 0;
+	padding: 0.65rem 0.55rem;
+	background: transparent;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.activeLink { font-weight: 650; }
+
+.language select {
+	min-height: 2.8rem;
+	appearance: none;
+	border: 0;
+	padding: 0 0.35rem;
+	background: transparent;
+	cursor: pointer;
+}
+
+.language option {
+	background: var(--engestofte-green-dark);
+	color: var(--engestofte-white);
+}
+
+.brand:focus-visible,
+.link:focus-visible,
+.activeLink:focus-visible,
+.action:focus-visible,
+.language select:focus-visible {
+	outline: 3px solid var(--engestofte-focus);
+	outline-offset: 3px;
+}
+
+@media (max-width: 1120px) {
+	.inner {
+		grid-template-columns: 1fr;
+		gap: 0;
+		padding-block: 0.5rem;
+	}
+
+	.workspace { justify-content: space-between; }
+}
+
+@media (max-width: 700px) {
+	.workspace {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.navigation,
+	.actions {
+		width: 100%;
+		flex-wrap: wrap;
+	}
+
+	.actions { gap: 0.35rem 0.55rem; }
+}

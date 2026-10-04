@@ -3,7 +3,7 @@
 // src/features/placeholder-pages/PlaceholderPages.tsx
 
 import { Link } from 'react-router-dom'
-import { Button, Card, EmptyState } from '../../shared/components/ui'
+import { Button, Card, EmptyState } from '../../shared/components/Ui'
 import PageContainer from '../../shared/components/PageContainer'
 import { useTranslate } from '../../shared/hooks/useTranslate'
 import styles from './PlaceholderPages.module.css'

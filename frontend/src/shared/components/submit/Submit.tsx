@@ -3,7 +3,7 @@
 // src/shared/components/submit/Submit.tsx
 
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
-import { Button } from '../ui'
+import { Button } from '../Ui'
 
 type SubmitProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'children'> & {
 	children: ReactNode

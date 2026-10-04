@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:7070/v1
+
+### Clear all rows, reset identity sequences, and refresh the AI status constraint
+POST {{baseUrl}}/populate/reset
+
+### Create the CUSTOMER, STAFF, and OWNER roles
+POST {{baseUrl}}/populate/roles
+
+### Create or promote the local Owner accounts (password: Password12345!)
+POST {{baseUrl}}/populate/owners

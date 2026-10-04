@@ -32,6 +32,9 @@ Thumbs.db
 backend/.mvn/
 backend/target/
 backend/src/main/resources/http/
+!backend/src/main/resources/http/
+backend/src/main/resources/http/*
+!backend/src/main/resources/http/populate.http
 backend/logs
 backend/.idea
 *.idea

@@ -4,7 +4,7 @@
 
 **Blocked by:** 08: Show the customer request overview
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -21,11 +21,11 @@
 
 ## Acceptance criteria
 
-- [ ] Owner can find a submitted request and see its structured information.
-- [ ] Owner can distinguish customer-visible information from internal notes.
-- [ ] Owner can see the AI summary, identified missing information, uncertainty and upsell opportunities.
-- [ ] Owner can ask the customer for clarification.
-- [ ] The customer sees an understandable review status and any customer-facing question.
+- [x] Owner can find a submitted request and see its structured information.
+- [x] Owner can distinguish customer-visible information from internal notes.
+- [x] Owner can see the AI summary, identified missing information, uncertainty and upsell opportunities.
+- [x] Owner can ask the customer for clarification.
+- [x] The customer sees an understandable review status and any customer-facing question.
 
 ## Verification
 

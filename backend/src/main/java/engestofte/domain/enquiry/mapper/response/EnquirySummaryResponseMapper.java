@@ -21,6 +21,7 @@ public class EnquirySummaryResponseMapper {
 		response.setLanguage(enquiry.getLanguage());
 		response.setStatus(enquiry.getStatus());
 		response.setSubmittedAt(enquiry.getCreatedAt());
+		response.setCustomerQuestion(enquiry.getCustomerQuestion());
 		return response;
 	}
 }

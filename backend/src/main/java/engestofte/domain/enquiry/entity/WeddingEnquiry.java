@@ -24,6 +24,7 @@ public class WeddingEnquiry {
 	// __________________
 	//
 	//		id | submission_id | language | raw_draft | status | created_at
+	//		| ai_assessment | internal_note | customer_question
 	//
 	// __________________
 	// Tested: NO
@@ -48,6 +49,16 @@ public class WeddingEnquiry {
 	@Column(name = "raw_draft", nullable = false, columnDefinition = "jsonb")
 	private JsonNode rawDraft;
 
+	@JdbcTypeCode(SqlTypes.JSON)
+	@Column(name = "ai_assessment", columnDefinition = "jsonb")
+	private JsonNode aiAssessment;
+
+	@Column(name = "internal_note", columnDefinition = "text")
+	private String internalNote;
+
+	@Column(name = "customer_question", length = 1500)
+	private String customerQuestion;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, length = 32)
 	private EnquiryStatus status;
@@ -62,6 +73,9 @@ public class WeddingEnquiry {
 		public static final String SUBMISSION_ID = "submissionId";
 		public static final String LANGUAGE = "language";
 		public static final String RAW_DRAFT = "rawDraft";
+		public static final String AI_ASSESSMENT = "aiAssessment";
+		public static final String INTERNAL_NOTE = "internalNote";
+		public static final String CUSTOMER_QUESTION = "customerQuestion";
 		public static final String STATUS = "status";
 		public static final String CREATED_AT = "createdAt";
 	}

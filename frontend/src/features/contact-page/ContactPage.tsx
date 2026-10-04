@@ -2,7 +2,7 @@
 // _______
 // src/features/contact-page/ContactPage.tsx
 
-import { Button } from '../../shared/components/ui'
+import { Button } from '../../shared/components/Ui'
 import InputText from '../../shared/components/input-text/InputText'
 import PageContainer from '../../shared/components/PageContainer'
 import Submit from '../../shared/components/submit/Submit'

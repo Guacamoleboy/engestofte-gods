@@ -11,12 +11,12 @@ These tickets are the implementation queue for the approved MVP specification. T
 ## Dependency graph
 
 ```text
-01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 15
+01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 15 → 16
                                                         ↘ 13
                                    10 ───────────────────→ 14
 ```
 
-Ticket 13 may start after Ticket 11 and can proceed in parallel with Ticket 12. Ticket 14 may start after Ticket 10 and can proceed in parallel with Tickets 11–13. Ticket 15 remains blocked by bilateral approval in Ticket 12.
+Ticket 13 may start after Ticket 11 and can proceed in parallel with Ticket 12. Ticket 14 may start after Ticket 10 and can proceed in parallel with Tickets 11–13. Ticket 15 remains blocked by bilateral approval in Ticket 12. Ticket 16 remains blocked until Ticket 15 is complete.
 
 ## Shared agent guardrails
 

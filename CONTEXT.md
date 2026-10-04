@@ -14,6 +14,12 @@ En adgang, som en kontaktperson opretter for at kunne være tilknyttet en foresp
 
 Et genereret link til en forespørgsel, som giver læseadgang uden at knytte personen til en fuld kontaktpersonskonto. Linket giver ikke ret til at skrive eller slette.
 
+## Gæsteinvitation
+
+En offentlig, skrivebeskyttet visning af et Owner-godkendt event, som den primære kontaktperson kan dele med inviterede gæster. Gæsten åbner visningen via et event-specifikt adgangslink uden konto. Invitationen viser kun godkendte, gæstevendte oplysninger og giver ikke adgang til dashboard, Messenger eller interne noter.
+
+Gæsteinvitationen bruger samme sidestruktur på tværs af arrangementskategorier. Eventets kategori vælger de visuelle elementer. Bryllup er den eneste kategori med færdige invitation-visuals i MVP'en; senere kategorier kan tilføjes uden en separat sidestruktur. Gæster og kontaktpersoner kan ikke redigere selve invitationen eller vælge dens visuelle tema.
+
 ## Kontaktperson
 
 En person, der er knyttet til en forespørgsel. En forespørgsel kan have flere kontaktpersoner, så planlægningen kan deles. Kontaktpersoner har samme rettigheder til eventets indhold og Messenger, men den person, der oprettede forespørgslen, er primær kontaktperson med særligt adgangsansvar. Den primære kontaktperson og Owner kan administrere andre kontaktpersoner; øvrige kontaktpersoner kan kun fjerne sig selv.

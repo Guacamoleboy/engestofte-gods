@@ -3,6 +3,8 @@ package engestofte.domain.aiflow.provider;
 import com.fasterxml.jackson.databind.JsonNode;
 import engestofte.config.PoolConfig;
 import engestofte.domain.aiflow.dto.request.AiFlowRequestDTO;
+import engestofte.domain.aiflow.dto.request.AiFlowTurnDTO;
+import engestofte.domain.aiflow.dto.response.AiEnquiryAssessmentDTO;
 import engestofte.domain.aiflow.dto.response.AiFlowResponseDTO;
 import engestofte.domain.aiflow.enums.AiFlowStatus;
 import engestofte.exception.ApiException;
@@ -16,7 +18,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-public class OpenAiFlowProvider implements AiFlowProvider {
+public class OpenAiFlowProvider implements AiFlowProvider, EnquiryAssessmentProvider {
 
 	// Attributes
 	private static final String API_URL = "https://api.openai.com/v1/responses";
@@ -103,6 +105,62 @@ public class OpenAiFlowProvider implements AiFlowProvider {
 
 	// _________________________________________________________________________________________________________________
 
+	@Override
+	public AiEnquiryAssessmentDTO assess(List<AiFlowTurnDTO> conversation, String language) {
+		try {
+			String serializedConversation = PoolConfig.getMapper().writeValueAsString(conversation);
+			String prompt = readResource("prompts/enquiry-assessment-user-prompt.txt")
+					.replace("{{LANGUAGE}}", language)
+					.replace("{{RUBRIC}}", readResource("rubric/rubric.json"))
+					.replace("{{CONVERSATION}}", serializedConversation);
+			Map<String, Object> stringList = Map.of(
+					"type", "array",
+					"items", Map.of("type", "string", "maxLength", 700),
+					"maxItems", 20);
+			Map<String, Object> schema = Map.of(
+				"type", "object",
+				"properties", Map.of(
+						"summary", Map.of("type", "string", "maxLength", 3000),
+						"missing_information", stringList,
+						"uncertainties", stringList,
+						"conflicts", stringList,
+						"upsell_suggestions", stringList),
+				"required", new String[]{"summary", "missing_information", "uncertainties", "conflicts", "upsell_suggestions"},
+				"additionalProperties", false);
+			String body = PoolConfig.getMapper().writeValueAsString(Map.of(
+					"model", MODEL,
+					"store", false,
+					"instructions", readResource("prompts/enquiry-assessment-system-prompt.md"),
+					"input", prompt,
+					"text", Map.of("format", Map.of(
+							"type", "json_schema",
+							"name", "wedding_enquiry_assessment",
+							"strict", true,
+							"schema", schema))));
+			HttpRequest httpRequest = HttpRequest.newBuilder(URI.create(API_URL))
+					.timeout(Duration.ofSeconds(45))
+					.header("Authorization", "Bearer " + apiKey)
+					.header("Content-Type", "application/json")
+					.POST(HttpRequest.BodyPublishers.ofString(body))
+					.build();
+			HttpResponse<String> response = PoolConfig.getClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+			if (response.statusCode() < 200 || response.statusCode() >= 300) {
+				throw new ApiException(500, "AI enquiry assessment is unavailable");
+			}
+			JsonNode structured = readStructuredOutput(response.body());
+			AiEnquiryAssessmentDTO assessment = PoolConfig.getMapper().treeToValue(structured, AiEnquiryAssessmentDTO.class);
+			validateAssessment(assessment);
+			return assessment;
+		} catch (InterruptedException exception) {
+			Thread.currentThread().interrupt();
+			throw new ApiException(500, "AI enquiry assessment is unavailable");
+		} catch (IOException exception) {
+			throw new ApiException(500, "AI enquiry assessment is unavailable");
+		}
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	private String readResource(String path) throws IOException {
 		try (InputStream stream = getClass().getClassLoader().getResourceAsStream(path)) {
 			if (stream == null) {
@@ -110,6 +168,38 @@ public class OpenAiFlowProvider implements AiFlowProvider {
 			}
 			return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
 		}
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private JsonNode readStructuredOutput(String responseBody) throws IOException {
+		JsonNode output = PoolConfig.getMapper().readTree(responseBody).path("output");
+		for (JsonNode item : output) {
+			for (JsonNode content : item.path("content")) {
+				if ("output_text".equals(content.path("type").asText())) {
+					return PoolConfig.getMapper().readTree(content.path("text").asText());
+				}
+			}
+		}
+		throw new ApiException(500, "AI enquiry assessment is unavailable");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static void validateAssessment(AiEnquiryAssessmentDTO assessment) {
+		if (assessment.getSummary() == null || assessment.getSummary().isBlank()
+				|| assessment.getSummary().length() > 3000
+				|| !isValidItems(assessment.getMissingInformation())
+				|| !isValidItems(assessment.getUncertainties())
+				|| !isValidItems(assessment.getConflicts())
+				|| !isValidItems(assessment.getUpsellSuggestions())) {
+			throw new ApiException(500, "AI enquiry assessment is unavailable");
+		}
+	}
+
+	private static boolean isValidItems(List<String> items) {
+		return items != null && items.size() <= 20
+				&& items.stream().allMatch(item -> item != null && !item.isBlank() && item.length() <= 700);
 	}
 
 	// _________________________________________________________________________________________________________________

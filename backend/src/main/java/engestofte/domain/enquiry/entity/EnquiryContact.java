@@ -1,6 +1,6 @@
 package engestofte.domain.enquiry.entity;
 
-import engestofte.domain.user.entity.UserAccount;
+import engestofte.domain.useraccount.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

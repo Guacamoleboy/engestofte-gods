@@ -22,6 +22,7 @@ Frontend bygges med React, TypeScript og Vite. Nye frontend-filer skal være `.t
 |---|---|---|
 | `/dashboard/events/` | `EventsDashboardPage` | Liste over kundens forespørgsler og statusser. |
 | `/dashboard/events/:id` | `EventPage` | Kundens godkendte event med eventdata og event-scoped Messenger. |
+| `/events/:id?access={access}` | `GuestInvitationPage` | Offentlig, skrivebeskyttet invitation med godkendt gæsteinformation for ét event. |
 
 ### Protected internal routes
 
@@ -63,7 +64,7 @@ Event-routes skal kontrollere, at den aktuelle bruger faktisk er tilknyttet det 
 
 ### App and layout
 
-- `AppRouter`
+- `AppRoutes`
 - `PublicLayout`
 - `DashboardLayout`
 - `OwnerLayout`
@@ -172,6 +173,8 @@ Component-specific styling belongs in sibling `.module.css` files. Shared design
 - [ ] `/login`, `/register` and `/forgot-password` support the authentication handoff.
 - [ ] `/dashboard/events/` shows customer request status.
 - [ ] `/dashboard/events/:id` shows event data and Messenger after approval.
+- [ ] `/events/:id?access={access}` shows only approved guest-facing information through an event-scoped invitation capability, without account access or dashboard controls.
+- [ ] Invitation pages share one structure and select a category-specific theme; wedding is the only themed category in the MVP.
 - [ ] Owner can review and approve through the internal pages.
 - [ ] Staff sees only permitted read-only operational data.
 - [ ] JWT and event/role guards protect all private routes.
