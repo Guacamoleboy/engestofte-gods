@@ -23,8 +23,9 @@ Dette dokument er et bud på de domæneområder og entities, som sandsynligvis e
 | `WeddingEnquiry` | Enquiry | Den indsendte bryllupsforespørgsel og dens samlede svar. | Skal med |
 | `EnquiryAnswer` | Enquiry | Et struktureret felt, værdi og eventuel kilde/konflikt. | Skal med |
 | `EnquiryContact` | Enquiry | Knytter en `UserAccount` til forespørgslen og markerer primær kontaktperson. | Skal med |
-| `Event` | Event | Den konkrete event-platform, som oprettes efter Owner-godkendelse. | Skal med |
-| `Message` | Communication | En besked knyttet til ét event. | Skal med |
+| `Event` | Event | Den konkrete event-platform, som oprettes ved Owner-godkendelse eller når Owner starter en opfølgning. | Skal med |
+| `EventMessage` | Event/Communication | En kundevendt opfølgningsbesked knyttet til ét event med afsender og tidspunkt. | Ticket 10 |
+| `Message` | Communication | En besked knyttet til ét event i den senere eventkommunikation. | Skal med |
 | `MessageRecipient` | Communication | Modtagerrelation med `readAt` og syv-dages eskalering pr. modtager. | Skal med |
 | `ChangeProposal` | Approval | En konkret før-/efter-ændring i eventdata. | Skal med |
 | `Approval` | Approval | En kundes eller Owners separate godkendelse af et proposal. | Skal med |
@@ -50,7 +51,11 @@ DRAFT
 SUBMITTED
 UNDER_REVIEW
 AWAITING_CUSTOMER
+FOLLOW_UP_REQUIRED
+OWNER_FOLLOW_UP_REQUIRED
 APPROVED
+CLOSED_BY_OWNER
+CLOSED_BY_CUSTOMER
 CANCELLED_BY_CUSTOMER
 ```
 
@@ -58,9 +63,13 @@ CANCELLED_BY_CUSTOMER
 
 ```text
 AWAITING_APPROVAL
+FOLLOW_UP_REQUIRED
+OWNER_FOLLOW_UP_REQUIRED
 APPROVED
 AWAITING_DEPOSIT
 BOOKED
+CLOSED_BY_OWNER
+CLOSED_BY_CUSTOMER
 CANCELLED_BY_CUSTOMER
 ```
 
@@ -74,6 +83,9 @@ Statusnavne skal mappes til kundevendte tekster som `Under gennemgang`, `Afvente
 - Direkte identificerende brugerdata skal begrænses efter rolle.
 - Staff må se nødvendige operationelle oplysninger, men ikke Messenger eller fulde direkte identifikatorer.
 - Eventets beskeder og data skal være isoleret fra andre events.
+- Ét `WeddingEnquiry` kan højst have ét `Event`; hvert nyt event får sit eget database-ID.
+- Gæsteadgang opbevares som en unik hash på `Event`. Den rå capability-token må kun returneres, når et invitationslink oprettes.
+- Owner- og kundebeskeder hører til eventets samtale. Interne noter og AI-vurderinger må aldrig være en del af kundens event-response.
 - Alle ændringer, approvals og statusændringer skal kunne spores med aktør og tidspunkt.
 - Alle nye entities følger [architecture-and-file-conventions.md](../standards/architecture-and-file-conventions.md).
 
@@ -85,4 +97,3 @@ Disse punkter må ikke gættes af en agent under implementation:
 - Om `EnquiryAnswer` skal være en normaliseret tabel eller en JSONB-struktur.
 - Om `UserRole` er nødvendig, eller om én konto kun må have én rolle i MVP’en.
 - Hvilke strukturerede AI-vurderinger der skal gemmes, og hvor længe de skal opbevares.
-- Om `Event` skal være én-til-én med `WeddingEnquiry` eller kunne oprettes flere gange gennem historikken.

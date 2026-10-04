@@ -1,0 +1,41 @@
+/* Pathing
+   _______
+   src/features/customer-approval-page/CustomerApprovalView.module.css */
+
+.page { flex: 1; background: var(--engestofte-surface); }
+.content { padding-block: 1rem 2rem; }
+.backLink { display: inline-block; margin-bottom: 0.75rem; color: var(--engestofte-green-dark); font-weight: 650; }
+.header { margin-bottom: var(--engestofte-space-5); }
+.eyebrow { margin: 0 0 0.4rem; color: var(--engestofte-muted); font-size: 0.82rem; font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; }
+.header h1 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; }
+.header > p:last-child { margin: 0.35rem 0 0; color: var(--engestofte-muted); line-height: 1.5; }
+.conversationPanel, .state { border: 1px solid var(--engestofte-border); padding: clamp(1rem, 2vw, 1.5rem); background: var(--engestofte-white); box-shadow: var(--engestofte-shadow-card); }
+.conversationPanel { display: flex; flex-direction: column; }
+.statusPanel { min-height: 0; }
+.messagesPanel { min-height: min(65vh, 52rem); padding-top: 1rem; }
+.tabs { display: flex; gap: var(--engestofte-space-3); border-bottom: 1px solid var(--engestofte-border); }
+.tab, .activeTab { border: 0; border-bottom: 3px solid transparent; padding: 0.8rem 1rem; background: transparent; color: var(--engestofte-muted); font: inherit; font-weight: 650; cursor: pointer; }
+.activeTab { border-bottom-color: var(--engestofte-green-dark); color: var(--engestofte-heading); }
+.tab:focus-visible, .activeTab:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+.statusContent { display: flex; flex-direction: column; flex: 1; padding-top: 1rem; }
+.messages { flex: 1; min-height: 20rem; overflow-y: auto; display: flex; flex-direction: column; gap: var(--engestofte-space-3); margin: 1rem 0; padding: 0.25rem; }
+.message { max-width: min(82%, 48rem); align-self: flex-start; border: 1px solid var(--engestofte-border); padding: 0.75rem 0.9rem; background: var(--engestofte-surface); }
+.ownMessage { align-self: flex-end; border-color: var(--engestofte-green); background: var(--engestofte-white); }
+.message p { margin: 0; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.messageMeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; margin-bottom: 0.35rem !important; color: var(--engestofte-muted); font-size: 0.78rem; }
+.composer { display: grid; gap: 0.5rem; border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-3); }
+.composer label { color: var(--engestofte-heading); font-weight: 650; }
+.composer textarea { width: 100%; min-height: 5.5rem; resize: vertical; border: 1px solid var(--engestofte-border); padding: 0.7rem; color: var(--engestofte-body); font: inherit; }
+.composer button, .closeAction button, .state button { min-height: 2.7rem; justify-self: start; border: 1px solid var(--engestofte-green-dark); padding: 0.55rem 0.9rem; background: var(--engestofte-green-dark); color: var(--engestofte-white); font: inherit; font-weight: 650; cursor: pointer; }
+.composer button { width: 100%; box-sizing: border-box; justify-self: stretch; }
+.composer button:disabled, .closeAction button:disabled { opacity: 0.55; cursor: not-allowed; }
+.closeAction { margin-top: var(--engestofte-space-3); border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-3); }
+.closeAction button { background: transparent; color: var(--engestofte-green-dark); }
+.waiting { margin-top: auto; border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-3); color: var(--engestofte-muted); }
+.error { margin: 0; color: #8d2525; }
+.state { width: min(100%, 46rem); color: var(--engestofte-muted); }
+.state button:focus-visible, .backLink:focus-visible, .composer button:focus-visible, .closeAction button:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
+@media (max-width: 760px) {
+	.content { padding-block: 1.5rem 2rem; }
+	.message { max-width: 96%; }
+}

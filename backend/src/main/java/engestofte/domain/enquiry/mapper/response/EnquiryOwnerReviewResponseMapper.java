@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import engestofte.domain.enquiry.dto.response.EnquiryOwnerReviewResponseDTO;
 import engestofte.domain.enquiry.dto.response.EnquiryOwnerReviewSummaryResponseDTO;
 import engestofte.domain.enquiry.entity.WeddingEnquiry;
+import engestofte.domain.enquiry.enums.EnquiryStatus;
 
 import java.util.List;
 
@@ -22,7 +23,11 @@ public class EnquiryOwnerReviewResponseMapper {
 		response.setId(enquiry.getId());
 		response.setSubmissionId(enquiry.getSubmissionId());
 		response.setLanguage(enquiry.getLanguage());
-		response.setStatus(enquiry.getStatus());
+		response.setStatus(enquiry.getEvent() != null && enquiry.getEvent().getApprovedAt() != null
+				? EnquiryStatus.APPROVED
+				: enquiry.getStatus());
+		response.setEventId(enquiry.getEvent() == null ? null : enquiry.getEvent().getId());
+		response.setEventApprovedAt(enquiry.getEvent() == null ? null : enquiry.getEvent().getApprovedAt());
 		response.setSubmittedAt(enquiry.getCreatedAt());
 		response.setDraft(enquiry.getRawDraft());
 		response.setAiAssessment(enquiry.getAiAssessment());
@@ -38,7 +43,11 @@ public class EnquiryOwnerReviewResponseMapper {
 		response.setId(enquiry.getId());
 		response.setCustomerName(enquiry.getRawDraft().path("customerName").asText(""));
 		response.setSummary(getSummary(enquiry.getAiAssessment()));
-		response.setStatus(enquiry.getStatus());
+		response.setStatus(enquiry.getEvent() != null && enquiry.getEvent().getApprovedAt() != null
+				? EnquiryStatus.APPROVED
+				: enquiry.getStatus());
+		response.setEventId(enquiry.getEvent() == null ? null : enquiry.getEvent().getId());
+		response.setEventApprovedAt(enquiry.getEvent() == null ? null : enquiry.getEvent().getApprovedAt());
 		response.setSubmittedAt(enquiry.getCreatedAt());
 		return response;
 	}

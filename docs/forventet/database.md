@@ -18,6 +18,8 @@ erDiagram
     WEDDING_ENQUIRY ||--o{ UPSELL_SUGGESTION : produces
     WEDDING_ENQUIRY ||--o{ SOURCE_REFERENCE : cites
     EVENT ||--o{ MESSAGE : contains
+    EVENT ||--o{ EVENT_MESSAGE : contains
+    USER_ACCOUNT ||--o{ EVENT_MESSAGE : sends
     USER_ACCOUNT ||--o{ MESSAGE : sends
     MESSAGE ||--o{ MESSAGE_RECIPIENT : targets
     USER_ACCOUNT ||--o{ MESSAGE_RECIPIENT : receives
@@ -41,14 +43,17 @@ erDiagram
 
 - A `WeddingEnquiry` belongs to a primary contact relationship and may have additional contact persons.
 - A request can exist before an `Event` is approved.
-- A request can become one concrete `Event` in the MVP.
+- A request can become one concrete `Event` in the MVP either when Owner approves it or starts a customer follow-up.
+- Each enquiry has at most one event, enforced by a unique foreign key. Events use their own generated integer IDs, separate from the enquiry submission UUID.
 - `EnquiryAnswer` preserves structured values and must support conflicts without silently overwriting the original answer.
 - The complete localStorage draft is not a `WeddingEnquiry` in PostgreSQL until authentication and submission succeed. Scope 03 separately stores each sent AI turn as an `AiFlow` interaction record; it is not an account-linked or submitted enquiry.
 
 ### Event og kommunikation
 
-- An `Event` belongs to one approved enquiry.
+- An `Event` belongs to one enquiry and may be created before approval when Owner starts a follow-up.
 - `Message` always belongs to one event; there is no global customer Messenger.
+- `EventMessage` stores the Owner/customer follow-up thread for an event, including sender side and timestamp. This initial enquiry thread is persisted before approval when needed; the later `Message` model covers the approved event workflow.
+- `Event.guest_access_token_hash` stores only the unique hash of a future invitation capability; invitation creation will issue and return the raw token.
 - `MessageRecipient` stores read state separately per recipient.
 - A seven-day `Vigtig besked` can be calculated from message creation time and `MessageRecipient.readAt`.
 - Staff access is enforced before data is returned, not only in the frontend.

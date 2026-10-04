@@ -2,6 +2,7 @@ package engestofte.domain.enquiry.mapper.response;
 
 import engestofte.domain.enquiry.dto.response.EnquirySummaryResponseDTO;
 import engestofte.domain.enquiry.entity.WeddingEnquiry;
+import engestofte.domain.enquiry.enums.EnquiryStatus;
 
 import java.util.List;
 
@@ -18,8 +19,11 @@ public class EnquirySummaryResponseMapper {
 	private static EnquirySummaryResponseDTO toDTO(WeddingEnquiry enquiry) {
 		EnquirySummaryResponseDTO response = new EnquirySummaryResponseDTO();
 		response.setSubmissionId(enquiry.getSubmissionId());
+		response.setEventId(enquiry.getEvent() == null ? null : enquiry.getEvent().getId());
 		response.setLanguage(enquiry.getLanguage());
-		response.setStatus(enquiry.getStatus());
+		response.setStatus(enquiry.getEvent() != null && enquiry.getEvent().getApprovedAt() != null
+				? EnquiryStatus.APPROVED
+				: enquiry.getStatus());
 		response.setSubmittedAt(enquiry.getCreatedAt());
 		response.setCustomerQuestion(enquiry.getCustomerQuestion());
 		return response;

@@ -28,7 +28,7 @@ public class WeddingEnquiryDAO extends EntityManagerDAO<WeddingEnquiry> {
 
 	public List<WeddingEnquiry> findForAccount(Integer accountId) {
 		return executeQuery(() -> em.createQuery(
-				"SELECT DISTINCT enquiry FROM WeddingEnquiry enquiry JOIN EnquiryContact contact ON contact.enquiry = enquiry WHERE contact.userAccount.id = :accountId ORDER BY enquiry.createdAt DESC",
+				"SELECT DISTINCT enquiry FROM WeddingEnquiry enquiry LEFT JOIN FETCH enquiry.event JOIN EnquiryContact contact ON contact.enquiry = enquiry WHERE contact.userAccount.id = :accountId ORDER BY enquiry.createdAt DESC",
 				WeddingEnquiry.class)
 			.setParameter("accountId", accountId)
 			.getResultList());
@@ -38,12 +38,15 @@ public class WeddingEnquiryDAO extends EntityManagerDAO<WeddingEnquiry> {
 
 	public List<WeddingEnquiry> findForOwnerReview() {
 		return executeQuery(() -> em.createQuery(
-				"SELECT enquiry FROM WeddingEnquiry enquiry WHERE enquiry.status IN :statuses ORDER BY enquiry.createdAt ASC",
+				"SELECT DISTINCT enquiry FROM WeddingEnquiry enquiry LEFT JOIN FETCH enquiry.event WHERE enquiry.status IN :statuses ORDER BY enquiry.createdAt ASC",
 				WeddingEnquiry.class)
 			.setParameter("statuses", List.of(
 					EnquiryStatus.SUBMITTED,
 					EnquiryStatus.UNDER_REVIEW,
-					EnquiryStatus.AWAITING_CUSTOMER))
+					EnquiryStatus.AWAITING_CUSTOMER,
+					EnquiryStatus.FOLLOW_UP_REQUIRED,
+					EnquiryStatus.OWNER_FOLLOW_UP_REQUIRED,
+					EnquiryStatus.APPROVED))
 			.getResultList());
 	}
 
@@ -67,5 +70,15 @@ public class WeddingEnquiryDAO extends EntityManagerDAO<WeddingEnquiry> {
 			.setParameter("accountId", accountId)
 			.getSingleResult());
 		return matchingContacts > 0;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public WeddingEnquiry closeByCustomer(WeddingEnquiry enquiry) {
+		return executeQuery(() -> {
+			WeddingEnquiry managedEnquiry = em.merge(enquiry);
+			managedEnquiry.setStatus(EnquiryStatus.CLOSED_BY_CUSTOMER);
+			return managedEnquiry;
+		});
 	}
 }

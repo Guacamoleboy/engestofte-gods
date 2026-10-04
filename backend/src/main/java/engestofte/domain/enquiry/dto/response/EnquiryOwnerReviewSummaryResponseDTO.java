@@ -19,6 +19,8 @@ public class EnquiryOwnerReviewSummaryResponseDTO {
 	//			"customer_name": "Alex Morgan",
 	//			"summary": "A wedding for approximately 60 guests in June.",
 	//			"status": "SUBMITTED",
+	//			"event_id": null,
+	//			"event_approved_at": null,
 	//			"submitted_at": "2026-10-04T12:30:00Z"
 	//		}
 	//
@@ -39,6 +41,12 @@ public class EnquiryOwnerReviewSummaryResponseDTO {
 
 	@JsonProperty("status")
 	private EnquiryStatus status;
+
+	@JsonProperty("event_id")
+	private Integer eventId;
+
+	@JsonProperty("event_approved_at")
+	private Instant eventApprovedAt;
 
 	@JsonProperty("submitted_at")
 	private Instant submittedAt;

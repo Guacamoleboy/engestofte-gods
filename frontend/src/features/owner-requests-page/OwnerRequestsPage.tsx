@@ -16,6 +16,9 @@ export default function OwnerRequestsPage() {
 		SUBMITTED: copy.statusSubmitted,
 		UNDER_REVIEW: copy.statusUnderReview,
 		AWAITING_CUSTOMER: copy.statusAwaitingCustomer,
+		FOLLOW_UP_REQUIRED: copy.statusFollowUpRequired,
+		OWNER_FOLLOW_UP_REQUIRED: copy.statusOwnerFollowUpRequired,
+		APPROVED: copy.statusApproved,
 	}
 
 	return (
@@ -42,7 +45,7 @@ export default function OwnerRequestsPage() {
 				{state === 'loaded' && enquiries.length > 0 && (
 					<section className={styles.list} aria-label={copy.title}>
 						{enquiries.map((enquiry) => (
-							<Link className={styles.card} key={enquiry.id} to={`/owner/requests/${enquiry.id}`}>
+							<Link className={styles.card} key={enquiry.id} to={enquiry.event_approved_at && enquiry.event_id ? `/owner/events/${enquiry.event_id}` : `/owner/requests/${enquiry.id}`}>
 								<div className={styles.cardContent}>
 									<p className={styles.status}>{statusLabels[enquiry.status]}</p>
 									<p className={styles.eyebrow}>{copy.customer}</p>

@@ -16,6 +16,7 @@ public class EnquirySummaryResponseDTO {
 	//
 	//		{
 	//			"submission_id": "c02b8f4d-1c7f-4c15-9ee2-b26a8c998fc1",
+	//			"event_id": 18,
 	//			"language": "da",
 	//			"status": "SUBMITTED",
 	//			"submitted_at": "2026-10-04T12:30:00Z",
@@ -30,6 +31,9 @@ public class EnquirySummaryResponseDTO {
 
 	@JsonProperty("submission_id")
 	private String submissionId;
+
+	@JsonProperty("event_id")
+	private Integer eventId;
 
 	@JsonProperty("language")
 	private String language;

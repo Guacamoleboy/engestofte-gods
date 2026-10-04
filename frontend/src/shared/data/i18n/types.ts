@@ -47,9 +47,20 @@ export type TranslationContent = {
 		statusAwaitingCustomer: string
 		statusApproved: string
 		statusCancelled: string
+		statusFollowUpRequired: string
+		statusOwnerFollowUpRequired: string
+		statusClosed: string
 		customerQuestion: string
+		ownerReplied: string
 	}
 	ownerReview: {
+		aiTab: string
+		statusTab: string
+		requestTab: string
+		messagesTab: string
+		followUpQuestion: string
+		sendFollowUp: string
+		declineConfirm: string
 		title: string
 		description: string
 		loading: string
@@ -64,6 +75,11 @@ export type TranslationContent = {
 		statusSubmitted: string
 		statusUnderReview: string
 		statusAwaitingCustomer: string
+		statusApproved: string
+		statusCancelled: string
+		statusFollowUpRequired: string
+		statusOwnerFollowUpRequired: string
+		statusClosed: string
 		backToRequests: string
 		assessmentTitle: string
 		assessmentUnavailable: string
@@ -72,6 +88,7 @@ export type TranslationContent = {
 		conflicts: string
 		upsellSuggestions: string
 		conversationTitle: string
+		aiFlowLabel: string
 		customerLabel: string
 		internalNoteTitle: string
 		internalNoteDescription: string
@@ -84,6 +101,97 @@ export type TranslationContent = {
 		saveError: string
 		saved: string
 		noItems: string
+		approveTitle: string
+		approveAction: string
+		approvalTitle: string
+		approvalDescription: string
+		customerNoteLabel: string
+		approvalAction: string
+		approving: string
+		approvalBlocked: string
+		approvalError: string
+		eventCreated: string
+		threadTitle: string
+		emptyThread: string
+		ownerLabel: string
+		messageLabel: string
+		sendMessage: string
+		messageSending: string
+		messageError: string
+		closeTitle: string
+		declineTitle: string
+		declining: string
+		declineError: string
+		declinedNotice: string
+		closeReasonLabel: string
+		closeAction: string
+		declineAction: string
+		closing: string
+		closeError: string
+		closedNotice: string
+	}
+	eventPage: {
+		statusTab: string
+		messagesTab: string
+		loading: string
+		unauthenticated: string
+		error: string
+		retry: string
+		back: string
+		eyebrow: string
+		title: string
+		description: string
+		guestCount: string
+		approvedAt: string
+		receivedAt: string
+		detailsTitle: string
+		noteTitle: string
+		noNote: string
+		conversationTitle: string
+		noMessages: string
+		ownerLabel: string
+		customerLabel: string
+		messageLabel: string
+		followUpReplyLabel: string
+		sendMessage: string
+		sendFollowUpReply: string
+		sending: string
+		messageError: string
+		waitingForOwner: string
+		closeRequest: string
+		closeConfirm: string
+		closing: string
+		closeError: string
+		statusFollowUpRequired: string
+		statusOwnerFollowUpRequired: string
+		statusClosed: string
+		statusApproved: string
+		statusPending: string
+	}
+	ownerEvent: {
+		loading: string
+		error: string
+		retry: string
+		back: string
+		eyebrow: string
+		title: string
+		description: string
+		detailsTitle: string
+		customerName: string
+		customerEmail: string
+		guestCount: string
+		requestedDate: string
+		approvedAt: string
+		conversationTitle: string
+		noMessages: string
+		ownerLabel: string
+		customerLabel: string
+		messageLabel: string
+		sendMessage: string
+		sending: string
+		messageError: string
+		statusApproved: string
+		staffReadOnly: string
 	}
 	aiFlow: {
 		introMessage: string

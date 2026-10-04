@@ -2,18 +2,22 @@
 // _______
 // src/features/owner-requests-page/OwnerRequestPage.hooks.ts
 
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
-import { useParams } from 'react-router-dom'
-import { getOwnerEnquiry, saveOwnerEnquiryReview, type OwnerEnquiryReview } from '../../api/endpoints/ownerEnquiries'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { approveOwnerEnquiry, closeOwnerEnquiry, getOwnerEnquiry, getOwnerEnquiryMessages, sendOwnerEnquiryMessage, type EventMessage, type OwnerEnquiryReview } from '../../api/endpoints/ownerEnquiries'
 
 export function useOwnerEnquiryReview() {
 	const { id: rawId } = useParams()
+	const navigate = useNavigate()
 	const id = Number(rawId)
 	const [review, setReview] = useState<OwnerEnquiryReview | null>(null)
-	const [internalNote, setInternalNote] = useState('')
-	const [customerQuestion, setCustomerQuestion] = useState('')
+	const [messages, setMessages] = useState<EventMessage[]>([])
+	const messagesRequestId = useRef(0)
+	const [message, setMessage] = useState('')
 	const [state, setState] = useState<'loading' | 'loaded' | 'error'>('loading')
-	const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
+	const [approvalState, setApprovalState] = useState<'idle' | 'approving' | 'error'>('idle')
+	const [messageState, setMessageState] = useState<'idle' | 'sending' | 'error'>('idle')
+	const [rejectState, setRejectState] = useState<'idle' | 'rejecting' | 'rejected' | 'error'>('idle')
 
 	const loadReview = useCallback(async () => {
 		if (!Number.isInteger(id) || id < 1) {
@@ -22,33 +26,63 @@ export function useOwnerEnquiryReview() {
 		}
 		setState('loading')
 		try {
-			const result = await getOwnerEnquiry(id)
-			setReview(result)
-			setInternalNote(result.internal_note ?? '')
-			setCustomerQuestion(result.customer_question ?? '')
+			setReview(await getOwnerEnquiry(id))
 			setState('loaded')
 		} catch {
 			setState('error')
 		}
 	}, [id])
 
-	useEffect(() => {
-		void loadReview()
-	}, [loadReview])
-
-	const saveReview = useCallback(async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault()
-		setSaveState('saving')
+	const loadMessages = useCallback(async () => {
+		const requestId = ++messagesRequestId.current
 		try {
-			const updatedReview = await saveOwnerEnquiryReview(id, internalNote, customerQuestion)
-			setReview(updatedReview)
-			setInternalNote(updatedReview.internal_note ?? '')
-			setCustomerQuestion(updatedReview.customer_question ?? '')
-			setSaveState('saved')
+			const loadedMessages = await getOwnerEnquiryMessages(id)
+			if (requestId === messagesRequestId.current) setMessages(loadedMessages)
 		} catch {
-			setSaveState('error')
+			return
 		}
-	}, [customerQuestion, id, internalNote])
+	}, [id])
 
-	return { customerQuestion, internalNote, loadReview, review, saveReview, saveState, setCustomerQuestion, setInternalNote, state }
+	useEffect(() => { void loadReview() }, [loadReview])
+	useEffect(() => { void loadMessages() }, [loadMessages])
+
+	const approve = useCallback(async () => {
+		setApprovalState('approving')
+		try {
+			const approval = await approveOwnerEnquiry(id, '')
+			navigate(`/owner/events/${approval.event_id}`, { replace: true })
+		} catch {
+			setApprovalState('error')
+		}
+	}, [id, navigate])
+
+	const sendMessage = useCallback(async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		if (!message.trim()) return
+		setMessageState('sending')
+		try {
+			const sentMessage = await sendOwnerEnquiryMessage(id, message)
+			messagesRequestId.current += 1
+			setMessages((current) => current.some((item) => item.id === sentMessage.id) ? current : [...current, sentMessage])
+			setMessage('')
+			setMessageState('idle')
+			await loadMessages()
+			await loadReview()
+		} catch {
+			setMessageState('error')
+		}
+	}, [id, loadMessages, loadReview, message])
+
+	const reject = useCallback(async () => {
+		setRejectState('rejecting')
+		try {
+			await closeOwnerEnquiry(id, '')
+			await Promise.all([loadReview(), loadMessages()])
+			setRejectState('rejected')
+		} catch {
+			setRejectState('error')
+		}
+	}, [id, loadMessages, loadReview])
+
+	return { approvalState, approve, isClosed: review ? ['CLOSED_BY_OWNER', 'CLOSED_BY_CUSTOMER', 'CANCELLED_BY_CUSTOMER'].includes(review.status) : false, loadReview, message, messageState, messages, reject, rejectState, review, sendMessage, setMessage, state }
 }
