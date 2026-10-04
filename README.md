@@ -21,7 +21,6 @@ Contact Page to handle customer requests without having to spam call Johan with 
 
 AI Customer interaction feed with knowledge provided and limitations + personalized yet professional feedback and results.
 
-![AI-Flow 1](docs/display/display-2.png)
 ![AI-Flow 2](docs/display/display-3.png)
 
 Final Approval in order to "collect" the new customer requests and possible business in the future.\
