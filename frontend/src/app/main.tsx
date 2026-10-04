@@ -8,15 +8,18 @@ import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { TranslationProvider } from '../shared/context/TranslationContext'
+import { AuthProvider } from '../shared/context/AuthContext'
 import '../shared/styles/global.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<HelmetProvider>
 			<BrowserRouter>
-				<TranslationProvider>
-					<App />
-				</TranslationProvider>
+				<AuthProvider>
+					<TranslationProvider>
+						<App />
+					</TranslationProvider>
+				</AuthProvider>
 			</BrowserRouter>
 		</HelmetProvider>
 	</React.StrictMode>,

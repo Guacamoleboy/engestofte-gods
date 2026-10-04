@@ -47,6 +47,43 @@ export type TranslationContent = {
 		statusAwaitingCustomer: string
 		statusApproved: string
 		statusCancelled: string
+		customerQuestion: string
+	}
+	ownerReview: {
+		title: string
+		description: string
+		loading: string
+		loadError: string
+		retry: string
+		emptyTitle: string
+		emptyDescription: string
+		requestTitle: string
+		customer: string
+		guestCount: string
+		submittedAt: string
+		statusSubmitted: string
+		statusUnderReview: string
+		statusAwaitingCustomer: string
+		backToRequests: string
+		assessmentTitle: string
+		assessmentUnavailable: string
+		missingInformation: string
+		uncertainties: string
+		conflicts: string
+		upsellSuggestions: string
+		conversationTitle: string
+		customerLabel: string
+		internalNoteTitle: string
+		internalNoteDescription: string
+		internalNoteLabel: string
+		customerQuestionTitle: string
+		customerQuestionDescription: string
+		customerQuestionLabel: string
+		save: string
+		saving: string
+		saveError: string
+		saved: string
+		noItems: string
 	}
 	aiFlow: {
 		introMessage: string

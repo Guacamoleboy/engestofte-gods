@@ -9,6 +9,7 @@ export type EnquirySummary = {
 	language: 'da' | 'en' | 'de'
 	status: 'SUBMITTED' | 'UNDER_REVIEW' | 'AWAITING_CUSTOMER' | 'APPROVED' | 'CANCELLED_BY_CUSTOMER'
 	submitted_at: string
+	customer_question: string | null
 }
 
 type ApiEnvelope<T> = {

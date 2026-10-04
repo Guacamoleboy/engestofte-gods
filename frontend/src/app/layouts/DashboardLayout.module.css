@@ -1,0 +1,9 @@
+/* Pathing
+   _______
+   src/app/layouts/DashboardLayout.module.css */
+
+.shell {
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+}

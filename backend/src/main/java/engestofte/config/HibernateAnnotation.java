@@ -4,7 +4,7 @@ import engestofte.domain.aiflow.entity.AiFlow;
 import engestofte.domain.enquiry.entity.EnquiryContact;
 import engestofte.domain.enquiry.entity.WeddingEnquiry;
 import engestofte.domain.role.entity.Role;
-import engestofte.domain.user.entity.UserAccount;
+import engestofte.domain.useraccount.entity.UserAccount;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateAnnotation {

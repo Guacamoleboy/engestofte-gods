@@ -123,4 +123,8 @@ public class DotEnv {
         return fileName;
     }
 
+    public static boolean isDevelopment() {
+        return "development".equalsIgnoreCase(System.getProperty("set.env", environment));
+    }
+
 }

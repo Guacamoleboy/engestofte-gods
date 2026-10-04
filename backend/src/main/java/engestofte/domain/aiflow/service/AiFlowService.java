@@ -1,13 +1,12 @@
 package engestofte.domain.aiflow.service;
 
-import engestofte.config.DotEnv;
 import engestofte.domain.aiflow.dao.AiFlowDAO;
 import engestofte.domain.aiflow.dto.request.AiFlowRequestDTO;
 import engestofte.domain.aiflow.dto.response.AiFlowResponseDTO;
 import engestofte.domain.aiflow.entity.AiFlow;
 import engestofte.domain.aiflow.mapper.request.AiFlowRequestMapper;
 import engestofte.domain.aiflow.provider.AiFlowProvider;
-import engestofte.domain.aiflow.provider.OpenAiFlowProvider;
+import engestofte.domain.aiflow.provider.AiFlowProviderFactory;
 import engestofte.exception.ApiException;
 import engestofte.service.EntityManagerService;
 import jakarta.persistence.EntityManager;
@@ -26,9 +25,8 @@ public class AiFlowService extends EntityManagerService<AiFlow> {
 	public AiFlowService(EntityManager em) {
 		super(new AiFlowDAO(em), AiFlow.class);
 		this.aiFlowDAO = (AiFlowDAO) this.entityManagerDAO;
-		String apiKey = DotEnv.getOptional("OPENAI_API_KEY");
-		this.provider = apiKey == null || apiKey.isBlank() ? null : new OpenAiFlowProvider(apiKey);
-		LOGGER.info("AI flow provider selected: {}", this.provider == null ? "unavailable (missing API key)" : "OpenAI");
+		this.provider = AiFlowProviderFactory.create();
+		LOGGER.info("AI flow provider selected: {}\n", this.provider == null ? "unavailable (missing API key)" : "OpenAI");
 	}
 
 	// _________________________________________________________________________________________________________________

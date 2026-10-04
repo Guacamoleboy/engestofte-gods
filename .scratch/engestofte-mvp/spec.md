@@ -29,6 +29,8 @@ Login eller register
 /dashboard/events/{id}
         ↓
 Event-data, Messenger, godkendelser og booking
+        ↓
+Gæsteinvitation via `/events/{id}?access={access}`
 ```
 
 Den offentlige entry-side præsenterer Engestofte Gods med smiley-rapport, billeder af ledelsen og sprogvalg. AI-flowet indsamler kritiske grundoplysninger, relevante opfølgende oplysninger og mulige mersalgsbehov. Kunden kan forlade flowet uden at oprette konto, fordi kladden gemmes lokalt.
@@ -67,6 +69,7 @@ The primary external user is a potential wedding customer. The primary internal 
 9. The customer receives access to `/dashboard/events/{id}`.
 10. Customer and Owner communicate, propose changes and approve the final data.
 11. Customer simulates depositum payment and reaches `Booket`, or deliberately cancels the event.
+12. The primary contact person creates and shares a read-only invitation link for an approved event; guests open an invitation-style page without an account.
 
 ## Functional requirements
 
@@ -80,6 +83,9 @@ The primary external user is a potential wedding customer. The primary internal 
 - The system must preserve bilateral field-level approval history.
 - The system must track unread messages per recipient and apply seven-day escalation.
 - The system must support simulated depositum and irreversible customer cancellation behavior.
+- The primary contact person must be able to create a guest invitation link for an Owner-approved event.
+- A guest invitation capability must grant read-only access only to approved guest-facing information for its specific event, without requiring a guest account.
+- Invitation pages must share one page structure and select their visual theme by arrangement category. Wedding is the only themed category in this MVP; the structure must allow later categories to add themes without separate page implementations.
 
 ## Content requirements
 
@@ -95,6 +101,9 @@ The primary external user is a potential wedding customer. The primary internal 
 - `/kontakt` should feel like an Engestofte Gods website rather than a generic chatbot.
 - The flow should show progress and one manageable question at a time.
 - The event platform should use a two-panel layout: event data on the left and Messenger on the right.
+- A guest invitation should look and read like an invitation, not a dashboard, and show the approved schedule, timings and relevant guest logistics.
+- All invitation categories use the same page structure. Users cannot edit invitation content or choose a theme; the event category selects the theme.
+- The wedding invitation theme is the only theme with visuals in this MVP.
 - Important statuses and approval consequences must be visually clear.
 - The design should follow the documented Engestofte green, Alice-inspired typography, sharp corners and professional contrast.
 - The system must make AI involvement visible rather than presenting AI as a human.
@@ -109,6 +118,9 @@ The primary external user is a potential wedding customer. The primary internal 
 - [ ] Owner and Staff permissions match the documented role boundaries.
 - [ ] Unread and seven-day important-message behavior is recipient-specific.
 - [ ] Simulated depositum produces `Booket`, while deliberate customer exit produces non-reopenable `Annulleret af kunde`.
+- [ ] An authorized primary contact person can create a shareable invitation for an approved event; a signed-out guest sees only that event's approved guest-facing information.
+- [ ] Invitation access is read-only and capability-scoped; an invalid access value reveals no event information.
+- [ ] A shared invitation structure selects a category-specific visual theme, with wedding as the only implemented theme and no guest or user editing.
 
 ## Testable boundaries
 
@@ -118,6 +130,8 @@ The primary external user is a potential wedding customer. The primary internal 
 - Authorization boundary: customer, primary contact person, Owner and Staff access to the same event.
 - State boundary: request review, approval, change proposals, unread escalation, depositum, booking and cancellation.
 - Event boundary: isolation of event data and Messenger between two events.
+- Guest-link boundary: capability access to one event's guest-facing information without account access to the event platform.
+- Invitation presentation boundary: shared page structure with category-selected visuals and a wedding-only MVP theme.
 
 ## User Stories
 
@@ -191,6 +205,12 @@ The primary external user is a potential wedding customer. The primary internal 
 68. As the primary contact person, I want a strong multi-step confirmation before leaving an event, so that I cannot accidentally cancel a major life event.
 69. As a customer, I want cancellation to be explicit about the loss of a paid depositum, so that I understand the consequence before confirming.
 70. As Owner, I want an annulled event to remain historical and not reopen, so that the request history is trustworthy.
+71. As the primary contact person, I want to create a guest invitation for an approved event, so that friends and family can access the practical event information.
+72. As an invited guest, I want to open the invitation link without creating an account, so that access is simple for people outside the customer account.
+73. As an invited guest, I want to see the approved event schedule, timings and relevant logistics, so that I know where to be and how the event is planned.
+74. As an invited guest, I want the event to appear as an invitation rather than a dashboard, so that the page feels intended for attendees.
+75. As the project owner, I want invitation categories to share one page structure with category-specific visuals, so that future event types can be added without rebuilding the page.
+76. As the project owner, I want only wedding visuals implemented in this MVP, so that the invitation foundation is extensible while delivery stays focused.
 
 ## Implementation Decisions
 
@@ -225,6 +245,10 @@ The primary external user is a potential wedding customer. The primary internal 
 - `Booket` requires both-party approval and simulated depositum payment.
 - A primary-contact exit is a deliberate multi-step cancellation. It produces `Annulleret af kunde`, does not refund paid depositum and cannot be reopened.
 - A cancelled event requires a new enquiry if the customer returns later.
+- An Owner-approved event can have a shareable, read-only guest invitation at `/events/{id}?access={access}`. The access capability is distinct from account JWTs and is scoped to one event's guest-facing data.
+- The guest invitation is a public read-only view without accounts, Messenger, internal notes or dashboard controls.
+- All invitation categories share one page structure. The event's category selects the visual theme; theme selection and invitation editing are not exposed to users.
+- Wedding is the only category with invitation visuals in the MVP. Other category themes are future work, though the architecture seam for adding them is included in Ticket 16.
 - The highest verification seam is one end-to-end customer journey with role-aware transitions through the public page, AI-flow, authentication, request dashboard, Owner approval, event platform and booking.
 
 ## Testing Decisions
@@ -250,6 +274,8 @@ The primary external user is a potential wedding customer. The primary internal 
 - Cloudflare/IP-based language detection.
 - Guaranteed bus availability, transport price or external supplier booking.
 - A general customer Messenger outside a concrete event.
+- Non-wedding invitation visuals or guest experiences for conferences, summer houses, parties or other categories.
+- Invitation editing, user-selected themes, guest accounts, RSVP collection and automated invitation delivery.
 - Staff editing, approval, user administration or customer communication.
 - AI sending messages as a human or making final commercial decisions.
 

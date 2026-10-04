@@ -3,9 +3,9 @@
 // src/features/events-dashboard-page/EventsDashboardPage.tsx
 
 import { Link } from 'react-router-dom'
+import type { EnquirySummary } from '../../api/endpoints/myEnquiries'
 import PageContainer from '../../shared/components/PageContainer'
 import { useTranslate } from '../../shared/hooks/useTranslate'
-import DashboardNavigation from './DashboardNavigation'
 import { useEventsDashboard } from './EventsDashboardPage.hooks'
 import styles from './EventsDashboardPage.module.css'
 
@@ -13,17 +13,9 @@ export default function EventsDashboardPage() {
 	const { content, language } = useTranslate()
 	const copy = content.eventsDashboard
 	const { enquiries, loadEnquiries, state } = useEventsDashboard()
-	const statusLabels = {
-		SUBMITTED: copy.statusSubmitted,
-		UNDER_REVIEW: copy.statusUnderReview,
-		AWAITING_CUSTOMER: copy.statusAwaitingCustomer,
-		APPROVED: copy.statusApproved,
-		CANCELLED_BY_CUSTOMER: copy.statusCancelled,
-	}
 
 	return (
-		<main className={styles.dashboard}>
-			<DashboardNavigation />
+		<div className={styles.dashboard}>
 			<PageContainer className={styles.content}>
 				<header className={styles.header}>
 					<h1>{copy.title}</h1>
@@ -52,22 +44,43 @@ export default function EventsDashboardPage() {
 				{state === 'loaded' && enquiries.length > 0 && (
 					<section className={styles.list} aria-label={copy.title}>
 						{enquiries.map((enquiry) => (
-							<article className={styles.card} key={enquiry.submission_id}>
-								<div>
-									<h2>{copy.requestTitle}</h2>
-									<p className={styles.submittedAt}>
-										<span>{copy.submittedAt}</span>
-										<time dateTime={enquiry.submitted_at}>{new Intl.DateTimeFormat(language, { dateStyle: 'long', timeStyle: 'short' }).format(new Date(enquiry.submitted_at))}</time>
-									</p>
-								</div>
-								<p className={styles.status}>
-									{statusLabels[enquiry.status]}
-								</p>
-							</article>
+							<EnquiryCard key={enquiry.submission_id} enquiry={enquiry} language={language} copy={copy} />
 						))}
 					</section>
 				)}
 			</PageContainer>
-		</main>
+		</div>
 	)
+}
+
+function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; language: string; copy: ReturnType<typeof useTranslate>['content']['eventsDashboard'] }) {
+	const isClickable = enquiry.status === 'APPROVED'
+	const cardContent = (
+		<>
+			<div className={styles.cardContent}>
+				<p className={`${styles.status} ${isClickable ? styles.approvedStatus : ''}`}>{statusLabelsFor(enquiry.status, copy)}</p>
+				<h2>{copy.requestTitle}</h2>
+				<p className={styles.submittedAt}>
+					<span>{copy.submittedAt}</span>
+					<time dateTime={enquiry.submitted_at}>{new Intl.DateTimeFormat(language, { dateStyle: 'long', timeStyle: 'short' }).format(new Date(enquiry.submitted_at))}</time>
+				</p>
+				{enquiry.customer_question && <p className={styles.customerQuestion}><strong>{copy.customerQuestion}</strong><br />{enquiry.customer_question}</p>}
+			</div>
+			{isClickable && <span className={styles.cardIndicator} aria-hidden="true">→</span>}
+		</>
+	)
+
+	return isClickable
+		? <Link className={`${styles.card} ${styles.clickableCard}`} to={`/dashboard/events/${enquiry.submission_id}`}>{cardContent}</Link>
+		: <article className={styles.card}>{cardContent}</article>
+}
+
+function statusLabelsFor(status: EnquirySummary['status'], copy: ReturnType<typeof useTranslate>['content']['eventsDashboard']) {
+	return {
+		SUBMITTED: copy.statusSubmitted,
+		UNDER_REVIEW: copy.statusUnderReview,
+		AWAITING_CUSTOMER: copy.statusAwaitingCustomer,
+		APPROVED: copy.statusApproved,
+		CANCELLED_BY_CUSTOMER: copy.statusCancelled,
+	}[status]
 }

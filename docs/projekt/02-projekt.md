@@ -50,6 +50,8 @@ Login eller register
 /dashboard/events/{id}
         ↓
 Event-data, Messenger, ændringsgodkendelser og booking
+        ↓
+Gæsteinvitation via `/events/{id}?access={access}`
 ```
 
 ### `/kontakt`
@@ -114,6 +116,12 @@ Når Owner/Johan har godkendt forespørgslen, oprettes eller åbnes kundens konk
 - status for depositum og booking
 
 Messenger er altid knyttet til det konkrete event. Der findes ikke en generel kunde-Messenger uden for et event.
+
+### Gæsteinvitation
+
+Efter Owner/Johans godkendelse kan den primære kontaktperson oprette et skrivebeskyttet invitationslink til venner og familie. Linket åbner `/events/{id}?access={access}` uden gæstekonto og viser kun godkendte, gæstevendte eventoplysninger som tidspunkter, program og relevant planlægning. Siden skal ligne en invitation og ikke et dashboard.
+
+Alle invitationskategorier deler samme sidestruktur. Eventets kategori vælger sidens visuelle tema; brugere kan ikke redigere invitationen eller vælge et andet tema. Bryllup er den eneste kategori med færdige visuals i MVP'en. Arkitekturen skal gøre senere temaer for eksempelvis konference og sommerhus mulige uden separate sideimplementeringer.
 
 ## 4. Roller og adgang
 
@@ -253,6 +261,7 @@ Depositum er kun simuleret i skoleprojektet. Knappen `Betal depositum` viser `De
 - forespørgselsoversigt under `/dashboard/events/`
 - Owner-gennemgang, AI-opsummering, usikkerheder og afklaringer
 - godkendt event-platform under `/dashboard/events/{id}`
+- skrivebeskyttet gæsteinvitation via et event-scoped adgangslink
 - event-scoped Messenger
 - kontaktpersoner og roller
 - field-level ændringsforslag og bilateral godkendelse
@@ -273,6 +282,7 @@ Depositum er kun simuleret i skoleprojektet. Knappen `Betal depositum` viser `De
 - Cloudflare/IP-baseret sprogdetektion
 - komplet erstatning af Squarespace, Trello eller økonomisystem
 - fuld understøttelse af fest, jagt, konference eller julemarked
+- invitationstemaer og gæsteoplevelser for andre kategorier end bryllup
 - garanteret busbooking eller ekstern leverandørbooking
 - produktionsgodkendelse af raw sensitive data i localStorage
 

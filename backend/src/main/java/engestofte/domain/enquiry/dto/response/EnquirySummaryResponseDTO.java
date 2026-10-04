@@ -18,7 +18,8 @@ public class EnquirySummaryResponseDTO {
 	//			"submission_id": "c02b8f4d-1c7f-4c15-9ee2-b26a8c998fc1",
 	//			"language": "da",
 	//			"status": "SUBMITTED",
-	//			"submitted_at": "2026-10-04T12:30:00Z"
+	//			"submitted_at": "2026-10-04T12:30:00Z",
+	//			"customer_question": null
 	//		}
 	//
 	// ____________________
@@ -38,4 +39,7 @@ public class EnquirySummaryResponseDTO {
 
 	@JsonProperty("submitted_at")
 	private Instant submittedAt;
+
+	@JsonProperty("customer_question")
+	private String customerQuestion;
 }
