@@ -2,6 +2,7 @@ package engestofte.domain.enquiry.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import engestofte.domain.enquiry.enums.EnquiryStatus;
+import engestofte.domain.event.entity.Event;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +67,9 @@ public class WeddingEnquiry {
 	@Column(name = "created_at", nullable = false)
 	private Instant createdAt;
 
+	@OneToOne(mappedBy = "weddingEnquiry", fetch = FetchType.LAZY)
+	private Event event;
+
 	// ______ | NESTED FIELDS | ________________________________________________________________________________________
 
 	public static class Fields {
@@ -78,5 +82,6 @@ public class WeddingEnquiry {
 		public static final String CUSTOMER_QUESTION = "customerQuestion";
 		public static final String STATUS = "status";
 		public static final String CREATED_AT = "createdAt";
+		public static final String EVENT = "event";
 	}
 }

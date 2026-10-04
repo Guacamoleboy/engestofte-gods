@@ -90,7 +90,17 @@
 .formSection + .formSection { margin-top: var(--engestofte-space-6); border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-5); }
 .formSection label { display: block; margin: var(--engestofte-space-4) 0 0.4rem; color: var(--engestofte-heading); font-weight: 650; }
 .formSection textarea { width: 100%; min-height: 8rem; resize: vertical; border: 1px solid var(--engestofte-border); padding: 0.75rem; color: var(--engestofte-body); font: inherit; line-height: 1.5; }
+.reviewSidebar > .panel > label, .messageComposer label, .closeForm label { display: block; margin: var(--engestofte-space-4) 0 0.4rem; color: var(--engestofte-heading); font-weight: 650; }
+.reviewSidebar > .panel > textarea, .messageComposer textarea, .closeForm textarea { width: 100%; min-height: 6rem; resize: vertical; border: 1px solid var(--engestofte-border); padding: 0.75rem; color: var(--engestofte-body); font: inherit; line-height: 1.5; }
 .formSection textarea:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+.reviewSidebar > .panel > textarea:focus-visible, .messageComposer textarea:focus-visible, .closeForm textarea:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+.messagePanel { display: flex; flex-direction: column; min-height: 24rem; }
+.messages { display: grid; align-content: start; gap: var(--engestofte-space-3); max-height: 24rem; overflow-y: auto; margin: var(--engestofte-space-4) 0; }
+.message { border: 1px solid var(--engestofte-border); padding: 0.7rem 0.85rem; background: var(--engestofte-surface); line-height: 1.55; overflow-wrap: anywhere; white-space: pre-wrap; }
+.message > p { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 0.75rem; margin: 0 0 0.35rem; color: var(--engestofte-muted); font-size: 0.78rem; }
+.messageComposer, .closeForm { border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-3); }
+.closeForm { margin-top: var(--engestofte-space-4); }
+.closeForm h3 { margin: 0; color: var(--engestofte-heading); font-size: 1rem; }
 .error { color: #8d2525; }
 .success { color: var(--engestofte-green-dark); }
 

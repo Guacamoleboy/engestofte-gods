@@ -11,7 +11,7 @@ import styles from './OwnerRequestsPage.module.css'
 export default function OwnerRequestPage() {
 	const { content, language } = useTranslate()
 	const copy = content.ownerReview
-	const { customerQuestion, internalNote, loadReview, review, saveReview, saveState, setCustomerQuestion, setInternalNote, state } = useOwnerEnquiryReview()
+	const { approval, approvalState, approve, closeReason, closeRequest, closeState, customerNote, customerQuestion, internalNote, loadReview, message, messageState, messages, review, saveReview, saveState, sendMessage, setCloseReason, setCustomerNote, setCustomerQuestion, setInternalNote, setMessage, state } = useOwnerEnquiryReview()
 
 	if (state === 'loading') return <main className={styles.page}><PageContainer className={styles.content}><p role="status">{copy.loading}</p></PageContainer></main>
 	if (state === 'error' || !review) {
@@ -24,7 +24,33 @@ export default function OwnerRequestPage() {
 		SUBMITTED: copy.statusSubmitted,
 		UNDER_REVIEW: copy.statusUnderReview,
 		AWAITING_CUSTOMER: copy.statusAwaitingCustomer,
+		FOLLOW_UP_REQUIRED: copy.statusFollowUpRequired,
+		OWNER_FOLLOW_UP_REQUIRED: copy.statusOwnerFollowUpRequired,
+		APPROVED: copy.statusApproved,
+		CLOSED_BY_OWNER: copy.statusClosed,
+		CLOSED_BY_CUSTOMER: copy.statusClosed,
+		CANCELLED_BY_CUSTOMER: copy.statusClosed,
 	}
+	const hasCompleteAssessment = Boolean(assessment
+		&& Array.isArray(assessment.missing_information)
+		&& Array.isArray(assessment.conflicts))
+	const approvalBlocked = review.status === 'AWAITING_CUSTOMER'
+		|| review.status === 'FOLLOW_UP_REQUIRED'
+		|| Boolean(review.event_approved_at)
+		|| review.status === 'CLOSED_BY_OWNER'
+		|| review.status === 'CLOSED_BY_CUSTOMER'
+		|| review.status === 'CANCELLED_BY_CUSTOMER'
+		|| !review.draft.isComplete
+		|| !review.draft.customerName?.trim()
+		|| !review.draft.expectedGuestCount
+		|| review.draft.expectedGuestCount < 1
+		|| review.draft.expectedGuestCount > 150
+		|| !conversation.length
+		|| !hasCompleteAssessment
+		|| Boolean(assessment?.missing_information.length)
+		|| Boolean(assessment?.conflicts.length)
+	const canApprove = !approvalBlocked && !approval && saveState !== 'saving'
+	const isClosed = review.status === 'CLOSED_BY_OWNER' || review.status === 'CLOSED_BY_CUSTOMER' || review.status === 'CANCELLED_BY_CUSTOMER'
 
 	return (
 		<main className={styles.page}>
@@ -69,18 +95,51 @@ export default function OwnerRequestPage() {
 								<h2>{copy.internalNoteTitle}</h2>
 								<p>{copy.internalNoteDescription}</p>
 								<label htmlFor="internal-note">{copy.internalNoteLabel}</label>
-								<textarea id="internal-note" value={internalNote} maxLength={10000} onChange={(event) => setInternalNote(event.currentTarget.value)} />
+								<textarea id="internal-note" value={internalNote} maxLength={10000} disabled={Boolean(approval) || Boolean(review.event_approved_at) || isClosed} onChange={(event) => setInternalNote(event.currentTarget.value)} />
 							</section>
-							<section className={styles.formSection}>
+							{!review.event_id && <section className={styles.formSection}>
 								<h2>{copy.customerQuestionTitle}</h2>
 								<p>{copy.customerQuestionDescription}</p>
 								<label htmlFor="customer-question">{copy.customerQuestionLabel}</label>
-								<textarea id="customer-question" value={customerQuestion} maxLength={1500} onChange={(event) => setCustomerQuestion(event.currentTarget.value)} />
-							</section>
+								<textarea id="customer-question" value={customerQuestion} maxLength={1500} disabled={isClosed} onChange={(event) => setCustomerQuestion(event.currentTarget.value)} />
+							</section>}
 							{saveState === 'error' && <p className={styles.error} role="alert">{copy.saveError}</p>}
 							{saveState === 'saved' && <p className={styles.success} role="status">{copy.saved}</p>}
-							<button className={styles.action} type="submit" disabled={saveState === 'saving'}>{saveState === 'saving' ? copy.saving : copy.save}</button>
+							<button className={styles.action} type="submit" disabled={saveState === 'saving' || Boolean(approval) || Boolean(review.event_approved_at) || isClosed}>{saveState === 'saving' ? copy.saving : copy.save}</button>
 						</form>
+						<section className={`${styles.panel} ${styles.messagePanel}`}>
+							<h2>{copy.threadTitle}</h2>
+							<div className={styles.messages} aria-live="polite">
+								{messages.map((item) => <article className={styles.message} key={item.id}><p><strong>{item.sender_type === 'OWNER' ? copy.ownerLabel : copy.customerLabel}</strong><time dateTime={item.created_at}>{new Intl.DateTimeFormat(language, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.created_at))}</time></p><div>{item.content}</div></article>)}
+								{messages.length === 0 && <p>{copy.emptyThread}</p>}
+							</div>
+							{!isClosed && <form className={styles.messageComposer} onSubmit={sendMessage}>
+								<label htmlFor="owner-message">{copy.messageLabel}</label>
+								<textarea id="owner-message" value={message} maxLength={5000} onChange={(event) => setMessage(event.currentTarget.value)} />
+								{messageState === 'error' && <p className={styles.error} role="alert">{copy.messageError}</p>}
+								<button className={styles.action} type="submit" disabled={messageState === 'sending' || !message.trim()}>{messageState === 'sending' ? copy.messageSending : copy.sendMessage}</button>
+							</form>}
+							{review.status === 'OWNER_FOLLOW_UP_REQUIRED' && !review.event_approved_at && <form className={styles.closeForm} onSubmit={closeRequest}>
+								<h3>{copy.closeTitle}</h3>
+								<label htmlFor="close-reason">{copy.closeReasonLabel}</label>
+								<textarea id="close-reason" value={closeReason} maxLength={5000} onChange={(event) => setCloseReason(event.currentTarget.value)} />
+								{closeState === 'error' && <p className={styles.error} role="alert">{copy.closeError}</p>}
+								<button className={styles.action} type="submit" disabled={closeState === 'closing' || !closeReason.trim()}>{closeState === 'closing' ? copy.closing : copy.closeAction}</button>
+							</form>}
+							{closeState === 'closed' && <p className={styles.success} role="status">{copy.closedNotice}</p>}
+						</section>
+						<section className={styles.panel}>
+							<h2>{copy.approvalTitle}</h2>
+							<p>{copy.approvalDescription}</p>
+							<label htmlFor="customer-note">{copy.customerNoteLabel}</label>
+							<textarea id="customer-note" value={customerNote} maxLength={10000} disabled={Boolean(approval) || isClosed} onChange={(event) => setCustomerNote(event.currentTarget.value)} />
+							{approvalBlocked && !approval && !isClosed && !review.event_approved_at && <p>{copy.approvalBlocked}</p>}
+							{approvalState === 'error' && <p className={styles.error} role="alert">{copy.approvalError}</p>}
+							{approval && <p className={styles.success} role="status">{copy.eventCreated.replace('{id}', String(approval.event_id))}</p>}
+							<button className={styles.action} type="button" disabled={!canApprove || approvalState === 'approving' || isClosed} onClick={() => void approve()}>
+								{approvalState === 'approving' ? copy.approving : copy.approvalAction}
+							</button>
+						</section>
 					</aside>
 				</div>
 			</PageContainer>

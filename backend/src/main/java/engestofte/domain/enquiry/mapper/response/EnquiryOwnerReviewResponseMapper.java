@@ -23,6 +23,8 @@ public class EnquiryOwnerReviewResponseMapper {
 		response.setSubmissionId(enquiry.getSubmissionId());
 		response.setLanguage(enquiry.getLanguage());
 		response.setStatus(enquiry.getStatus());
+		response.setEventId(enquiry.getEvent() == null ? null : enquiry.getEvent().getId());
+		response.setEventApprovedAt(enquiry.getEvent() == null ? null : enquiry.getEvent().getApprovedAt());
 		response.setSubmittedAt(enquiry.getCreatedAt());
 		response.setDraft(enquiry.getRawDraft());
 		response.setAiAssessment(enquiry.getAiAssessment());

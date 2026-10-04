@@ -18,6 +18,7 @@ public class EnquirySummaryResponseMapper {
 	private static EnquirySummaryResponseDTO toDTO(WeddingEnquiry enquiry) {
 		EnquirySummaryResponseDTO response = new EnquirySummaryResponseDTO();
 		response.setSubmissionId(enquiry.getSubmissionId());
+		response.setEventId(enquiry.getEvent() == null ? null : enquiry.getEvent().getId());
 		response.setLanguage(enquiry.getLanguage());
 		response.setStatus(enquiry.getStatus());
 		response.setSubmittedAt(enquiry.getCreatedAt());

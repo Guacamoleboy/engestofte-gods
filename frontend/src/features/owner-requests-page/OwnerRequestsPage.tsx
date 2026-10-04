@@ -16,6 +16,9 @@ export default function OwnerRequestsPage() {
 		SUBMITTED: copy.statusSubmitted,
 		UNDER_REVIEW: copy.statusUnderReview,
 		AWAITING_CUSTOMER: copy.statusAwaitingCustomer,
+		FOLLOW_UP_REQUIRED: copy.statusFollowUpRequired,
+		OWNER_FOLLOW_UP_REQUIRED: copy.statusOwnerFollowUpRequired,
+		APPROVED: copy.statusApproved,
 	}
 
 	return (

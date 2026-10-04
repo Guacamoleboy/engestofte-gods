@@ -20,6 +20,7 @@ public class EnquiryOwnerReviewResponseDTO {
 	//			"submission_id": "c02b8f4d-1c7f-4c15-9ee2-b26a8c998fc1",
 	//			"language": "da",
 	//			"status": "UNDER_REVIEW",
+	//			"event_id": null,
 	//			"submitted_at": "2026-10-04T12:30:00Z",
 	//			"draft": { "conversation": [] },
 	//			"ai_assessment": { "summary": "..." },
@@ -44,6 +45,12 @@ public class EnquiryOwnerReviewResponseDTO {
 
 	@JsonProperty("status")
 	private EnquiryStatus status;
+
+	@JsonProperty("event_id")
+	private Integer eventId;
+
+	@JsonProperty("event_approved_at")
+	private Instant eventApprovedAt;
 
 	@JsonProperty("submitted_at")
 	private Instant submittedAt;

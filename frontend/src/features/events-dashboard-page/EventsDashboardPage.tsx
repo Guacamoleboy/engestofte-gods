@@ -54,7 +54,7 @@ export default function EventsDashboardPage() {
 }
 
 function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; language: string; copy: ReturnType<typeof useTranslate>['content']['eventsDashboard'] }) {
-	const isClickable = enquiry.status === 'APPROVED'
+	const isClickable = enquiry.event_id !== null
 	const cardContent = (
 		<>
 			<div className={styles.cardContent}>
@@ -71,7 +71,7 @@ function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; lan
 	)
 
 	return isClickable
-		? <Link className={`${styles.card} ${styles.clickableCard}`} to={`/dashboard/events/${enquiry.submission_id}`}>{cardContent}</Link>
+		? <Link className={`${styles.card} ${styles.clickableCard}`} to={`/dashboard/events/${enquiry.event_id}`}>{cardContent}</Link>
 		: <article className={styles.card}>{cardContent}</article>
 }
 
@@ -82,5 +82,9 @@ function statusLabelsFor(status: EnquirySummary['status'], copy: ReturnType<type
 		AWAITING_CUSTOMER: copy.statusAwaitingCustomer,
 		APPROVED: copy.statusApproved,
 		CANCELLED_BY_CUSTOMER: copy.statusCancelled,
+		FOLLOW_UP_REQUIRED: copy.statusFollowUpRequired,
+		OWNER_FOLLOW_UP_REQUIRED: copy.statusOwnerFollowUpRequired,
+		CLOSED_BY_OWNER: copy.statusClosed,
+		CLOSED_BY_CUSTOMER: copy.statusClosed,
 	}[status]
 }

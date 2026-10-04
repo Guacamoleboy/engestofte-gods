@@ -8,9 +8,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.put;
+import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class EnquiryRouting {
 
@@ -32,6 +32,10 @@ public class EnquiryRouting {
 			get("/owner", enquiryController::listForOwnerReview);
 			get("/owner/{id}", enquiryController::findOwnerReview);
 			put("/owner/{id}", enquiryController::saveOwnerReview);
+			post("/owner/{id}/approve", enquiryController::approveOwnerEnquiry);
+			get("/owner/{id}/messages", enquiryController::findOwnerMessages);
+			post("/owner/{id}/messages", enquiryController::sendOwnerMessage);
+			post("/owner/{id}/close", enquiryController::closeByOwner);
 			post("", enquiryController::submit);
 		});
 	}

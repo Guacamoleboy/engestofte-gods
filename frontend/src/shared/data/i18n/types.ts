@@ -47,6 +47,9 @@ export type TranslationContent = {
 		statusAwaitingCustomer: string
 		statusApproved: string
 		statusCancelled: string
+		statusFollowUpRequired: string
+		statusOwnerFollowUpRequired: string
+		statusClosed: string
 		customerQuestion: string
 	}
 	ownerReview: {
@@ -64,6 +67,11 @@ export type TranslationContent = {
 		statusSubmitted: string
 		statusUnderReview: string
 		statusAwaitingCustomer: string
+		statusApproved: string
+		statusCancelled: string
+		statusFollowUpRequired: string
+		statusOwnerFollowUpRequired: string
+		statusClosed: string
 		backToRequests: string
 		assessmentTitle: string
 		assessmentUnavailable: string
@@ -84,6 +92,60 @@ export type TranslationContent = {
 		saveError: string
 		saved: string
 		noItems: string
+		approvalTitle: string
+		approvalDescription: string
+		customerNoteLabel: string
+		approvalAction: string
+		approving: string
+		approvalBlocked: string
+		approvalError: string
+		eventCreated: string
+		threadTitle: string
+		emptyThread: string
+		ownerLabel: string
+		messageLabel: string
+		sendMessage: string
+		messageSending: string
+		messageError: string
+		closeTitle: string
+		closeReasonLabel: string
+		closeAction: string
+		closing: string
+		closeError: string
+		closedNotice: string
+	}
+	eventPage: {
+		loading: string
+		unauthenticated: string
+		error: string
+		retry: string
+		back: string
+		eyebrow: string
+		title: string
+		description: string
+		guestCount: string
+		approvedAt: string
+		receivedAt: string
+		detailsTitle: string
+		noteTitle: string
+		noNote: string
+		conversationTitle: string
+		noMessages: string
+		ownerLabel: string
+		customerLabel: string
+		messageLabel: string
+		sendMessage: string
+		sending: string
+		messageError: string
+		waitingForOwner: string
+		closeRequest: string
+		closeConfirm: string
+		closing: string
+		closeError: string
+		statusFollowUpRequired: string
+		statusOwnerFollowUpRequired: string
+		statusClosed: string
+		statusApproved: string
 	}
 	aiFlow: {
 		introMessage: string
