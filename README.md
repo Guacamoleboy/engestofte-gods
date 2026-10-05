@@ -21,13 +21,14 @@ Contact Page to handle customer requests without having to spam call Johan with 
 
 AI Customer interaction feed with knowledge provided and limitations + personalized yet professional feedback and results.
 
-![AI-Flow 2](docs/display/display-3.png)
+![AI-Flow 2](docs/display/display-6.png)
 
-Final Approval in order to "collect" the new customer requests and possible business in the future.\
-**COMING SOON**
+Pre-approval steps. Seperate dashboard. Once it has been accepted by an owner - it'll spawn an event. Untill then it awaits approval.
+![Customer Dashboard](docs/display/display-7.png)
+![Customer Dashboard](docs/display/display-8.png)
 
-Dashboard Visuals - Same for alle roles - Navbar specific items per role though.\
-**COMING SOON**
+Event changes approval system including role based navbar to allow Johan to implement Source of Truth with Trello along with resource tracking.
+![Customer Dashboard](docs/display/display-4.png)
 
 ---
 
