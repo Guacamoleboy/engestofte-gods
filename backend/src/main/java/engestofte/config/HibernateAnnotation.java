@@ -5,6 +5,8 @@ import engestofte.domain.enquiry.entity.EnquiryContact;
 import engestofte.domain.enquiry.entity.WeddingEnquiry;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.entity.EventMessage;
+import engestofte.domain.event.entity.ChangeProposal;
+import engestofte.domain.event.entity.ChangeApproval;
 import engestofte.domain.role.entity.Role;
 import engestofte.domain.useraccount.entity.UserAccount;
 import org.hibernate.cfg.Configuration;
@@ -23,6 +25,8 @@ public class HibernateAnnotation {
 		configuration.addAnnotatedClass(EnquiryContact.class);
 		configuration.addAnnotatedClass(Event.class);
 		configuration.addAnnotatedClass(EventMessage.class);
+		configuration.addAnnotatedClass(ChangeProposal.class);
+		configuration.addAnnotatedClass(ChangeApproval.class);
     }
 
 }

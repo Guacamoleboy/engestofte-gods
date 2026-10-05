@@ -31,6 +31,9 @@ public class EventMessageResponseDTO {
 	@JsonProperty("sender_name")
 	private String senderName;
 
+	@JsonProperty("is_mine")
+	private boolean mine;
+
 	@JsonProperty("content")
 	private String content;
 

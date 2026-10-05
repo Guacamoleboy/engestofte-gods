@@ -19,13 +19,14 @@ public class EventCustomerResponseDTO {
 	//		{
 	//			"event_id": 18,
 	//			"category": "WEDDING",
-	//			"event_data": { "customer_name": "Alex", "expected_guest_count": 60, "requested_date": "June 2027" },
+	//			"event_data": { "event_name": "Bryllupsevent", "expected_guest_count": 60, "requested_date": "June 2027" },
 	//			"status": "APPROVED",
 	//			"approved_at": "2026-10-04T12:30:00Z",
 	//			"customer_note": "We look forward to helping with your wedding.",
 	//			"created_at": "2026-10-04T12:30:00Z",
 	//			"customer_email_redacted": "ale....@example.com",
-	//			"is_primary_contact": true
+	//			"is_primary_contact": true,
+	//			"primary_contact_name": "Alex Morgan"
 	//		}
 	//
 	// ____________________
@@ -60,4 +61,7 @@ public class EventCustomerResponseDTO {
 
 	@JsonProperty("is_primary_contact")
 	private boolean primaryContact;
+
+	@JsonProperty("primary_contact_name")
+	private String primaryContactName;
 }

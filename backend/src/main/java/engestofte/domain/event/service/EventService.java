@@ -2,6 +2,13 @@ package engestofte.domain.event.service;
 
 import engestofte.domain.event.dao.EventDAO;
 import engestofte.domain.event.dao.EventMessageDAO;
+import engestofte.domain.event.dao.ChangeProposalDAO;
+import engestofte.domain.event.changeproposal.ChangeApprovalDecision;
+import engestofte.domain.event.changeproposal.ChangeApprovalParty;
+import engestofte.domain.event.changeproposal.ChangeProposalStatus;
+import engestofte.domain.event.dto.response.ChangeProposalResponseDTO;
+import engestofte.domain.event.entity.ChangeProposal;
+import engestofte.domain.event.mapper.response.ChangeProposalResponseMapper;
 import engestofte.domain.event.dto.response.EventCustomerResponseDTO;
 import engestofte.domain.event.dto.response.EventMessageResponseDTO;
 import engestofte.domain.event.dto.response.EventOwnerResponseDTO;
@@ -25,18 +32,20 @@ public class EventService extends EntityManagerService<Event> {
 	private final EventDAO eventDAO;
 	private final EventMessageDAO eventMessageDAO;
 	private final UserAccountDAO userAccountDAO;
+	private final ChangeProposalDAO changeProposalDAO;
 
 	// _________________________________________________________________________________________________________________
 
 	public EventService(EntityManager entityManager) {
-		this(new EventDAO(entityManager), new EventMessageDAO(entityManager), new UserAccountDAO(entityManager));
+		this(new EventDAO(entityManager), new EventMessageDAO(entityManager), new UserAccountDAO(entityManager), new ChangeProposalDAO(entityManager));
 	}
 
-	private EventService(EventDAO eventDAO, EventMessageDAO eventMessageDAO, UserAccountDAO userAccountDAO) {
+	private EventService(EventDAO eventDAO, EventMessageDAO eventMessageDAO, UserAccountDAO userAccountDAO, ChangeProposalDAO changeProposalDAO) {
 		super(eventDAO, Event.class);
 		this.eventDAO = eventDAO;
 		this.eventMessageDAO = eventMessageDAO;
 		this.userAccountDAO = userAccountDAO;
+		this.changeProposalDAO = changeProposalDAO;
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -46,6 +55,95 @@ public class EventService extends EntityManagerService<Event> {
 		Event event = eventDAO.findForAccount(eventId, accountId);
 		if (event == null) throw new ApiException(404, "Event not found");
 		return EventResponseMapper.toCustomerDTO(event, eventDAO.findPrimaryContactForEvent(eventId), eventDAO.isPrimaryContact(eventId, accountId));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public java.util.List<ChangeProposalResponseDTO> findChangeProposalsForAccount(Integer eventId, Integer accountId) {
+		Event event = findEventForAccount(eventId, accountId);
+		return ChangeProposalResponseMapper.toDTOs(changeProposalDAO.findForEvent(event.getId()));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public java.util.List<ChangeProposalResponseDTO> findChangeProposalsForOwner(Integer eventId) {
+		Event event = findApprovedEvent(eventId);
+		return ChangeProposalResponseMapper.toDTOs(changeProposalDAO.findForEvent(event.getId()));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public ChangeProposalResponseDTO proposeEventChange(Integer eventId, Integer accountId, String fieldName, String newValue, boolean owner) {
+		Event event = findApprovedEvent(eventId);
+		if (!owner && !eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can propose event changes");
+		if (event.getStatus() != EventStatus.APPROVED && event.getStatus() != EventStatus.AWAITING_APPROVAL) throw new ApiException(409, "This event cannot accept changes in its current state");
+		if (newValue == null || newValue.isBlank()) throw new ApiException(400, "A new value is required");
+		String normalized = newValue.trim();
+		String oldValue = currentEventFieldValue(event, fieldName);
+		if (oldValue == null) throw new ApiException(400, "This event field cannot be changed");
+		if (("customer_name".equals(fieldName) || "event_name".equals(fieldName)) && normalized.length() > 160) throw new ApiException(400, "The name is too long");
+		if ("expected_guest_count".equals(fieldName)) {
+			try {
+				int guestCount = Integer.parseInt(normalized);
+				if (guestCount < 1 || guestCount > 5000) throw new NumberFormatException();
+			} catch (NumberFormatException exception) {
+				throw new ApiException(400, "Enter a valid guest count");
+			}
+		}
+		if ("requested_date".equals(fieldName) && normalized.length() > 1000) throw new ApiException(400, "The requested date is too long");
+		if (oldValue.equals(normalized)) throw new ApiException(409, "The proposed value is already approved");
+		UserAccount proposer = userAccountDAO.getById(accountId);
+		if (proposer == null) throw new ApiException(401, "Authenticated account not found");
+		ChangeApprovalParty party = owner ? ChangeApprovalParty.OWNER : ChangeApprovalParty.CUSTOMER;
+		ChangeProposal proposal = changeProposalDAO.createProposal(event, proposer, party, fieldName, oldValue, normalized);
+		return ChangeProposalResponseMapper.toDTO(proposal);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static String currentEventFieldValue(Event event, String fieldName) {
+		return switch (fieldName == null ? "" : fieldName) {
+			case "customer_name" -> event.getEventData().path("customerName").asText(null);
+			case "event_name" -> {
+				String name = event.getEventData().path("eventName").asText();
+				yield name.isBlank() ? "Bryllupsevent" : name;
+			}
+			case "expected_guest_count" -> event.getEventData().path("expectedGuestCount").isNumber()
+					? event.getEventData().path("expectedGuestCount").asText()
+					: null;
+			case "requested_date" -> {
+				com.fasterxml.jackson.databind.JsonNode conversation = event.getEventData().path("conversation");
+				if (!conversation.isArray() || conversation.size() <= 1) yield null;
+				String value = conversation.get(1).path("answer").asText();
+				yield value.isBlank() ? null : value;
+			}
+			default -> null;
+		};
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public ChangeProposalResponseDTO decideChangeProposal(Integer eventId, Integer proposalId, Integer accountId, ChangeApprovalDecision decision, String explanation, boolean owner) {
+		Event event = owner ? findApprovedEvent(eventId) : findEventForAccount(eventId, accountId);
+		if (isClosed(event)) throw new ApiException(409, "A closed event cannot resolve change proposals");
+		if (!owner && !eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can decide event changes");
+		if (decision == null) throw new ApiException(400, "An approval decision is required");
+		ChangeProposal proposal = changeProposalDAO.findForEvent(event.getId()).stream()
+			.filter(item -> item.getId().equals(proposalId))
+			.findFirst()
+			.orElseThrow(() -> new ApiException(404, "Change proposal not found"));
+		ChangeApprovalParty party = owner ? ChangeApprovalParty.OWNER : ChangeApprovalParty.CUSTOMER;
+		if (proposal.getProposerParty() == party) throw new ApiException(403, "The proposing party cannot approve its own change");
+		if (proposal.getStatus() != ChangeProposalStatus.PENDING) throw new ApiException(409, "This change proposal is already resolved");
+		String normalizedExplanation = explanation == null ? null : explanation.trim();
+		if (decision == ChangeApprovalDecision.REJECTED && (normalizedExplanation == null || normalizedExplanation.isBlank())) throw new ApiException(400, "A rejection explanation is required");
+		if (normalizedExplanation != null && normalizedExplanation.length() > 1000) throw new ApiException(400, "The explanation is too long");
+		UserAccount actor = userAccountDAO.getById(accountId);
+		if (actor == null) throw new ApiException(401, "Authenticated account not found");
+		ChangeProposal decided = changeProposalDAO.recordDecision(proposalId, actor, party, decision, normalizedExplanation);
+		if (decided == null) throw new ApiException(404, "Change proposal not found");
+		if (decided.getStatus() == ChangeProposalStatus.PENDING) throw new ApiException(409, "This party has already decided this proposal");
+		return ChangeProposalResponseMapper.toDTO(decided);
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -76,50 +174,74 @@ public class EventService extends EntityManagerService<Event> {
 
 	// _________________________________________________________________________________________________________________
 
-	public java.util.List<EventMessageResponseDTO> findMessagesForOwner(Integer eventId) {
+	public java.util.List<EventMessageResponseDTO> findMessagesForOwner(Integer eventId, Integer ownerAccountId) {
 		Event event = findApprovedEvent(eventId);
-		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()));
+		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()), ownerAccountId);
 	}
 
 	// _________________________________________________________________________________________________________________
 
 	public EventMessageResponseDTO sendOwnerMessage(Integer eventId, Integer ownerAccountId, String content) {
 		Event event = findApprovedEvent(eventId);
+		if (isClosed(event)) throw new ApiException(409, "A closed event cannot receive messages");
 		EventMessage message = createMessage(ownerAccountId, EventMessageSender.OWNER, content);
-		eventDAO.addMessage(event, message, EventStatus.APPROVED, EnquiryStatus.APPROVED);
-		return EventMessageResponseMapper.toDTO(message);
+		EventStatus eventStatus = changeProposalDAO.hasPendingForEvent(eventId) ? EventStatus.AWAITING_APPROVAL : EventStatus.APPROVED;
+		eventDAO.addMessage(event, message, eventStatus, EnquiryStatus.APPROVED);
+		return EventMessageResponseMapper.toDTO(message, ownerAccountId);
 	}
 
 	// _________________________________________________________________________________________________________________
 
 	public java.util.List<EventMessageResponseDTO> findMessagesForAccount(Integer eventId, Integer accountId) {
 		Event event = findEventForAccount(eventId, accountId);
-		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()));
+		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()), accountId);
 	}
 
 	// _________________________________________________________________________________________________________________
 
 	public EventMessageResponseDTO sendCustomerMessage(Integer eventId, Integer accountId, String content) {
 		Event event = findEventForAccount(eventId, accountId);
-		if (event.getApprovedAt() == null && (event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER)) {
-			throw new ApiException(409, "A closed request cannot receive messages");
-		}
+		if (isClosed(event)) throw new ApiException(409, "A closed event cannot receive messages");
 		EventMessage message = createMessage(accountId, EventMessageSender.CUSTOMER, content);
-		EventStatus eventStatus = event.getApprovedAt() == null ? EventStatus.OWNER_FOLLOW_UP_REQUIRED : EventStatus.APPROVED;
+		EventStatus eventStatus = event.getApprovedAt() == null
+				? EventStatus.OWNER_FOLLOW_UP_REQUIRED
+				: changeProposalDAO.hasPendingForEvent(eventId) ? EventStatus.AWAITING_APPROVAL : EventStatus.APPROVED;
 		EnquiryStatus enquiryStatus = event.getApprovedAt() == null ? EnquiryStatus.OWNER_FOLLOW_UP_REQUIRED : EnquiryStatus.APPROVED;
 		eventDAO.addMessage(event, message, eventStatus, enquiryStatus);
-		return EventMessageResponseMapper.toDTO(message);
+		return EventMessageResponseMapper.toDTO(message, accountId);
 	}
 
 	// _________________________________________________________________________________________________________________
 
 	public EventCustomerResponseDTO closeByCustomer(Integer eventId, Integer accountId) {
 		Event event = findEventForAccount(eventId, accountId);
-		if (event.getApprovedAt() != null || event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER) {
-			throw new ApiException(409, "Only an open, unapproved request can be closed");
-		}
+		if (!eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can remove this event");
+		ensureEventCanBeClosed(event);
 		eventDAO.close(event, EventStatus.CLOSED_BY_CUSTOMER, EnquiryStatus.CLOSED_BY_CUSTOMER);
-		return EventResponseMapper.toCustomerDTO(eventDAO.findForAccount(eventId, accountId));
+		return EventResponseMapper.toCustomerDTO(eventDAO.findForAccount(eventId, accountId), eventDAO.findPrimaryContactForEvent(eventId), true);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void closeByOwner(Integer eventId) {
+		Event event = findApprovedEvent(eventId);
+		ensureEventCanBeClosed(event);
+		eventDAO.close(event, EventStatus.CLOSED_BY_OWNER, EnquiryStatus.CLOSED_BY_OWNER);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static void ensureEventCanBeClosed(Event event) {
+		if (isClosed(event)) {
+			throw new ApiException(409, "This event is already closed");
+		}
+		if (event.getStatus() == EventStatus.BOOKED) throw new ApiException(409, "A booked event cannot be removed");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static boolean isClosed(Event event) {
+		return event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER || event.getStatus() == EventStatus.CANCELLED_BY_CUSTOMER;
 	}
 
 	// _________________________________________________________________________________________________________________
