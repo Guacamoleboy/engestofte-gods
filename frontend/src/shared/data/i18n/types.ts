@@ -192,6 +192,11 @@ export type TranslationContent = {
 		messageError: string
 		statusApproved: string
 		staffReadOnly: string
+		contactEmailLabel: string
+		addContact: string
+		contactAdding: string
+		contactAdded: string
+		contactError: string
 	}
 	aiFlow: {
 		introMessage: string

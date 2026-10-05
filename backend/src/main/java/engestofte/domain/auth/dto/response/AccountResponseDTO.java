@@ -14,7 +14,7 @@ public class AccountResponseDTO {
 	//
 	//		{
 	//			"full_name": "Alex Morgan",
-	//			"email": "alex@example.com",
+	//			"email_redacted": "ale....@example.com",
 	//			"role": "CUSTOMER"
 	//		}
 	//
@@ -27,8 +27,8 @@ public class AccountResponseDTO {
 	@JsonProperty("full_name")
 	private String fullName;
 
-	@JsonProperty("email")
-	private String email;
+	@JsonProperty("email_redacted")
+	private String emailRedacted;
 
 	@JsonProperty("role")
 	private RoleName role;

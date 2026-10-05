@@ -45,7 +45,18 @@ public class EventService extends EntityManagerService<Event> {
 		if (accountId == null) throw new ApiException(401, "Authenticated account not found");
 		Event event = eventDAO.findForAccount(eventId, accountId);
 		if (event == null) throw new ApiException(404, "Event not found");
-		return EventResponseMapper.toCustomerDTO(event);
+		return EventResponseMapper.toCustomerDTO(event, eventDAO.findPrimaryContactForEvent(eventId), eventDAO.isPrimaryContact(eventId, accountId));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void addContactPerson(Integer eventId, Integer accountId, String email, boolean owner) {
+		Event event = findApprovedEvent(eventId);
+		if (!owner && !eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can manage event contacts");
+		if (email == null || !email.trim().matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) throw new ApiException(400, "A valid email address is required");
+		UserAccount contact = userAccountDAO.findByEmailIgnoreCase(email.trim());
+		if (contact == null) throw new ApiException(404, "No customer account exists for this email address");
+		eventDAO.addContactPerson(event.getId(), contact);
 	}
 
 	// _________________________________________________________________________________________________________________

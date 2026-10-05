@@ -4,7 +4,7 @@
 
 **Blocked by:** 10: Approve a request and open the concrete event
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 

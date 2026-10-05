@@ -28,10 +28,12 @@ public class EventRouting {
 	public EndpointGroup routes() {
 		return () -> path("/events", () -> {
 			get("/owner/{id}", context -> withController(context, EventController::findForOwner));
+			post("/owner/{id}/contacts", context -> withController(context, EventController::addContactForOwner));
 			get("/staff/{id}", context -> withController(context, EventController::findForStaff));
 			get("/owner/{id}/messages", context -> withController(context, EventController::findMessagesForOwner));
 			post("/owner/{id}/messages", context -> withController(context, EventController::sendOwnerMessage));
 			get("/{id}", context -> withController(context, EventController::findForAccount));
+			post("/{id}/contacts", context -> withController(context, EventController::addContactForCustomer));
 			get("/{id}/messages", context -> withController(context, EventController::findMessagesForAccount));
 			post("/{id}/messages", context -> withController(context, EventController::sendCustomerMessage));
 			post("/{id}/close", context -> withController(context, EventController::closeByCustomer));

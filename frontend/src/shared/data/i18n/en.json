@@ -147,7 +147,12 @@
 		"sending": "Sending…",
 		"messageError": "The message could not be sent.",
 		"statusApproved": "Approved",
-		"staffReadOnly": "Event information is shown in read-only mode for staff."
+		"staffReadOnly": "Event information is shown in read-only mode for staff.",
+		"contactEmailLabel": "Add a contact person by email",
+		"addContact": "Add contact person",
+		"contactAdding": "Adding…",
+		"contactAdded": "The contact person now has access to the event and Messenger.",
+		"contactError": "No registered customer account has that email, or the contact person could not be added."
 	},
 	"eventPage": {
 		"statusTab": "Status",

@@ -10,6 +10,7 @@ import engestofte.domain.event.dto.response.EventOwnerResponseDTO;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.enums.EventStatus;
 import engestofte.domain.useraccount.entity.UserAccount;
+import engestofte.util.EmailRedactor;
 
 public class EventResponseMapper {
 	private static final int REQUESTED_DATE_TURN_INDEX = 1;
@@ -42,6 +43,22 @@ public class EventResponseMapper {
 
 	// _________________________________________________________________________________________________________________
 
+	public static EventCustomerResponseDTO toCustomerDTO(Event event, boolean primaryContact) {
+		EventCustomerResponseDTO response = toCustomerDTO(event);
+		response.setPrimaryContact(primaryContact);
+		return response;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public static EventCustomerResponseDTO toCustomerDTO(Event event, UserAccount primaryContact, boolean isPrimaryContact) {
+		EventCustomerResponseDTO response = toCustomerDTO(event, isPrimaryContact);
+		response.setCustomerEmailRedacted(primaryContact == null ? null : EmailRedactor.redact(primaryContact.getEmail()));
+		return response;
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public static EventOwnerResponseDTO toOwnerDTO(Event event, UserAccount primaryContact) {
 		EventOwnerResponseDTO response = new EventOwnerResponseDTO();
 		response.setEventId(event.getId());
@@ -51,7 +68,7 @@ public class EventResponseMapper {
 		response.setRequestedDate(getRequestedDate(event.getEventData()));
 		String customerName = event.getEventData().path("customerName").asText();
 		response.setCustomerName(customerName.isBlank() ? primaryContact.getFullName() : customerName);
-		response.setCustomerEmail(primaryContact.getEmail());
+		response.setCustomerEmailRedacted(EmailRedactor.redact(primaryContact.getEmail()));
 		response.setCreatedAt(event.getCreatedAt());
 		return response;
 	}

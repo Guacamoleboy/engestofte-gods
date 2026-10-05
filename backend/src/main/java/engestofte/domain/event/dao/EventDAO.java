@@ -2,6 +2,7 @@ package engestofte.domain.event.dao;
 
 import engestofte.dao.EntityManagerDAO;
 import engestofte.domain.enquiry.entity.WeddingEnquiry;
+import engestofte.domain.enquiry.entity.EnquiryContact;
 import engestofte.domain.enquiry.enums.EnquiryStatus;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.entity.EventMessage;
@@ -67,6 +68,40 @@ public class EventDAO extends EntityManagerDAO<Event> {
 			.getResultStream()
 			.findFirst()
 			.orElse(null));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public boolean isPrimaryContact(Integer eventId, Integer accountId) {
+		return executeQuery(() -> em.createQuery(
+				"SELECT COUNT(contact) FROM EnquiryContact contact WHERE contact.enquiry.event.id = :eventId AND contact.userAccount.id = :accountId AND contact.primary = true",
+				Long.class)
+			.setParameter("eventId", eventId)
+			.setParameter("accountId", accountId)
+			.getSingleResult() > 0);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void addContactPerson(Integer eventId, UserAccount userAccount) {
+		executeQuery(() -> {
+			Event event = em.createQuery("SELECT event FROM Event event JOIN FETCH event.weddingEnquiry WHERE event.id = :eventId", Event.class)
+				.setParameter("eventId", eventId)
+				.getResultStream().findFirst().orElse(null);
+			if (event == null) return null;
+			Long existing = em.createQuery("SELECT COUNT(contact) FROM EnquiryContact contact WHERE contact.enquiry.id = :enquiryId AND contact.userAccount.id = :accountId", Long.class)
+				.setParameter("enquiryId", event.getWeddingEnquiry().getId())
+				.setParameter("accountId", userAccount.getId())
+				.getSingleResult();
+			if (existing == 0) {
+				EnquiryContact contact = new EnquiryContact();
+				contact.setEnquiry(event.getWeddingEnquiry());
+				contact.setUserAccount(userAccount);
+				contact.setPrimary(false);
+				em.persist(contact);
+			}
+			return null;
+		});
 	}
 
 	// _________________________________________________________________________________________________________________

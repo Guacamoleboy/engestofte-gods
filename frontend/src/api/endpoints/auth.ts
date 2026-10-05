@@ -9,7 +9,7 @@ export type AuthResponse = {
 	refresh_token: string
 	account: {
 		full_name: string
-		email: string
+		email_redacted: string
 		role: 'CUSTOMER' | 'STAFF' | 'OWNER'
 	}
 }

@@ -15,9 +15,16 @@
 .facts { display: grid; grid-template-columns: minmax(8rem, 0.6fr) minmax(0, 1fr); gap: 0.7rem 1rem; margin: var(--engestofte-space-4) 0; }
 .facts dt { color: var(--engestofte-muted); font-size: 0.9rem; }
 .facts dd { min-width: 0; margin: 0; color: var(--engestofte-heading); font-weight: 600; overflow-wrap: anywhere; }
-.facts a { color: var(--engestofte-green-dark); }
+.contactForm { display: grid; gap: 0.5rem; border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-3); }
+.contactForm label { color: var(--engestofte-heading); font-weight: 650; }
+.contactForm input { width: 100%; min-height: 2.7rem; border: 1px solid var(--engestofte-border); padding: 0.55rem 0.7rem; color: var(--engestofte-body); font: inherit; }
+.contactForm input:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+.contactForm button { min-height: 2.7rem; justify-self: start; border: 1px solid var(--engestofte-green-dark); padding: 0.55rem 0.9rem; background: var(--engestofte-green-dark); color: var(--engestofte-white); font: inherit; font-weight: 650; cursor: pointer; }
+.contactForm button:disabled { opacity: 0.55; cursor: not-allowed; }
+.contactForm p { margin: 0; }
 .conversationPanel { display: flex; flex-direction: column; }
-.messages { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: var(--engestofte-space-3); margin: var(--engestofte-space-4) 0; }
+.messages { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: var(--engestofte-space-3); margin: var(--engestofte-space-4) 0; scrollbar-width: none; -ms-overflow-style: none; }
+.messages::-webkit-scrollbar { display: none; }
 .message { max-width: 92%; border: 1px solid var(--engestofte-border); padding: 0.75rem 0.9rem; background: var(--engestofte-surface); }
 .ownerMessage { align-self: flex-end; border-color: var(--engestofte-green); background: var(--engestofte-white); }
 .customerMessage { align-self: flex-start; }
@@ -32,7 +39,7 @@
 .readOnly { margin-top: var(--engestofte-space-4); color: var(--engestofte-muted); }
 .error { margin: 0; color: #8d2525; }
 .state { width: min(100%, 46rem); border: 1px solid var(--engestofte-border); padding: clamp(1.25rem, 3vw, 2rem); background: var(--engestofte-white); color: var(--engestofte-muted); }
-.state button:focus-visible, .backLink:focus-visible, .composer button:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
+.state button:focus-visible, .backLink:focus-visible, .composer button:focus-visible, .contactForm button:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
 @media (max-width: 760px) {
 	.content { padding-block: 1.5rem 2rem; }
 	.grid { grid-template-columns: 1fr; grid-template-rows: minmax(20rem, auto) minmax(24rem, auto); height: auto; min-height: 0; }

@@ -21,6 +21,8 @@ export type CustomerEvent = {
 	}
 	customer_note: string | null
 	created_at: string
+	customer_email_redacted: string | null
+	is_primary_contact: boolean
 }
 
 export type OwnerEvent = {
@@ -28,7 +30,7 @@ export type OwnerEvent = {
 	status: 'APPROVED'
 	approved_at: string
 	customer_name: string
-	customer_email: string
+	customer_email_redacted: string
 	expected_guest_count: number | null
 	requested_date: string | null
 	created_at: string
@@ -72,6 +74,11 @@ export async function sendEventMessage(id: number, content: string) {
 	return response.data
 }
 
+export async function addEventContact(id: number, email: string) {
+	const response = await client<ApiEnvelope<null>>(`/events/${id}/contacts`, { method: 'POST', body: JSON.stringify({ email }) })
+	return response.data
+}
+
 export async function closeEvent(id: number) {
 	const response = await client<ApiEnvelope<CustomerEvent>>(`/events/${id}/close`, { method: 'POST' })
 	return response.data
@@ -97,5 +104,10 @@ export async function sendOwnerEventMessage(id: number, content: string) {
 		method: 'POST',
 		body: JSON.stringify({ content }),
 	})
+	return response.data
+}
+
+export async function addOwnerEventContact(id: number, email: string) {
+	const response = await client<ApiEnvelope<null>>(`/events/owner/${id}/contacts`, { method: 'POST', body: JSON.stringify({ email }) })
 	return response.data
 }
