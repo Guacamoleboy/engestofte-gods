@@ -6,6 +6,7 @@ import engestofte.domain.enquiry.entity.EnquiryContact;
 import engestofte.domain.enquiry.enums.EnquiryStatus;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.entity.EventMessage;
+import engestofte.domain.event.entity.EventMessageRecipient;
 import engestofte.domain.event.enums.EventMessageSender;
 import engestofte.domain.event.enums.EventStatus;
 import engestofte.domain.useraccount.entity.UserAccount;
@@ -145,6 +146,7 @@ public class EventDAO extends EntityManagerDAO<Event> {
 			message.setEvent(event);
 			message.setSenderType(EventMessageSender.OWNER);
 			em.persist(message);
+			persistMessageRecipients(event, message);
 			return event;
 		});
 	}
@@ -164,6 +166,7 @@ public class EventDAO extends EntityManagerDAO<Event> {
 			message.setEvent(event);
 			message.setSenderType(EventMessageSender.OWNER);
 			em.persist(message);
+			persistMessageRecipients(event, message);
 		}
 			return event;
 		});
@@ -187,8 +190,31 @@ public class EventDAO extends EntityManagerDAO<Event> {
 			if (message.getSenderType() == EventMessageSender.OWNER) managedEnquiry.setCustomerQuestion(null);
 			message.setEvent(managedEvent);
 			em.persist(message);
+			persistMessageRecipients(managedEvent, message);
 			return managedEvent;
 		});
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private void persistMessageRecipients(Event event, EventMessage message) {
+		java.util.List<UserAccount> recipients = new java.util.ArrayList<>(em.createQuery(
+				"SELECT account FROM EnquiryContact contact JOIN contact.userAccount account WHERE contact.enquiry = :enquiry",
+				UserAccount.class)
+			.setParameter("enquiry", event.getWeddingEnquiry())
+			.getResultList());
+		if (message.getSenderType() == EventMessageSender.CUSTOMER) recipients.addAll(em.createQuery(
+				"SELECT account FROM UserAccount account WHERE account.role.name = :ownerRole",
+				UserAccount.class)
+			.setParameter("ownerRole", engestofte.domain.role.enums.RoleName.OWNER)
+			.getResultList());
+		for (UserAccount recipient : recipients.stream().distinct().toList()) {
+			if (recipient.getId().equals(message.getSenderAccount().getId())) continue;
+			EventMessageRecipient messageRecipient = new EventMessageRecipient();
+			messageRecipient.setMessage(message);
+			messageRecipient.setRecipient(recipient);
+			em.persist(messageRecipient);
+		}
 	}
 
 	// _________________________________________________________________________________________________________________

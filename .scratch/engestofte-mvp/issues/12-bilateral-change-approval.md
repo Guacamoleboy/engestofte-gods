@@ -4,7 +4,7 @@
 
 **Blocked by:** 11: Add event-scoped Messenger and contact persons
 
-**Status:** in-progress
+**Status:** complete
 
 ## In scope
 

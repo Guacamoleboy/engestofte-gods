@@ -45,7 +45,10 @@
 		"statusOwnerFollowUpRequired": "Awaiting Engestofte Gods",
 		"statusClosed": "Closed",
 		"customerQuestion": "Question from Engestofte Gods",
-		"ownerReplied": "You have received a reply from Engestofte Gods. Click to open."
+		"ownerReplied": "You have received a reply from Engestofte Gods. Click to open.",
+		"importantMessagesTitle": "Important messages",
+		"importantMessage": "Important message",
+		"unreadCount": "{count} unread messages"
 	},
 	"ownerReview": {
 		"aiTab": "AI assessment",
@@ -82,6 +85,9 @@
 		"statusOwnerFollowUpRequired": "Follow-up required",
 		"statusApproved": "Approved",
 		"statusClosed": "Closed",
+		"importantMessagesTitle": "Important messages",
+		"importantMessage": "Important message",
+		"unreadCount": "{count} unread messages",
 		"backToRequests": "Back to enquiries",
 		"assessmentTitle": "AI assessment",
 		"assessmentUnavailable": "The AI assessment is unavailable. Review the conversation manually.",

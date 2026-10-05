@@ -59,6 +59,14 @@ export type EventMessage = {
 	created_at: string
 }
 
+export type ImportantMessage = {
+	event_id: number
+	event_name: string
+	unread_count: number
+	latest_message: string
+	latest_message_at: string
+}
+
 export type ChangeProposal = {
 	id: number
 	field_name: string
@@ -74,6 +82,16 @@ export type ChangeProposal = {
 }
 
 type ApiEnvelope<T> = { data: T }
+
+export async function getImportantMessages() {
+	const response = await client<ApiEnvelope<ImportantMessage[]>>('/events/important-messages')
+	return response.data
+}
+
+export async function getOwnerImportantMessages() {
+	const response = await client<ApiEnvelope<ImportantMessage[]>>('/events/owner/important-messages')
+	return response.data
+}
 
 export async function getEvent(id: number) {
 	const response = await client<ApiEnvelope<CustomerEvent>>(`/events/${id}`)

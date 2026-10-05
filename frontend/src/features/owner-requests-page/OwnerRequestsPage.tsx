@@ -11,7 +11,7 @@ import styles from './OwnerRequestsPage.module.css'
 export default function OwnerRequestsPage() {
 	const { content, language } = useTranslate()
 	const copy = content.ownerReview
-	const { enquiries, loadEnquiries, state } = useOwnerEnquiries()
+	const { enquiries, importantMessages, loadEnquiries, state } = useOwnerEnquiries()
 	const statusLabels = {
 		SUBMITTED: copy.statusSubmitted,
 		UNDER_REVIEW: copy.statusUnderReview,
@@ -40,6 +40,20 @@ export default function OwnerRequestsPage() {
 					<section className={styles.state}>
 						<h2>{copy.emptyTitle}</h2>
 						<p>{copy.emptyDescription}</p>
+					</section>
+				)}
+				{state === 'loaded' && importantMessages.length > 0 && (
+					<section className={styles.list} aria-label={copy.importantMessagesTitle}>
+						<h2>{copy.importantMessagesTitle}</h2>
+						{importantMessages.map((item) => <Link className={styles.card} key={item.event_id} to={`/owner/events/${item.event_id}`}>
+							<div className={styles.cardContent}>
+								<p className={styles.status}>{copy.importantMessage}</p>
+								<h2>{item.event_name}</h2>
+								<p>{copy.unreadCount.replace('{count}', String(item.unread_count))}</p>
+								<p>{item.latest_message}</p>
+							</div>
+							<span className={styles.cardIndicator} aria-hidden="true">â†’</span>
+						</Link>)}
 					</section>
 				)}
 				{state === 'loaded' && enquiries.length > 0 && (

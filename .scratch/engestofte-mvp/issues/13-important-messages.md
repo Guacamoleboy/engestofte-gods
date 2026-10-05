@@ -4,7 +4,7 @@
 
 **Blocked by:** 11: Add event-scoped Messenger and contact persons
 
-**Status:** ready-for-agent
+**Status:** complete
 
 ## In scope
 
@@ -21,11 +21,11 @@
 
 ## Acceptance criteria
 
-- [ ] A new message appears unread for each intended recipient.
-- [ ] Opening the event platform marks that recipient’s relevant messages read.
-- [ ] One recipient opening the event does not mark another recipient’s messages read.
-- [ ] After seven days, unread messages are grouped under `Vigtige beskeder` for the affected recipient.
-- [ ] The grouped item shows the unread count and the full history remains in Messenger.
+- [X] A new message appears unread for each intended recipient.
+- [X] Opening the event platform marks that recipient’s relevant messages read.
+- [X] One recipient opening the event does not mark another recipient’s messages read.
+- [X] After seven days, unread messages are grouped under `Vigtige beskeder` for the affected recipient.
+- [X] The grouped item shows the unread count and the full history remains in Messenger.
 
 ## Verification
 

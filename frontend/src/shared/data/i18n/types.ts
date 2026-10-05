@@ -52,6 +52,9 @@ export type TranslationContent = {
 		statusClosed: string
 		customerQuestion: string
 		ownerReplied: string
+		importantMessagesTitle: string
+		importantMessage: string
+		unreadCount: string
 	}
 	ownerReview: {
 		aiTab: string
@@ -80,6 +83,9 @@ export type TranslationContent = {
 		statusFollowUpRequired: string
 		statusOwnerFollowUpRequired: string
 		statusClosed: string
+		importantMessagesTitle: string
+		importantMessage: string
+		unreadCount: string
 		backToRequests: string
 		assessmentTitle: string
 		assessmentUnavailable: string
