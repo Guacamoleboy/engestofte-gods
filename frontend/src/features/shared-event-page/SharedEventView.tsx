@@ -11,7 +11,7 @@ import styles from './SharedEventView.module.css'
 export default function SharedEventView() {
 	const { content, language } = useTranslate()
 	const copy = content.ownerEvent
-	const { event, loadEvent, message, messageState, messages, role, sendMessage, setMessage, state } = useSharedEventView()
+	const { addContact, contactEmail, contactState, event, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, role, sendMessage, setContactEmail, setMessage, state } = useSharedEventView()
 
 	if (state === 'loading') return <main className={styles.page}><PageContainer className={styles.content}><p role="status">{copy.loading}</p></PageContainer></main>
 	if (state !== 'loaded' || !event) {
@@ -36,20 +36,27 @@ export default function SharedEventView() {
 						<h2>{copy.detailsTitle}</h2>
 						<dl className={styles.facts}>
 							{event.customerName && <Fact label={copy.customerName} value={event.customerName} />}
-							{event.customerEmail && <><dt>{copy.customerEmail}</dt><dd><a href={`mailto:${event.customerEmail}`}>{event.customerEmail}</a></dd></>}
+							{event.customerEmail && <><dt>{copy.customerEmail}</dt><dd>{event.customerEmail}</dd></>}
 							{event.expectedGuestCount != null && <Fact label={copy.guestCount} value={String(event.expectedGuestCount)} />}
 							{event.requestedDate && <Fact label={copy.requestedDate} value={event.requestedDate} />}
 							<Fact label={copy.approvedAt} value={new Intl.DateTimeFormat(language, { dateStyle: 'long', timeStyle: 'short' }).format(new Date(event.approvedAt))} />
 						</dl>
+						{(role === 'OWNER' || (role === 'CUSTOMER' && isPrimaryContact)) && <form className={styles.contactForm} onSubmit={addContact}>
+							<label htmlFor="event-contact-email">{copy.contactEmailLabel}</label>
+							<input id="event-contact-email" type="email" required value={contactEmail} onChange={(formEvent) => setContactEmail(formEvent.currentTarget.value)} />
+							<button type="submit" disabled={contactState === 'adding' || !contactEmail.trim()}>{contactState === 'adding' ? copy.contactAdding : copy.addContact}</button>
+							{contactState === 'added' && <p role="status">{copy.contactAdded}</p>}
+							{contactState === 'error' && <p className={styles.error} role="alert">{copy.contactError}</p>}
+						</form>}
 					</section>
 
 					<section className={`${styles.panel} ${styles.conversationPanel}`}>
 						<h2>{copy.conversationTitle}</h2>
 						{mayMessage ? <>
-							<div className={styles.messages} aria-live="polite">
+							<div className={styles.messages} aria-live="polite" ref={messagesContainerRef}>
 								{messages.map((item) => (
 									<article className={`${styles.message} ${item.sender_type === 'OWNER' ? styles.ownerMessage : styles.customerMessage}`} key={item.id}>
-										<p className={styles.messageMeta}><strong>{item.sender_type === 'OWNER' ? copy.ownerLabel : copy.customerLabel}</strong><time dateTime={item.created_at}>{new Intl.DateTimeFormat(language, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.created_at))}</time></p>
+										<p className={styles.messageMeta}><strong>{item.sender_name}</strong><time dateTime={item.created_at}>{new Intl.DateTimeFormat(language, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.created_at))}</time></p>
 										<p>{item.content}</p>
 									</article>
 								))}

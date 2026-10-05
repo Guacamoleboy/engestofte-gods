@@ -16,7 +16,7 @@ public class AuthResponseDTO {
 	//			"refresh_token": "...",
 	//			"account": {
 	//				"full_name": "Alex Morgan",
-	//				"email": "alex@example.com",
+	//				"email_redacted": "ale....@example.com",
 	//				"role": "CUSTOMER"
 	//			}
 	//		}

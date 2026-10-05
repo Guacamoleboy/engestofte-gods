@@ -36,7 +36,7 @@ public class PopulateController {
 	public void createOwners(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
 			populateDB.createOwners();
-			return Map.of("emails", new String[]{"johan@johan.dk", "lise@lise.dk", "mette@mette.dk"});
+			return Map.of("created", true);
 		}, "Owner accounts populated");
 	}
 }

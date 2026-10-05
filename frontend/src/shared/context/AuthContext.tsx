@@ -8,7 +8,7 @@ import { clearAuthSession, type AccountRole } from '../data/authSession'
 
 export type AuthUser = {
 	fullName: string
-	email: string
+	emailRedacted: string
 	role: AccountRole
 }
 
@@ -46,8 +46,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
 function getStoredUser(): AuthUser | null {
 	const token = window.localStorage.getItem('access_token')
-	if (!token) return null
 	try {
+		const account = JSON.parse(window.localStorage.getItem('account') ?? 'null') as unknown
+		removeLegacyEmail(account)
+		if (!token) return null
 		const payload = decodeJwtPayload(token)
 		if (payload.type !== 'access' || typeof payload.exp !== 'number' || payload.exp * 1000 <= Date.now()) {
 			clearAuthSession()
@@ -58,10 +60,9 @@ function getStoredUser(): AuthUser | null {
 			clearAuthSession()
 			return null
 		}
-		const account = JSON.parse(window.localStorage.getItem('account') ?? 'null') as unknown
 		return {
 			fullName: getAccountField(account, 'full_name'),
-			email: getAccountField(account, 'email'),
+			emailRedacted: getAccountField(account, 'email_redacted'),
 			role,
 		}
 	} catch {
@@ -87,8 +88,15 @@ function isAccountRole(value: unknown): value is AccountRole {
 	return value === 'CUSTOMER' || value === 'STAFF' || value === 'OWNER'
 }
 
-function getAccountField(account: unknown, field: 'full_name' | 'email'): string {
+function getAccountField(account: unknown, field: 'full_name' | 'email_redacted'): string {
 	if (typeof account !== 'object' || account === null || !(field in account)) return ''
 	const value = (account as Record<string, unknown>)[field]
 	return typeof value === 'string' ? value : ''
+}
+
+function removeLegacyEmail(account: unknown) {
+	if (typeof account !== 'object' || account === null || !('email' in account)) return
+	const sanitized = { ...(account as Record<string, unknown>) }
+	delete sanitized.email
+	window.localStorage.setItem('account', JSON.stringify(sanitized))
 }

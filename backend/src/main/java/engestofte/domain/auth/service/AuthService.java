@@ -14,6 +14,7 @@ import engestofte.exception.ApiException;
 import engestofte.security.jwt.JwtService;
 import engestofte.security.jwt.JwtUtil;
 import engestofte.util.BCryptHash;
+import engestofte.util.EmailRedactor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -114,7 +115,7 @@ public class AuthService {
 	private AuthResponseDTO createAuthResponse(UserAccount account) {
 		AccountResponseDTO accountResponse = new AccountResponseDTO();
 		accountResponse.setFullName(account.getFullName());
-		accountResponse.setEmail(account.getEmail());
+		accountResponse.setEmailRedacted(EmailRedactor.redact(account.getEmail()));
 		accountResponse.setRole(account.getRole().getName());
 
 		AuthResponseDTO response = new AuthResponseDTO();

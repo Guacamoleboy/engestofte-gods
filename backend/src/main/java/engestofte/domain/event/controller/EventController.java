@@ -2,6 +2,7 @@ package engestofte.domain.event.controller;
 
 import engestofte.domain.event.service.EventService;
 import engestofte.domain.event.dto.request.EventMessageRequestDTO;
+import engestofte.domain.event.dto.request.EventContactRequestDTO;
 import engestofte.exception.ApiException;
 import engestofte.security.jwt.JwtService;
 import engestofte.security.jwt.JwtUtil;
@@ -35,6 +36,28 @@ public class EventController {
 			requireOwner(context);
 			return eventService.findForOwner(parseId(context.pathParam("id")));
 		}, "Owner event loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void addContactForOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer accountId = requireOwner(context);
+			EventContactRequestDTO request = context.bodyAsClass(EventContactRequestDTO.class);
+			eventService.addContactPerson(parseId(context.pathParam("id")), accountId, request.getEmail(), true);
+			return null;
+		}, "Contact person added");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void addContactForCustomer(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer accountId = requireCustomer(context);
+			EventContactRequestDTO request = context.bodyAsClass(EventContactRequestDTO.class);
+			eventService.addContactPerson(parseId(context.pathParam("id")), accountId, request.getEmail(), false);
+			return null;
+		}, "Contact person added");
 	}
 
 	// _________________________________________________________________________________________________________________

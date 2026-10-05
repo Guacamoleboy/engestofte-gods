@@ -19,7 +19,7 @@ public class EventOwnerResponseDTO {
 	//			"status": "APPROVED",
 	//			"approved_at": "2026-10-04T12:30:00Z",
 	//			"customer_name": "Alex Morgan",
-	//			"customer_email": "alex@example.com",
+	//			"customer_email_redacted": "ale....@example.com",
 	//			"expected_guest_count": 60,
 	//			"requested_date": "June 2027",
 	//			"created_at": "2026-10-04T12:30:00Z"
@@ -43,8 +43,8 @@ public class EventOwnerResponseDTO {
 	@JsonProperty("customer_name")
 	private String customerName;
 
-	@JsonProperty("customer_email")
-	private String customerEmail;
+	@JsonProperty("customer_email_redacted")
+	private String customerEmailRedacted;
 
 	@JsonProperty("expected_guest_count")
 	private Integer expectedGuestCount;

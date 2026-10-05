@@ -147,7 +147,12 @@
 		"sending": "Wird gesendet…",
 		"messageError": "Die Nachricht konnte nicht gesendet werden.",
 		"statusApproved": "Genehmigt",
-		"staffReadOnly": "Eventinformationen werden für Mitarbeitende schreibgeschützt angezeigt."
+		"staffReadOnly": "Eventinformationen werden für Mitarbeitende schreibgeschützt angezeigt.",
+		"contactEmailLabel": "Kontaktperson per E-Mail hinzufügen",
+		"addContact": "Kontaktperson hinzufügen",
+		"contactAdding": "Wird hinzugefügt…",
+		"contactAdded": "Die Kontaktperson hat jetzt Zugriff auf das Event und den Messenger.",
+		"contactError": "Für diese E-Mail-Adresse gibt es kein registriertes Kundenkonto oder die Kontaktperson konnte nicht hinzugefügt werden."
 	},
 	"eventPage": {
 		"statusTab": "Status",

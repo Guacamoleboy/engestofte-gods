@@ -23,7 +23,9 @@ public class EventCustomerResponseDTO {
 	//			"status": "APPROVED",
 	//			"approved_at": "2026-10-04T12:30:00Z",
 	//			"customer_note": "We look forward to helping with your wedding.",
-	//			"created_at": "2026-10-04T12:30:00Z"
+	//			"created_at": "2026-10-04T12:30:00Z",
+	//			"customer_email_redacted": "ale....@example.com",
+	//			"is_primary_contact": true
 	//		}
 	//
 	// ____________________
@@ -52,4 +54,10 @@ public class EventCustomerResponseDTO {
 
 	@JsonProperty("created_at")
 	private Instant createdAt;
+
+	@JsonProperty("customer_email_redacted")
+	private String customerEmailRedacted;
+
+	@JsonProperty("is_primary_contact")
+	private boolean primaryContact;
 }

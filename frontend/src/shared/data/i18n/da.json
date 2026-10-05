@@ -147,7 +147,12 @@
 		"sending": "Sender…",
 		"messageError": "Beskeden kunne ikke sendes.",
 		"statusApproved": "Godkendt",
-		"staffReadOnly": "Eventoplysninger vises i skrivebeskyttet tilstand for staff."
+		"staffReadOnly": "Eventoplysninger vises i skrivebeskyttet tilstand for staff.",
+		"contactEmailLabel": "Tilføj kontaktperson via e-mail",
+		"addContact": "Tilføj kontaktperson",
+		"contactAdding": "Tilføjer…",
+		"contactAdded": "Kontaktpersonen har nu adgang til eventet og Messenger.",
+		"contactError": "E-mailen tilhører ikke en registreret kundekonto, eller kontaktpersonen kunne ikke tilføjes."
 	},
 	"eventPage": {
 		"statusTab": "Status",

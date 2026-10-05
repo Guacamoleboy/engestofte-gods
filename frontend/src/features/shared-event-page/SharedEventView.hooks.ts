@@ -2,9 +2,9 @@
 // _______
 // src/features/shared-event-page/SharedEventView.hooks.ts
 
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getEvent, getEventMessages, getOwnerEvent, getOwnerEventMessages, getStaffEvent, sendEventMessage, sendOwnerEventMessage, type EventMessage } from '../../api/endpoints/events'
+import { addEventContact, addOwnerEventContact, getEvent, getEventMessages, getOwnerEvent, getOwnerEventMessages, getStaffEvent, sendEventMessage, sendOwnerEventMessage, type EventMessage } from '../../api/endpoints/events'
 import { useAuth } from '../../shared/hooks/useAuth'
 
 export type SharedEventInfo = {
@@ -26,6 +26,10 @@ export function useSharedEventView() {
 	const [message, setMessage] = useState('')
 	const [state, setState] = useState<'loading' | 'loaded' | 'error'>('loading')
 	const [messageState, setMessageState] = useState<'idle' | 'sending' | 'error'>('idle')
+	const [contactEmail, setContactEmail] = useState('')
+	const [contactState, setContactState] = useState<'idle' | 'adding' | 'added' | 'error'>('idle')
+	const [isPrimaryContact, setIsPrimaryContact] = useState(false)
+	const messagesContainerRef = useRef<HTMLDivElement>(null)
 
 	const loadEvent = useCallback(async () => {
 		if (!Number.isInteger(id) || id < 1 || !user) {
@@ -36,7 +40,8 @@ export function useSharedEventView() {
 		try {
 			if (user.role === 'OWNER') {
 				const [ownerEvent, ownerMessages] = await Promise.all([getOwnerEvent(id), getOwnerEventMessages(id)])
-				setEvent({ eventId: ownerEvent.event_id, customerName: ownerEvent.customer_name, customerEmail: ownerEvent.customer_email, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, approvedAt: ownerEvent.approved_at })
+				setEvent({ eventId: ownerEvent.event_id, customerName: ownerEvent.customer_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, approvedAt: ownerEvent.approved_at })
+				setIsPrimaryContact(false)
 				setMessages(ownerMessages)
 			} else if (user.role === 'CUSTOMER') {
 				const customerEvent = await getEvent(id)
@@ -48,11 +53,12 @@ export function useSharedEventView() {
 				setEvent({
 					eventId: customerEvent.event_id,
 					customerName: customerEvent.event_data.customer_name ?? null,
-					customerEmail: user.email || null,
+					customerEmail: customerEvent.customer_email_redacted,
 					expectedGuestCount: customerEvent.event_data.expected_guest_count ?? null,
 					requestedDate: customerEvent.event_data.requested_date ?? null,
 					approvedAt: customerEvent.approved_at,
 				})
+				setIsPrimaryContact(customerEvent.is_primary_contact)
 				setMessages(customerMessages)
 			} else {
 				const staffEvent = await getStaffEvent(id)
@@ -66,6 +72,11 @@ export function useSharedEventView() {
 	}, [id, navigate, user])
 
 	useEffect(() => { void loadEvent() }, [loadEvent])
+
+	useEffect(() => {
+		const container = messagesContainerRef.current
+		if (container) container.scrollTop = container.scrollHeight
+	}, [messages])
 
 	const sendMessage = useCallback(async (formEvent: FormEvent<HTMLFormElement>) => {
 		formEvent.preventDefault()
@@ -83,5 +94,19 @@ export function useSharedEventView() {
 		}
 	}, [id, message, user])
 
-	return { event, loadEvent, message, messageState, messages, role: user?.role ?? null, sendMessage, setMessage, state }
+	const addContact = useCallback(async (formEvent: FormEvent<HTMLFormElement>) => {
+		formEvent.preventDefault()
+		if (!contactEmail.trim() || !user || (user.role !== 'OWNER' && !isPrimaryContact)) return
+		setContactState('adding')
+		try {
+			if (user.role === 'OWNER') await addOwnerEventContact(id, contactEmail.trim())
+			else await addEventContact(id, contactEmail.trim())
+			setContactEmail('')
+			setContactState('added')
+		} catch {
+			setContactState('error')
+		}
+	}, [contactEmail, id, isPrimaryContact, user])
+
+	return { addContact, contactEmail, contactState, event, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, role: user?.role ?? null, sendMessage, setContactEmail, setMessage, state }
 }
