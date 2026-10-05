@@ -13,6 +13,7 @@ import engestofte.domain.event.dto.response.EventCustomerResponseDTO;
 import engestofte.domain.event.dto.response.EventMessageResponseDTO;
 import engestofte.domain.event.dto.response.EventOwnerResponseDTO;
 import engestofte.domain.event.dto.response.EventOperationalResponseDTO;
+import engestofte.domain.event.dto.response.ImportantMessageResponseDTO;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.entity.EventMessage;
 import engestofte.domain.event.enums.EventMessageSender;
@@ -54,6 +55,7 @@ public class EventService extends EntityManagerService<Event> {
 		if (accountId == null) throw new ApiException(401, "Authenticated account not found");
 		Event event = eventDAO.findForAccount(eventId, accountId);
 		if (event == null) throw new ApiException(404, "Event not found");
+		if (event.getApprovedAt() != null) eventMessageDAO.markEventMessagesRead(eventId, accountId);
 		return EventResponseMapper.toCustomerDTO(event, eventDAO.findPrimaryContactForEvent(eventId), eventDAO.isPrimaryContact(eventId, accountId));
 	}
 
@@ -159,10 +161,11 @@ public class EventService extends EntityManagerService<Event> {
 
 	// _________________________________________________________________________________________________________________
 
-	public EventOwnerResponseDTO findForOwner(Integer eventId) {
+	public EventOwnerResponseDTO findForOwner(Integer eventId, Integer ownerAccountId) {
 		Event event = findApprovedEvent(eventId);
 		UserAccount primaryContact = eventDAO.findPrimaryContactForEvent(eventId);
 		if (primaryContact == null) throw new ApiException(404, "Event not found");
+		eventMessageDAO.markEventMessagesRead(eventId, ownerAccountId);
 		return EventResponseMapper.toOwnerDTO(event, primaryContact);
 	}
 
@@ -176,6 +179,7 @@ public class EventService extends EntityManagerService<Event> {
 
 	public java.util.List<EventMessageResponseDTO> findMessagesForOwner(Integer eventId, Integer ownerAccountId) {
 		Event event = findApprovedEvent(eventId);
+		eventMessageDAO.markEventMessagesRead(event.getId(), ownerAccountId);
 		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()), ownerAccountId);
 	}
 
@@ -194,7 +198,30 @@ public class EventService extends EntityManagerService<Event> {
 
 	public java.util.List<EventMessageResponseDTO> findMessagesForAccount(Integer eventId, Integer accountId) {
 		Event event = findEventForAccount(eventId, accountId);
+		eventMessageDAO.markEventMessagesRead(event.getId(), accountId);
 		return EventMessageResponseMapper.toDTOs(eventMessageDAO.findForEvent(event.getId()), accountId);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public java.util.List<ImportantMessageResponseDTO> findImportantMessages(Integer accountId) {
+		java.time.Instant cutoff = java.time.Instant.now().minus(java.time.Duration.ofDays(7));
+		java.util.Map<Integer, ImportantMessageResponseDTO> grouped = new java.util.LinkedHashMap<>();
+		for (var recipient : eventMessageDAO.findEscalatedForAccount(accountId, cutoff)) {
+			EventMessage message = recipient.getMessage();
+			Event event = message.getEvent();
+			ImportantMessageResponseDTO summary = grouped.computeIfAbsent(event.getId(), eventId -> {
+				ImportantMessageResponseDTO item = new ImportantMessageResponseDTO();
+				item.setEventId(eventId);
+				String name = event.getEventData().path("eventName").asText();
+				item.setEventName(name.isBlank() ? "Bryllupsevent" : name);
+				item.setLatestMessage(message.getContent());
+				item.setLatestMessageAt(message.getCreatedAt());
+				return item;
+			});
+			summary.setUnreadCount(summary.getUnreadCount() + 1);
+		}
+		return java.util.List.copyOf(grouped.values());
 	}
 
 	// _________________________________________________________________________________________________________________

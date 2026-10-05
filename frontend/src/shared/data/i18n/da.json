@@ -45,7 +45,10 @@
 		"statusOwnerFollowUpRequired": "Afventer Engestofte Gods",
 		"statusClosed": "Lukket",
 		"customerQuestion": "Spørgsmål fra Engestofte Gods",
-		"ownerReplied": "Du har modtaget svar fra Engestofte Gods. Tryk for at åbne."
+		"ownerReplied": "Du har modtaget svar fra Engestofte Gods. Tryk for at åbne.",
+		"importantMessagesTitle": "Vigtige beskeder",
+		"importantMessage": "Vigtig besked",
+		"unreadCount": "{count} ulæste beskeder"
 	},
 	"ownerReview": {
 		"aiTab": "AI-vurdering",
@@ -82,6 +85,9 @@
 		"statusOwnerFollowUpRequired": "Opfølgning påkrævet",
 		"statusApproved": "Godkendt",
 		"statusClosed": "Lukket",
+		"importantMessagesTitle": "Vigtige beskeder",
+		"importantMessage": "Vigtig besked",
+		"unreadCount": "{count} ulæste beskeder",
 		"backToRequests": "Tilbage til forespørgsler",
 		"assessmentTitle": "AI-vurdering",
 		"assessmentUnavailable": "AI-vurderingen mangler. Gennemgå samtalen manuelt.",

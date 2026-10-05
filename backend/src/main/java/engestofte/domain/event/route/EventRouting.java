@@ -27,6 +27,8 @@ public class EventRouting {
 
 	public EndpointGroup routes() {
 		return () -> path("/events", () -> {
+			get("/owner/important-messages", context -> withController(context, EventController::findImportantMessagesForOwner));
+			get("/important-messages", context -> withController(context, EventController::findImportantMessagesForAccount));
 			get("/owner/{id}", context -> withController(context, EventController::findForOwner));
 			get("/owner/{id}/change-proposals", context -> withController(context, EventController::findChangeProposalsForOwner));
 			post("/owner/{id}/change-proposals", context -> withController(context, EventController::proposeChangeForOwner));

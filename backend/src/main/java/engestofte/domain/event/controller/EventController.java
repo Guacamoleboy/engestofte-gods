@@ -35,9 +35,21 @@ public class EventController {
 
 	public void findForOwner(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
-			requireOwner(context);
-			return eventService.findForOwner(parseId(context.pathParam("id")));
+			Integer ownerAccountId = requireOwner(context);
+			return eventService.findForOwner(parseId(context.pathParam("id")), ownerAccountId);
 		}, "Owner event loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void findImportantMessagesForOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> eventService.findImportantMessages(requireOwner(context)), "Important messages loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void findImportantMessagesForAccount(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> eventService.findImportantMessages(requireCustomer(context)), "Important messages loaded");
 	}
 
 	// _________________________________________________________________________________________________________________

@@ -45,7 +45,10 @@
 		"statusOwnerFollowUpRequired": "Warten auf Engestofte Gods",
 		"statusClosed": "Geschlossen",
 		"customerQuestion": "Frage von Engestofte Gods",
-		"ownerReplied": "Sie haben eine Antwort von Engestofte Gods erhalten. Zum Öffnen klicken."
+		"ownerReplied": "Sie haben eine Antwort von Engestofte Gods erhalten. Zum Öffnen klicken.",
+		"importantMessagesTitle": "Wichtige Nachrichten",
+		"importantMessage": "Wichtige Nachricht",
+		"unreadCount": "{count} ungelesene Nachrichten"
 	},
 	"ownerReview": {
 		"aiTab": "KI-Einschätzung",
@@ -82,6 +85,9 @@
 		"statusOwnerFollowUpRequired": "Rückmeldung erforderlich",
 		"statusApproved": "Genehmigt",
 		"statusClosed": "Geschlossen",
+		"importantMessagesTitle": "Wichtige Nachrichten",
+		"importantMessage": "Wichtige Nachricht",
+		"unreadCount": "{count} ungelesene Nachrichten",
 		"backToRequests": "Zurück zu den Anfragen",
 		"assessmentTitle": "KI-Einschätzung",
 		"assessmentUnavailable": "Die KI-Einschätzung ist nicht verfügbar. Prüfen Sie den Gesprächsverlauf manuell.",
