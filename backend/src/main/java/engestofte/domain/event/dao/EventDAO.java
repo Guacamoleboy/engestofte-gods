@@ -48,6 +48,15 @@ public class EventDAO extends EntityManagerDAO<Event> {
 
 	// _________________________________________________________________________________________________________________
 
+	public java.util.List<Event> findAllApprovedForStaff() {
+		return executeQuery(() -> em.createQuery(
+				"SELECT event FROM Event event JOIN FETCH event.weddingEnquiry WHERE event.approvedAt IS NOT NULL ORDER BY event.createdAt ASC",
+				Event.class)
+			.getResultList());
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public UserAccount findPrimaryContactForEvent(Integer eventId) {
 		return executeQuery(() -> em.createQuery(
 				"SELECT account FROM Event event JOIN event.weddingEnquiry enquiry JOIN EnquiryContact contact ON contact.enquiry = enquiry JOIN contact.userAccount account WHERE event.id = :eventId AND contact.primary = true",

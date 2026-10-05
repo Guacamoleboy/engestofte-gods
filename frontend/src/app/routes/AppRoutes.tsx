@@ -12,6 +12,7 @@ import EventPage from '../pages/EventPage'
 import CustomerApprovalPage from '../pages/CustomerApprovalPage'
 import OwnerRequestsPage from '../pages/OwnerRequestsPage'
 import OwnerRequestPage from '../pages/OwnerRequestPage'
+import StaffEventsPage from '../../features/staff-events-page/StaffEventsPage'
 import AiFlowPage from '../../features/ai-flow-page'
 import AiFlowRedirectPage from '../../features/ai-flow-redirect-page'
 import ContactPage from '../../features/contact-page'
@@ -51,7 +52,7 @@ export default function AppRoutes() {
 				</Route>
 				<Route element={<ProtectedRoute allowedRoles={['STAFF']} />}>
 					<Route element={<DashboardLayout />}>
-						<Route path="/staff/events" element={<PlaceholderPage route="/staff/events" />} />
+						<Route path="/staff/events" element={<StaffEventsPage />} />
 						<Route path="/staff/events/:id" element={<EventPage />} />
 					</Route>
 				</Route>

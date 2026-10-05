@@ -172,7 +172,21 @@ public class EventService extends EntityManagerService<Event> {
 	// _________________________________________________________________________________________________________________
 
 	public EventOperationalResponseDTO findForStaff(Integer eventId) {
-		return EventResponseMapper.toOperationalDTO(findApprovedEvent(eventId));
+		return toOperationalDTOForStaff(findApprovedEvent(eventId));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public java.util.List<EventOperationalResponseDTO> findAllForStaff() {
+		return eventDAO.findAllApprovedForStaff().stream().map(this::toOperationalDTOForStaff).toList();
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private EventOperationalResponseDTO toOperationalDTOForStaff(Event event) {
+		UserAccount primaryContact = eventDAO.findPrimaryContactForEvent(event.getId());
+		StaffEventDataRedactor.RedactedEventData redacted = StaffEventDataRedactor.redact(event, primaryContact == null ? null : primaryContact.getFullName());
+		return EventResponseMapper.toOperationalDTO(event, redacted.eventName(), StaffEventDataRedactor.redactRequestedDate(event, primaryContact == null ? null : primaryContact.getFullName()), redacted.details());
 	}
 
 	// _________________________________________________________________________________________________________________

@@ -39,4 +39,13 @@ public class PopulateController {
 			return Map.of("created", true);
 		}, "Owner accounts populated");
 	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void staff(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			populateDB.staff();
+			return Map.of("created", true, "accounts", new String[]{"kok@kok.dk", "clean@clean.dk"});
+		}, "Staff accounts populated");
+	}
 }

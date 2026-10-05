@@ -14,8 +14,9 @@ export type SharedEventInfo = {
 	customerEmail: string | null
 	expectedGuestCount: number | null
 	requestedDate: string | null
+	operationalDetails: { question: string; answer: string }[]
 	approvedAt: string
-	status: 'APPROVED' | 'AWAITING_APPROVAL' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
+	status: 'APPROVED' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'AWAITING_APPROVAL' | 'AWAITING_DEPOSIT' | 'BOOKED' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
 }
 
 type EditableEventField = 'event_name' | 'expected_guest_count' | 'requested_date'
@@ -51,7 +52,7 @@ export function useSharedEventView() {
 		try {
 			if (user.role === 'OWNER') {
 				const [ownerEvent, ownerMessages, ownerProposals] = await Promise.all([getOwnerEvent(id), getOwnerEventMessages(id), getOwnerEventChangeProposals(id)])
-				setEvent({ eventId: ownerEvent.event_id, eventName: ownerEvent.event_name, primaryContactName: ownerEvent.primary_contact_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, approvedAt: ownerEvent.approved_at, status: ownerEvent.status })
+				setEvent({ eventId: ownerEvent.event_id, eventName: ownerEvent.event_name, primaryContactName: ownerEvent.primary_contact_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, operationalDetails: [], approvedAt: ownerEvent.approved_at, status: ownerEvent.status })
 				setProposalValues({ event_name: '', expected_guest_count: '', requested_date: '' })
 				setIsPrimaryContact(false)
 				setMessages(ownerMessages)
@@ -70,6 +71,7 @@ export function useSharedEventView() {
 					customerEmail: customerEvent.customer_email_redacted,
 					expectedGuestCount: customerEvent.event_data.expected_guest_count ?? null,
 					requestedDate: customerEvent.event_data.requested_date ?? null,
+					operationalDetails: [],
 					approvedAt: customerEvent.approved_at,
 					status: customerEvent.status === 'AWAITING_APPROVAL' ? 'AWAITING_APPROVAL'
 						: customerEvent.status === 'CLOSED_BY_CUSTOMER' || customerEvent.status === 'CLOSED_BY_OWNER' || customerEvent.status === 'CANCELLED_BY_CUSTOMER'
@@ -81,7 +83,7 @@ export function useSharedEventView() {
 				setProposals(customerProposals)
 			} else {
 				const staffEvent = await getStaffEvent(id)
-				setEvent({ eventId: staffEvent.event_id, eventName: null, primaryContactName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, approvedAt: staffEvent.approved_at, status: staffEvent.status })
+				setEvent({ eventId: staffEvent.event_id, eventName: staffEvent.event_name, primaryContactName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, operationalDetails: staffEvent.operational_details, approvedAt: staffEvent.approved_at, status: staffEvent.status })
 				setMessages([])
 				setProposals([])
 			}

@@ -26,6 +26,7 @@ public class PopulateRouting {
 			post("/reset", populateController::restart);
 			post("/roles", populateController::populateRoles);
 			post("/owners", populateController::createOwners);
+			post("/staff", populateController::staff);
 		});
 	}
 }

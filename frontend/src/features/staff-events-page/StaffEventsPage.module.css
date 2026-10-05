@@ -1,0 +1,17 @@
+/* Pathing
+   _______
+   src/features/staff-events-page/StaffEventsPage.module.css */
+
+.page { flex: 1; background: var(--engestofte-surface); }
+.content { padding-block: var(--engestofte-space-5); }
+.header { margin-bottom: var(--engestofte-space-5); }
+.header h1 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; }
+.header p, .state p, .emptyState p { color: var(--engestofte-muted); line-height: 1.5; }
+.list { display: grid; gap: var(--engestofte-space-3); }
+.card { display: flex; justify-content: space-between; gap: var(--engestofte-space-4); border: 1px solid var(--engestofte-border); padding: 1rem 1.2rem; background: var(--engestofte-white); color: inherit; text-decoration: none; }
+.card:hover { border-color: var(--engestofte-green-dark); }
+.card h2 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: 1.25rem; font-weight: 400; }
+.card p { margin: 0.35rem 0 0; color: var(--engestofte-muted); }
+.cardIndicator { align-self: center; color: var(--engestofte-green-dark); font-size: 1.4rem; }
+.state, .emptyState { border: 1px solid var(--engestofte-border); padding: clamp(1.25rem, 3vw, 2rem); background: var(--engestofte-white); }
+.state button { min-height: 2.7rem; border: 1px solid var(--engestofte-green-dark); padding: 0.55rem 0.9rem; background: var(--engestofte-green-dark); color: var(--engestofte-white); font: inherit; font-weight: 650; cursor: pointer; }

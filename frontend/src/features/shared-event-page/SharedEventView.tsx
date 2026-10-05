@@ -10,7 +10,7 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useSharedEventView } from './SharedEventView.hooks'
 import styles from './SharedEventView.module.css'
 
-type EventTab = 'details' | 'conversation' | 'important' | 'settings'
+type EventTab = 'details' | 'conversation' | 'important' | 'settings' | 'resources' | 'checklist'
 
 export default function SharedEventView() {
 	const { content, language } = useTranslate()
@@ -41,7 +41,10 @@ export default function SharedEventView() {
 			<PageContainer className={styles.content}>
 				<Link className={styles.backLink} to={backPath}>← {copy.back}</Link>
 				<header className={styles.header}>
-					<p className={styles.eyebrow}>{copy.eyebrow} · {event.status === 'AWAITING_APPROVAL' ? copy.statusAwaitingApproval : isClosed ? copy.statusClosed : copy.statusApproved}</p>
+					<p className={styles.eyebrow}>{copy.eyebrow} · {event.status === 'AWAITING_APPROVAL' ? copy.statusAwaitingApproval
+						: isClosed ? copy.statusClosed
+							: event.status === 'BOOKED' ? copy.statusBooked
+								: event.status === 'AWAITING_DEPOSIT' ? copy.statusAwaitingDeposit : copy.statusApproved}</p>
 					<h1>{event.eventName || copy.defaultEventName}</h1>
 					<p>{copy.description}</p>
 				</header>
@@ -49,13 +52,19 @@ export default function SharedEventView() {
 				<section className={styles.panel}>
 					<nav className={styles.tabs} aria-label={copy.detailsTitle}>
 						<TabButton activeTab={activeTab} tab="details" onSelect={setActiveTab}>{copy.detailsTab}</TabButton>
-						<TabButton activeTab={activeTab} tab="conversation" onSelect={setActiveTab}>{copy.conversationTab}</TabButton>
-						<TabButton activeTab={activeTab} tab="important" onSelect={setActiveTab}>{copy.importantTab}</TabButton>
+						{role !== 'STAFF' && <>
+							<TabButton activeTab={activeTab} tab="conversation" onSelect={setActiveTab}>{copy.conversationTab}</TabButton>
+							<TabButton activeTab={activeTab} tab="important" onSelect={setActiveTab}>{copy.importantTab}</TabButton>
+						</>}
 						{mayProposeChanges && <TabButton activeTab={activeTab} tab="settings" onSelect={setActiveTab}>{copy.settingsTab}</TabButton>}
 						{role === 'OWNER' && <>
 							<button className={styles.lockedTab} type="button" disabled>{copy.trelloTab}</button>
 							<button className={styles.lockedTab} type="button" disabled>{copy.resourcesTab}</button>
 							<button className={styles.lockedTab} type="button" disabled>{copy.checklistTab}</button>
+						</>}
+						{role === 'STAFF' && <>
+							<TabButton activeTab={activeTab} tab="checklist" onSelect={setActiveTab}>{copy.checklistTab}</TabButton>
+							<TabButton activeTab={activeTab} tab="resources" onSelect={setActiveTab}>{copy.resourcesTab}</TabButton>
 						</>}
 					</nav>
 
@@ -70,6 +79,14 @@ export default function SharedEventView() {
 							</dl>
 						</section>
 						<hr className={styles.divider} />
+						{role === 'STAFF' && <section className={styles.generalDetails}>
+							<h3>{copy.operationalDetailsTitle}</h3>
+							{event.operationalDetails.length === 0 && <p className={styles.readOnly}>{copy.noOperationalDetails}</p>}
+							{event.operationalDetails.map((detail, index) => <article className={styles.proposal} key={`${index}-${detail.question}`}>
+								<p><strong>{detail.question}</strong></p>
+								<p>{detail.answer}</p>
+							</article>)}
+						</section>}
 						<form className={styles.specificDetails} onSubmit={(formEvent) => { formEvent.preventDefault(); void submitEventProposals() }}>
 							<h3>{copy.specificDetailsTitle}</h3>
 							<InputText label={copy.eventName} name="event-name" placeholder={event.eventName || copy.defaultEventName} value={proposalValues.event_name} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('event_name', value)} />
@@ -144,6 +161,16 @@ export default function SharedEventView() {
 						<p>{copy.deleteEventDescription}</p>
 						<button className={styles.dangerAction} type="button" disabled={closeState === 'closing'} onClick={() => { if (window.confirm(copy.deleteEventConfirm)) void closeCurrentEvent() }}>{closeState === 'closing' ? copy.deletingEvent : copy.deleteEvent}</button>
 						{closeState === 'error' && <p className={styles.error} role="alert">{copy.deleteEventError}</p>}
+					</section>}
+
+					{role === 'STAFF' && activeTab === 'checklist' && <section className={styles.tabContent}>
+						<h2>{copy.checklistTab}</h2>
+						<p className={styles.readOnly}>{copy.staffChecklistEmpty}</p>
+					</section>}
+
+					{role === 'STAFF' && activeTab === 'resources' && <section className={styles.tabContent}>
+						<h2>{copy.resourcesTab}</h2>
+						<p className={styles.readOnly}>{copy.staffResourcesEmpty}</p>
 					</section>}
 				</section>
 			</PageContainer>

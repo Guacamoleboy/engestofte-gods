@@ -140,6 +140,15 @@ public class EventController {
 
 	// _________________________________________________________________________________________________________________
 
+	public void findAllForStaff(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			requireStaff(context);
+			return eventService.findAllForStaff();
+		}, "Operational events loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public void findMessagesForOwner(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
 			Integer ownerAccountId = requireOwner(context);

@@ -43,10 +43,12 @@ export type OwnerEvent = {
 export type StaffEvent = {
 	event_id: number
 	category: 'WEDDING'
-	status: 'APPROVED' | 'AWAITING_APPROVAL'
+	status: 'APPROVED' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'AWAITING_APPROVAL' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER' | 'AWAITING_DEPOSIT' | 'BOOKED'
 	approved_at: string
+	event_name: string | null
 	expected_guest_count: number | null
 	requested_date: string | null
+	operational_details: { question: string; answer: string }[]
 	created_at: string
 }
 
@@ -128,6 +130,11 @@ export async function getOwnerEvent(id: number) {
 
 export async function getStaffEvent(id: number) {
 	const response = await client<ApiEnvelope<StaffEvent>>(`/events/staff/${id}`)
+	return response.data
+}
+
+export async function getStaffEvents() {
+	const response = await client<ApiEnvelope<StaffEvent[]>>('/events/staff')
 	return response.data
 }
 

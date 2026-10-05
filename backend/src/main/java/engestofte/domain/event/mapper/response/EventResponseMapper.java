@@ -6,11 +6,14 @@ import engestofte.config.PoolConfig;
 import engestofte.domain.event.dto.response.EventApprovalResponseDTO;
 import engestofte.domain.event.dto.response.EventCustomerResponseDTO;
 import engestofte.domain.event.dto.response.EventOperationalResponseDTO;
+import engestofte.domain.event.dto.response.EventOperationalDetailResponseDTO;
 import engestofte.domain.event.dto.response.EventOwnerResponseDTO;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.enums.EventStatus;
 import engestofte.domain.useraccount.entity.UserAccount;
 import engestofte.util.EmailRedactor;
+
+import java.util.List;
 
 public class EventResponseMapper {
 	private static final int REQUESTED_DATE_TURN_INDEX = 1;
@@ -78,14 +81,16 @@ public class EventResponseMapper {
 
 	// _________________________________________________________________________________________________________________
 
-	public static EventOperationalResponseDTO toOperationalDTO(Event event) {
+	public static EventOperationalResponseDTO toOperationalDTO(Event event, String eventName, String requestedDate, List<EventOperationalDetailResponseDTO> operationalDetails) {
 		EventOperationalResponseDTO response = new EventOperationalResponseDTO();
 		response.setEventId(event.getId());
 		response.setCategory(event.getCategory());
-		response.setStatus(customerFacingStatus(event));
+		response.setStatus(event.getStatus());
 		response.setApprovedAt(event.getApprovedAt());
+		response.setEventName(eventName);
 		response.setExpectedGuestCount(getExpectedGuestCount(event.getEventData()));
-		response.setRequestedDate(getRequestedDate(event.getEventData()));
+		response.setRequestedDate(requestedDate);
+		response.setOperationalDetails(operationalDetails);
 		response.setCreatedAt(event.getCreatedAt());
 		return response;
 	}

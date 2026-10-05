@@ -7,6 +7,7 @@ import engestofte.domain.event.enums.EventStatus;
 import lombok.Data;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,8 +21,10 @@ public class EventOperationalResponseDTO {
 	//			"category": "WEDDING",
 	//			"status": "APPROVED",
 	//			"approved_at": "2026-10-04T12:30:00Z",
+	//			"event_name": "Bryllupsevent",
 	//			"expected_guest_count": 60,
 	//			"requested_date": "June 2027",
+	//			"operational_details": [{ "question": "Any allergies or dietary requirements?", "answer": "Two guests are vegan." }],
 	//			"created_at": "2026-10-04T12:30:00Z"
 	//		}
 	//
@@ -43,11 +46,17 @@ public class EventOperationalResponseDTO {
 	@JsonProperty("approved_at")
 	private Instant approvedAt;
 
+	@JsonProperty("event_name")
+	private String eventName;
+
 	@JsonProperty("expected_guest_count")
 	private Integer expectedGuestCount;
 
 	@JsonProperty("requested_date")
 	private String requestedDate;
+
+	@JsonProperty("operational_details")
+	private List<EventOperationalDetailResponseDTO> operationalDetails;
 
 	@JsonProperty("created_at")
 	private Instant createdAt;
