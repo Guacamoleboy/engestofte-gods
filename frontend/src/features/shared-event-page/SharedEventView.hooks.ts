@@ -4,17 +4,21 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { addEventContact, addOwnerEventContact, getEvent, getEventMessages, getOwnerEvent, getOwnerEventMessages, getStaffEvent, sendEventMessage, sendOwnerEventMessage, type EventMessage } from '../../api/endpoints/events'
+import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, proposeEventChange, proposeOwnerEventChange, sendEventMessage, sendOwnerEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
 import { useAuth } from '../../shared/hooks/useAuth'
 
 export type SharedEventInfo = {
 	eventId: number
-	customerName: string | null
+	eventName: string | null
+	primaryContactName: string | null
 	customerEmail: string | null
 	expectedGuestCount: number | null
 	requestedDate: string | null
 	approvedAt: string
+	status: 'APPROVED' | 'AWAITING_APPROVAL' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
 }
+
+type EditableEventField = 'event_name' | 'expected_guest_count' | 'requested_date'
 
 export function useSharedEventView() {
 	const { id: rawId } = useParams()
@@ -28,7 +32,14 @@ export function useSharedEventView() {
 	const [messageState, setMessageState] = useState<'idle' | 'sending' | 'error'>('idle')
 	const [contactEmail, setContactEmail] = useState('')
 	const [contactState, setContactState] = useState<'idle' | 'adding' | 'added' | 'error'>('idle')
+	const [closeState, setCloseState] = useState<'idle' | 'closing' | 'error'>('idle')
 	const [isPrimaryContact, setIsPrimaryContact] = useState(false)
+	const [proposals, setProposals] = useState<ChangeProposal[]>([])
+	const [proposalValues, setProposalValues] = useState<Record<EditableEventField, string>>({ event_name: '', expected_guest_count: '', requested_date: '' })
+	const [proposalState, setProposalState] = useState<'idle' | 'submitting' | 'error'>('idle')
+	const [rejectingProposalId, setRejectingProposalId] = useState<number | null>(null)
+	const [rejectionExplanation, setRejectionExplanation] = useState('')
+	const [decisionState, setDecisionState] = useState<'idle' | 'submitting' | 'error'>('idle')
 	const messagesContainerRef = useRef<HTMLDivElement>(null)
 
 	const loadEvent = useCallback(async () => {
@@ -39,31 +50,40 @@ export function useSharedEventView() {
 		setState('loading')
 		try {
 			if (user.role === 'OWNER') {
-				const [ownerEvent, ownerMessages] = await Promise.all([getOwnerEvent(id), getOwnerEventMessages(id)])
-				setEvent({ eventId: ownerEvent.event_id, customerName: ownerEvent.customer_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, approvedAt: ownerEvent.approved_at })
+				const [ownerEvent, ownerMessages, ownerProposals] = await Promise.all([getOwnerEvent(id), getOwnerEventMessages(id), getOwnerEventChangeProposals(id)])
+				setEvent({ eventId: ownerEvent.event_id, eventName: ownerEvent.event_name, primaryContactName: ownerEvent.primary_contact_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, approvedAt: ownerEvent.approved_at, status: ownerEvent.status })
+				setProposalValues({ event_name: '', expected_guest_count: '', requested_date: '' })
 				setIsPrimaryContact(false)
 				setMessages(ownerMessages)
+				setProposals(ownerProposals)
 			} else if (user.role === 'CUSTOMER') {
 				const customerEvent = await getEvent(id)
 				if (!customerEvent.approved_at) {
 					navigate(`/dashboard/approval/${id}`, { replace: true })
 					return
 				}
-				const customerMessages = await getEventMessages(id)
+				const [customerMessages, customerProposals] = await Promise.all([getEventMessages(id), getEventChangeProposals(id)])
 				setEvent({
 					eventId: customerEvent.event_id,
-					customerName: customerEvent.event_data.customer_name ?? null,
+					eventName: customerEvent.event_data.event_name ?? null,
+					primaryContactName: customerEvent.primary_contact_name,
 					customerEmail: customerEvent.customer_email_redacted,
 					expectedGuestCount: customerEvent.event_data.expected_guest_count ?? null,
 					requestedDate: customerEvent.event_data.requested_date ?? null,
 					approvedAt: customerEvent.approved_at,
+					status: customerEvent.status === 'AWAITING_APPROVAL' ? 'AWAITING_APPROVAL'
+						: customerEvent.status === 'CLOSED_BY_CUSTOMER' || customerEvent.status === 'CLOSED_BY_OWNER' || customerEvent.status === 'CANCELLED_BY_CUSTOMER'
+							? customerEvent.status : 'APPROVED',
 				})
+				setProposalValues({ event_name: '', expected_guest_count: '', requested_date: '' })
 				setIsPrimaryContact(customerEvent.is_primary_contact)
 				setMessages(customerMessages)
+				setProposals(customerProposals)
 			} else {
 				const staffEvent = await getStaffEvent(id)
-				setEvent({ eventId: staffEvent.event_id, customerName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, approvedAt: staffEvent.approved_at })
+				setEvent({ eventId: staffEvent.event_id, eventName: null, primaryContactName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, approvedAt: staffEvent.approved_at, status: staffEvent.status })
 				setMessages([])
+				setProposals([])
 			}
 			setState('loaded')
 		} catch {
@@ -108,5 +128,65 @@ export function useSharedEventView() {
 		}
 	}, [contactEmail, id, isPrimaryContact, user])
 
-	return { addContact, contactEmail, contactState, event, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, role: user?.role ?? null, sendMessage, setContactEmail, setMessage, state }
+	const closeCurrentEvent = useCallback(async () => {
+		if (!user || (user.role !== 'OWNER' && !isPrimaryContact)) return
+		setCloseState('closing')
+		try {
+			if (user.role === 'OWNER') await closeOwnerEvent(id)
+			else await closeCustomerEvent(id)
+			navigate(user.role === 'OWNER' ? '/owner/requests' : '/dashboard/events/', { replace: true })
+		} catch {
+			setCloseState('error')
+		}
+	}, [id, isPrimaryContact, navigate, user])
+
+	const setProposalValue = useCallback((fieldName: EditableEventField, value: string) => {
+		setProposalValues((current) => ({ ...current, [fieldName]: value }))
+	}, [])
+
+	const changedProposalFields = (Object.keys(proposalValues) as EditableEventField[]).filter((fieldName) => {
+		const currentValue = fieldName === 'event_name' ? event?.eventName ?? 'Bryllupsevent'
+			: fieldName === 'expected_guest_count' ? event?.expectedGuestCount == null ? '' : String(event.expectedGuestCount)
+				: event?.requestedDate ?? ''
+		return proposalValues[fieldName].trim() !== '' && proposalValues[fieldName].trim() !== currentValue
+	})
+	const hasProposalChanges = changedProposalFields.length > 0
+
+	const submitEventProposals = useCallback(async () => {
+		if (!hasProposalChanges || !user || (user.role !== 'OWNER' && !isPrimaryContact)) return
+		setProposalState('submitting')
+		try {
+			for (const fieldName of changedProposalFields) {
+				const newValue = proposalValues[fieldName].trim()
+				const proposal = user.role === 'OWNER'
+					? await proposeOwnerEventChange(id, fieldName, newValue)
+					: await proposeEventChange(id, fieldName, newValue)
+				setProposals((current) => [proposal, ...current])
+				setProposalValue(fieldName, '')
+			}
+			setProposalState('idle')
+			await loadEvent()
+		} catch {
+			setProposalState('error')
+		}
+	}, [changedProposalFields, hasProposalChanges, id, isPrimaryContact, loadEvent, proposalValues, setProposalValue, user])
+
+	const decideProposal = useCallback(async (proposalId: number, decision: 'APPROVED' | 'REJECTED', explanation?: string) => {
+		if (!user || (user.role !== 'OWNER' && !isPrimaryContact)) return
+		setDecisionState('submitting')
+		try {
+			const proposal = user.role === 'OWNER'
+				? await decideOwnerEventChange(id, proposalId, decision, explanation)
+				: await decideEventChange(id, proposalId, decision, explanation)
+			setProposals((current) => current.map((item) => item.id === proposal.id ? proposal : item))
+			setRejectingProposalId(null)
+			setRejectionExplanation('')
+			setDecisionState('idle')
+			await loadEvent()
+		} catch {
+			setDecisionState('error')
+		}
+	}, [id, isPrimaryContact, loadEvent, user])
+
+	return { addContact, closeCurrentEvent, closeState, contactEmail, contactState, decideProposal, decisionState, event, hasProposalChanges, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, proposalState, proposalValues, proposals, rejectionExplanation, rejectingProposalId, role: user?.role ?? null, sendMessage, setContactEmail, setMessage, setProposalValue, setRejectionExplanation, setRejectingProposalId, state, submitEventProposals }
 }

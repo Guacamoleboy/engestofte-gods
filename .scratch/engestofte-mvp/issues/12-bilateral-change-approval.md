@@ -4,7 +4,7 @@
 
 **Blocked by:** 11: Add event-scoped Messenger and contact persons
 
-**Status:** ready-for-agent
+**Status:** in-progress
 
 ## In scope
 
@@ -21,12 +21,12 @@
 
 ## Acceptance criteria
 
-- [ ] A customer change becomes a proposal rather than silently replacing the approved value.
-- [ ] An Owner change also requires customer approval, even if agreed verbally or in Messenger.
-- [ ] Both approvals are recorded separately.
-- [ ] Rejection requires an explanation and keeps the previous approved value.
-- [ ] A later proposal preserves earlier proposal history.
-- [ ] Unresolved critical changes prevent final approval/booking.
+- [X] A customer change becomes a proposal rather than silently replacing the approved value.
+- [X] An Owner change also requires customer approval, even if agreed verbally or in Messenger.
+- [X] Both approvals are recorded separately.
+- [X] Rejection requires an explanation and keeps the previous approved value.
+- [X] A later proposal preserves earlier proposal history.
+- [X] Unresolved critical changes prevent final deposit approval/booking.
 
 ## Verification
 

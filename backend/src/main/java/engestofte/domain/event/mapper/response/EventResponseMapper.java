@@ -20,7 +20,7 @@ public class EventResponseMapper {
 	public static EventApprovalResponseDTO toApprovalDTO(Event event) {
 		EventApprovalResponseDTO response = new EventApprovalResponseDTO();
 		response.setEventId(event.getId());
-		response.setStatus(event.getApprovedAt() == null ? event.getStatus() : EventStatus.APPROVED);
+		response.setStatus(customerFacingStatus(event));
 		response.setCreatedAt(event.getCreatedAt());
 		return response;
 	}
@@ -31,7 +31,7 @@ public class EventResponseMapper {
 		EventCustomerResponseDTO response = new EventCustomerResponseDTO();
 		response.setEventId(event.getId());
 		response.setCategory(event.getCategory());
-		response.setStatus(event.getApprovedAt() == null ? event.getStatus() : EventStatus.APPROVED);
+		response.setStatus(customerFacingStatus(event));
 		response.setApprovedAt(event.getApprovedAt());
 		response.setEventData(event.getApprovedAt() == null
 				? PoolConfig.getMapper().createObjectNode()
@@ -53,6 +53,7 @@ public class EventResponseMapper {
 
 	public static EventCustomerResponseDTO toCustomerDTO(Event event, UserAccount primaryContact, boolean isPrimaryContact) {
 		EventCustomerResponseDTO response = toCustomerDTO(event, isPrimaryContact);
+		response.setPrimaryContactName(primaryContact == null ? null : primaryContact.getFullName());
 		response.setCustomerEmailRedacted(primaryContact == null ? null : EmailRedactor.redact(primaryContact.getEmail()));
 		return response;
 	}
@@ -62,10 +63,12 @@ public class EventResponseMapper {
 	public static EventOwnerResponseDTO toOwnerDTO(Event event, UserAccount primaryContact) {
 		EventOwnerResponseDTO response = new EventOwnerResponseDTO();
 		response.setEventId(event.getId());
-		response.setStatus(EventStatus.APPROVED);
+		response.setStatus(customerFacingStatus(event));
 		response.setApprovedAt(event.getApprovedAt());
 		response.setExpectedGuestCount(getExpectedGuestCount(event.getEventData()));
 		response.setRequestedDate(getRequestedDate(event.getEventData()));
+		response.setEventName(getEventName(event.getEventData()));
+		response.setPrimaryContactName(primaryContact.getFullName());
 		String customerName = event.getEventData().path("customerName").asText();
 		response.setCustomerName(customerName.isBlank() ? primaryContact.getFullName() : customerName);
 		response.setCustomerEmailRedacted(EmailRedactor.redact(primaryContact.getEmail()));
@@ -79,7 +82,7 @@ public class EventResponseMapper {
 		EventOperationalResponseDTO response = new EventOperationalResponseDTO();
 		response.setEventId(event.getId());
 		response.setCategory(event.getCategory());
-		response.setStatus(EventStatus.APPROVED);
+		response.setStatus(customerFacingStatus(event));
 		response.setApprovedAt(event.getApprovedAt());
 		response.setExpectedGuestCount(getExpectedGuestCount(event.getEventData()));
 		response.setRequestedDate(getRequestedDate(event.getEventData()));
@@ -92,6 +95,8 @@ public class EventResponseMapper {
 	private static JsonNode toCustomerEventData(JsonNode rawDraft) {
 		ObjectNode approvedData = PoolConfig.getMapper().createObjectNode();
 		JsonNode customerName = rawDraft.path("customerName");
+		String eventName = getEventName(rawDraft);
+		if (eventName != null) approvedData.put("event_name", eventName);
 		JsonNode guestCount = rawDraft.path("expectedGuestCount");
 		String requestedDate = getRequestedDate(rawDraft);
 		if (customerName.isTextual()) approvedData.put("customer_name", customerName.asText());
@@ -114,5 +119,20 @@ public class EventResponseMapper {
 		if (!conversation.isArray() || conversation.size() <= REQUESTED_DATE_TURN_INDEX) return null;
 		String requestedDate = conversation.get(REQUESTED_DATE_TURN_INDEX).path("answer").asText();
 		return requestedDate.isBlank() ? null : requestedDate;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static String getEventName(JsonNode rawDraft) {
+		String eventName = rawDraft.path("eventName").asText();
+		return eventName.isBlank() ? null : eventName;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static EventStatus customerFacingStatus(Event event) {
+		if (event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER || event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CANCELLED_BY_CUSTOMER) return event.getStatus();
+		if (event.getStatus() == EventStatus.AWAITING_APPROVAL) return EventStatus.AWAITING_APPROVAL;
+		return event.getApprovedAt() == null ? event.getStatus() : EventStatus.APPROVED;
 	}
 }

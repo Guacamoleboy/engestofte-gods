@@ -16,6 +16,7 @@ export type CustomerEvent = {
 	approved_at: string | null
 	event_data: {
 		customer_name?: string
+		event_name?: string
 		expected_guest_count?: number
 		requested_date?: string
 	}
@@ -23,13 +24,16 @@ export type CustomerEvent = {
 	created_at: string
 	customer_email_redacted: string | null
 	is_primary_contact: boolean
+	primary_contact_name: string | null
 }
 
 export type OwnerEvent = {
 	event_id: number
-	status: 'APPROVED'
+	status: 'APPROVED' | 'AWAITING_APPROVAL' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
 	approved_at: string
 	customer_name: string
+	event_name: string | null
+	primary_contact_name: string
 	customer_email_redacted: string
 	expected_guest_count: number | null
 	requested_date: string | null
@@ -39,7 +43,7 @@ export type OwnerEvent = {
 export type StaffEvent = {
 	event_id: number
 	category: 'WEDDING'
-	status: 'APPROVED'
+	status: 'APPROVED' | 'AWAITING_APPROVAL'
 	approved_at: string
 	expected_guest_count: number | null
 	requested_date: string | null
@@ -50,7 +54,22 @@ export type EventMessage = {
 	id: number
 	sender_type: 'OWNER' | 'CUSTOMER'
 	sender_name: string
+	is_mine: boolean
 	content: string
+	created_at: string
+}
+
+export type ChangeProposal = {
+	id: number
+	field_name: string
+	old_value: string
+	new_value: string
+	proposer_name: string
+	proposer_party: 'CUSTOMER' | 'OWNER'
+	status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUPERSEDED'
+	customer_approved: boolean
+	owner_approved: boolean
+	rejection_explanation: string | null
 	created_at: string
 }
 
@@ -109,5 +128,51 @@ export async function sendOwnerEventMessage(id: number, content: string) {
 
 export async function addOwnerEventContact(id: number, email: string) {
 	const response = await client<ApiEnvelope<null>>(`/events/owner/${id}/contacts`, { method: 'POST', body: JSON.stringify({ email }) })
+	return response.data
+}
+
+export async function closeOwnerEvent(id: number) {
+	await client<ApiEnvelope<null>>(`/events/owner/${id}/close`, { method: 'POST' })
+}
+
+export async function getEventChangeProposals(id: number) {
+	const response = await client<ApiEnvelope<ChangeProposal[]>>(`/events/${id}/change-proposals`)
+	return response.data
+}
+
+export async function getOwnerEventChangeProposals(id: number) {
+	const response = await client<ApiEnvelope<ChangeProposal[]>>(`/events/owner/${id}/change-proposals`)
+	return response.data
+}
+
+export async function proposeEventChange(id: number, fieldName: string, newValue: string) {
+	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/${id}/change-proposals`, {
+		method: 'POST',
+		body: JSON.stringify({ field_name: fieldName, new_value: newValue }),
+	})
+	return response.data
+}
+
+export async function proposeOwnerEventChange(id: number, fieldName: string, newValue: string) {
+	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/owner/${id}/change-proposals`, {
+		method: 'POST',
+		body: JSON.stringify({ field_name: fieldName, new_value: newValue }),
+	})
+	return response.data
+}
+
+export async function decideEventChange(id: number, proposalId: number, decision: 'APPROVED' | 'REJECTED', explanation?: string) {
+	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/${id}/change-proposals/${proposalId}/decision`, {
+		method: 'POST',
+		body: JSON.stringify({ decision, explanation }),
+	})
+	return response.data
+}
+
+export async function decideOwnerEventChange(id: number, proposalId: number, decision: 'APPROVED' | 'REJECTED', explanation?: string) {
+	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/owner/${id}/change-proposals/${proposalId}/decision`, {
+		method: 'POST',
+		body: JSON.stringify({ decision, explanation }),
+	})
 	return response.data
 }

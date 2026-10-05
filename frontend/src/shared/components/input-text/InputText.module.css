@@ -25,6 +25,12 @@
 	outline-offset: 3px;
 }
 
+.input:disabled {
+	background: var(--engestofte-surface);
+	color: var(--engestofte-muted);
+	cursor: not-allowed;
+}
+
 .textarea {
 	min-height: 8rem;
 	resize: vertical;

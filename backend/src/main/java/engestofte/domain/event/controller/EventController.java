@@ -3,6 +3,8 @@ package engestofte.domain.event.controller;
 import engestofte.domain.event.service.EventService;
 import engestofte.domain.event.dto.request.EventMessageRequestDTO;
 import engestofte.domain.event.dto.request.EventContactRequestDTO;
+import engestofte.domain.event.dto.request.ChangeProposalRequestDTO;
+import engestofte.domain.event.dto.request.ChangeProposalDecisionRequestDTO;
 import engestofte.exception.ApiException;
 import engestofte.security.jwt.JwtService;
 import engestofte.security.jwt.JwtUtil;
@@ -62,6 +64,61 @@ public class EventController {
 
 	// _________________________________________________________________________________________________________________
 
+	public void findChangeProposalsForOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			requireOwner(context);
+			return eventService.findChangeProposalsForOwner(parseId(context.pathParam("id")));
+		}, "Change proposals loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void findChangeProposalsForAccount(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> eventService.findChangeProposalsForAccount(parseId(context.pathParam("id")), requireCustomer(context)), "Change proposals loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void proposeChangeForOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer accountId = requireOwner(context);
+			ChangeProposalRequestDTO request = context.bodyAsClass(ChangeProposalRequestDTO.class);
+			return eventService.proposeEventChange(parseId(context.pathParam("id")), accountId, request.getFieldName(), request.getNewValue(), true);
+		}, "Change proposed");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void proposeChangeForAccount(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer accountId = requireCustomer(context);
+			ChangeProposalRequestDTO request = context.bodyAsClass(ChangeProposalRequestDTO.class);
+			return eventService.proposeEventChange(parseId(context.pathParam("id")), accountId, request.getFieldName(), request.getNewValue(), false);
+		}, "Change proposed");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void decideChangeForOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer accountId = requireOwner(context);
+			ChangeProposalDecisionRequestDTO request = context.bodyAsClass(ChangeProposalDecisionRequestDTO.class);
+			return eventService.decideChangeProposal(parseId(context.pathParam("id")), parseId(context.pathParam("proposalId")), accountId, request.getDecision(), request.getExplanation(), true);
+		}, "Change proposal decided");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void decideChangeForAccount(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer accountId = requireCustomer(context);
+			ChangeProposalDecisionRequestDTO request = context.bodyAsClass(ChangeProposalDecisionRequestDTO.class);
+			return eventService.decideChangeProposal(parseId(context.pathParam("id")), parseId(context.pathParam("proposalId")), accountId, request.getDecision(), request.getExplanation(), false);
+		}, "Change proposal decided");
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public void findForStaff(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
 			requireStaff(context);
@@ -73,8 +130,8 @@ public class EventController {
 
 	public void findMessagesForOwner(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
-			requireOwner(context);
-			return eventService.findMessagesForOwner(parseId(context.pathParam("id")));
+			Integer ownerAccountId = requireOwner(context);
+			return eventService.findMessagesForOwner(parseId(context.pathParam("id")), ownerAccountId);
 		}, "Owner event messages loaded");
 	}
 
@@ -107,6 +164,16 @@ public class EventController {
 
 	public void closeByCustomer(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> eventService.closeByCustomer(parseId(context.pathParam("id")), requireCustomer(context)), "Request closed");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void closeByOwner(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			requireOwner(context);
+			eventService.closeByOwner(parseId(context.pathParam("id")));
+			return null;
+		}, "Event closed");
 	}
 
 	// _________________________________________________________________________________________________________________

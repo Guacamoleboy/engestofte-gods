@@ -177,6 +177,23 @@ export type TranslationContent = {
 		title: string
 		description: string
 		detailsTitle: string
+		detailsTab: string
+		conversationTab: string
+		importantTab: string
+		settingsTab: string
+		trelloTab: string
+		resourcesTab: string
+		checklistTab: string
+		generalTitle: string
+		specificDetailsTitle: string
+		eventName: string
+		defaultEventName: string
+		createdBy: string
+		deleteEvent: string
+		deletingEvent: string
+		deleteEventDescription: string
+		deleteEventConfirm: string
+		deleteEventError: string
 		customerName: string
 		customerEmail: string
 		guestCount: string
@@ -191,12 +208,33 @@ export type TranslationContent = {
 		sending: string
 		messageError: string
 		statusApproved: string
+		statusAwaitingApproval: string
+		statusClosed: string
 		staffReadOnly: string
 		contactEmailLabel: string
 		addContact: string
 		contactAdding: string
 		contactAdded: string
 		contactError: string
+		contactsTitle: string
+		proposeChange: string
+		proposalSending: string
+		proposalError: string
+		changeHistoryTitle: string
+		noChanges: string
+		proposalPending: string
+		proposalApproved: string
+		proposalRejected: string
+		proposalSuperseded: string
+		customerApproval: string
+		ownerApproval: string
+		approvalRecorded: string
+		approvalWaiting: string
+		approveChange: string
+		rejectChange: string
+		rejectionReason: string
+		cancelChange: string
+		decisionError: string
 	}
 	aiFlow: {
 		introMessage: string

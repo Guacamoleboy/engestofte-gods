@@ -28,11 +28,18 @@ public class EventRouting {
 	public EndpointGroup routes() {
 		return () -> path("/events", () -> {
 			get("/owner/{id}", context -> withController(context, EventController::findForOwner));
+			get("/owner/{id}/change-proposals", context -> withController(context, EventController::findChangeProposalsForOwner));
+			post("/owner/{id}/change-proposals", context -> withController(context, EventController::proposeChangeForOwner));
+			post("/owner/{id}/change-proposals/{proposalId}/decision", context -> withController(context, EventController::decideChangeForOwner));
 			post("/owner/{id}/contacts", context -> withController(context, EventController::addContactForOwner));
+			post("/owner/{id}/close", context -> withController(context, EventController::closeByOwner));
 			get("/staff/{id}", context -> withController(context, EventController::findForStaff));
 			get("/owner/{id}/messages", context -> withController(context, EventController::findMessagesForOwner));
 			post("/owner/{id}/messages", context -> withController(context, EventController::sendOwnerMessage));
 			get("/{id}", context -> withController(context, EventController::findForAccount));
+			get("/{id}/change-proposals", context -> withController(context, EventController::findChangeProposalsForAccount));
+			post("/{id}/change-proposals", context -> withController(context, EventController::proposeChangeForAccount));
+			post("/{id}/change-proposals/{proposalId}/decision", context -> withController(context, EventController::decideChangeForAccount));
 			post("/{id}/contacts", context -> withController(context, EventController::addContactForCustomer));
 			get("/{id}/messages", context -> withController(context, EventController::findMessagesForAccount));
 			post("/{id}/messages", context -> withController(context, EventController::sendCustomerMessage));

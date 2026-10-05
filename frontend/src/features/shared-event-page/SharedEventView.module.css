@@ -9,25 +9,49 @@
 .eyebrow { margin: 0 0 0.4rem; color: var(--engestofte-muted); font-size: 0.82rem; font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; }
 .header h1 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; }
 .header > p:last-child { margin: 0.35rem 0 0; color: var(--engestofte-muted); line-height: 1.5; }
-.grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: var(--engestofte-space-4); height: calc(100vh - 15rem); min-height: 32rem; }
-.panel { min-width: 0; min-height: 0; overflow: auto; border: 1px solid var(--engestofte-border); padding: clamp(1rem, 2vw, 1.5rem); background: var(--engestofte-white); box-shadow: var(--engestofte-shadow-card); }
-.panel h2 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: 1.4rem; font-weight: 400; }
-.facts { display: grid; grid-template-columns: minmax(8rem, 0.6fr) minmax(0, 1fr); gap: 0.7rem 1rem; margin: var(--engestofte-space-4) 0; }
+.panel { min-width: 0; min-height: min(65vh, 52rem); overflow: auto; border: 1px solid var(--engestofte-border); padding: clamp(1rem, 2vw, 1.5rem); background: var(--engestofte-white); box-shadow: var(--engestofte-shadow-card); }
+.panel h2, .tabContent h2, .conversationPanel h2, .changeHistory h2 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: 1.4rem; font-weight: 400; }
+.tabs { display: flex; gap: var(--engestofte-space-2); overflow-x: auto; border-bottom: 1px solid var(--engestofte-border); }
+.tab, .activeTab, .lockedTab { flex: 0 0 auto; border: 0; border-bottom: 3px solid transparent; padding: 0.8rem 0.85rem; background: transparent; color: var(--engestofte-muted); font: inherit; font-weight: 650; cursor: pointer; }
+.activeTab { border-bottom-color: var(--engestofte-green-dark); color: var(--engestofte-heading); }
+.lockedTab { color: var(--engestofte-muted); opacity: 0.65; cursor: not-allowed; }
+.tab:focus-visible, .activeTab:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
+.tabContent, .conversationPanel, .changeHistory { padding-top: var(--engestofte-space-4); }
+.tabContent h3 { margin: 0 0 var(--engestofte-space-3); color: var(--engestofte-heading); font-size: 1rem; }
+.generalDetails { margin-top: var(--engestofte-space-4); }
+.facts { display: grid; grid-template-columns: minmax(8rem, 0.6fr) minmax(0, 1fr); gap: 0.7rem 1rem; margin: 0; }
 .facts dt { color: var(--engestofte-muted); font-size: 0.9rem; }
-.facts dd { min-width: 0; margin: 0; color: var(--engestofte-heading); font-weight: 600; overflow-wrap: anywhere; }
-.contactForm { display: grid; gap: 0.5rem; border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-3); }
-.contactForm label { color: var(--engestofte-heading); font-weight: 650; }
-.contactForm input { width: 100%; min-height: 2.7rem; border: 1px solid var(--engestofte-border); padding: 0.55rem 0.7rem; color: var(--engestofte-body); font: inherit; }
-.contactForm input:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
-.contactForm button { min-height: 2.7rem; justify-self: start; border: 1px solid var(--engestofte-green-dark); padding: 0.55rem 0.9rem; background: var(--engestofte-green-dark); color: var(--engestofte-white); font: inherit; font-weight: 650; cursor: pointer; }
-.contactForm button:disabled { opacity: 0.55; cursor: not-allowed; }
+.facts dd { min-width: 0; justify-self: end; margin: 0; color: var(--engestofte-heading); font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.divider { border: 0; border-top: 1px solid var(--engestofte-border); margin: var(--engestofte-space-4) 0; }
+.specificDetails, .contactForm, .rejectForm { display: grid; gap: 0.8rem; }
+.contacts { margin-top: var(--engestofte-space-5); border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-4); }
+.contacts h3 { margin-bottom: var(--engestofte-space-3); }
 .contactForm p { margin: 0; }
-.conversationPanel { display: flex; flex-direction: column; }
+.primaryAction, .secondaryAction { min-height: 2.7rem; justify-self: start; border: 1px solid var(--engestofte-green-dark); padding: 0.55rem 0.9rem; font: inherit; font-weight: 650; cursor: pointer; }
+.primaryAction { background: var(--engestofte-green-dark); color: var(--engestofte-white); }
+.secondaryAction { background: transparent; color: var(--engestofte-green-dark); }
+.primaryAction:disabled, .secondaryAction:disabled { opacity: 0.55; cursor: not-allowed; }
+.changeHistory h2 { margin-bottom: var(--engestofte-space-3); }
+.proposal { border: 1px solid var(--engestofte-border); margin-top: var(--engestofte-space-3); padding: 0.75rem; background: var(--engestofte-surface); }
+.proposal p { margin: 0.3rem 0; line-height: 1.5; overflow-wrap: anywhere; }
+.proposalMeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; color: var(--engestofte-muted); font-size: 0.8rem; }
+.proposalStatus { color: var(--engestofte-muted); font-size: 0.82rem; }
+.proposalActions { display: flex; flex-wrap: wrap; gap: var(--engestofte-space-2); margin-top: var(--engestofte-space-3); }
+.rejectForm { margin-top: var(--engestofte-space-3); }
+.settingsPanel { padding-top: var(--engestofte-space-4); }
+.settingsPanel p { color: var(--engestofte-muted); line-height: 1.5; }
+.dangerAction { min-height: 2.7rem; border: 1px solid #8d2525; padding: 0.55rem 0.9rem; background: #8d2525; color: var(--engestofte-white); font: inherit; font-weight: 650; cursor: pointer; }
+.dangerAction:disabled { opacity: 0.55; cursor: not-allowed; }
+.conversationPanel { display: flex; flex-direction: column; height: min(110vh, 70rem); min-height: 40rem; }
 .messages { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: var(--engestofte-space-3); margin: var(--engestofte-space-4) 0; scrollbar-width: none; -ms-overflow-style: none; }
 .messages::-webkit-scrollbar { display: none; }
 .message { max-width: 92%; border: 1px solid var(--engestofte-border); padding: 0.75rem 0.9rem; background: var(--engestofte-surface); }
-.ownerMessage { align-self: flex-end; border-color: var(--engestofte-green); background: var(--engestofte-white); }
-.customerMessage { align-self: flex-start; }
+.ownMessage { align-self: flex-end; }
+.otherMessage { align-self: flex-start; }
+.ownerMessage { border-color: var(--engestofte-green-dark); background: var(--engestofte-green-dark); }
+.ownerMessage p { color: var(--engestofte-white); }
+.ownerMessage .messageMeta { color: rgba(255, 255, 255, 0.82); }
+.customerMessage { background: var(--engestofte-surface); }
 .message p { margin: 0; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
 .messageMeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; margin-bottom: 0.35rem !important; color: var(--engestofte-muted); font-size: 0.78rem; }
 .composer { display: grid; gap: 0.5rem; border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-3); }
@@ -39,8 +63,9 @@
 .readOnly { margin-top: var(--engestofte-space-4); color: var(--engestofte-muted); }
 .error { margin: 0; color: #8d2525; }
 .state { width: min(100%, 46rem); border: 1px solid var(--engestofte-border); padding: clamp(1.25rem, 3vw, 2rem); background: var(--engestofte-white); color: var(--engestofte-muted); }
-.state button:focus-visible, .backLink:focus-visible, .composer button:focus-visible, .contactForm button:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
+.state button:focus-visible, .backLink:focus-visible, .composer button:focus-visible, .primaryAction:focus-visible, .secondaryAction:focus-visible, .dangerAction:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
 @media (max-width: 760px) {
 	.content { padding-block: 1.5rem 2rem; }
-	.grid { grid-template-columns: 1fr; grid-template-rows: minmax(20rem, auto) minmax(24rem, auto); height: auto; min-height: 0; }
+	.tab, .activeTab, .lockedTab { padding-inline: 0.55rem; }
+	.conversationPanel { height: min(110vh, 70rem); min-height: 36rem; }
 }
