@@ -82,7 +82,9 @@ public class ChangeProposalDAO extends EntityManagerDAO<ChangeProposal> {
 			em.persist(proposerApproval);
 			proposal.getApprovals().add(proposerApproval);
 
-			managedEvent.setStatus(EventStatus.AWAITING_APPROVAL);
+			if (managedEvent.getStatus() != EventStatus.AWAITING_DEPOSIT && managedEvent.getStatus() != EventStatus.BOOKED) {
+				managedEvent.setStatus(EventStatus.AWAITING_APPROVAL);
+			}
 			return proposal;
 		});
 	}
@@ -127,7 +129,10 @@ public class ChangeProposalDAO extends EntityManagerDAO<ChangeProposal> {
 				.setParameter("proposalId", proposal.getId())
 				.setParameter("status", ChangeProposalStatus.PENDING)
 				.getSingleResult();
-			proposal.getEvent().setStatus(otherPending > 0 ? EventStatus.AWAITING_APPROVAL : EventStatus.APPROVED);
+			EventStatus currentStatus = proposal.getEvent().getStatus();
+			if (currentStatus != EventStatus.AWAITING_DEPOSIT && currentStatus != EventStatus.BOOKED) {
+				proposal.getEvent().setStatus(otherPending > 0 ? EventStatus.AWAITING_APPROVAL : EventStatus.APPROVED);
+			}
 			return proposal;
 		});
 	}

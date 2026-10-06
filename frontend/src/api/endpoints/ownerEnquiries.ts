@@ -4,7 +4,7 @@
 
 import { client } from '../client'
 
-export type OwnerEnquiryStatus = 'SUBMITTED' | 'UNDER_REVIEW' | 'AWAITING_CUSTOMER' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'APPROVED' | 'CLOSED_BY_OWNER' | 'CLOSED_BY_CUSTOMER' | 'CANCELLED_BY_CUSTOMER'
+export type OwnerEnquiryStatus = 'SUBMITTED' | 'UNDER_REVIEW' | 'AWAITING_CUSTOMER' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'APPROVED' | 'AWAITING_DEPOSIT' | 'BOOKED' | 'CLOSED_BY_OWNER' | 'CLOSED_BY_CUSTOMER' | 'CANCELLED_BY_CUSTOMER'
 export type OpenOwnerEnquiryStatus = Exclude<OwnerEnquiryStatus, 'CLOSED_BY_OWNER' | 'CLOSED_BY_CUSTOMER' | 'CANCELLED_BY_CUSTOMER'>
 
 export type OwnerEnquirySummary = {

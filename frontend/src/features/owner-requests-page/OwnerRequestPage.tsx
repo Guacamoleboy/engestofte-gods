@@ -30,6 +30,8 @@ export default function OwnerRequestPage() {
 		FOLLOW_UP_REQUIRED: copy.statusFollowUpRequired,
 		OWNER_FOLLOW_UP_REQUIRED: copy.statusOwnerFollowUpRequired,
 		APPROVED: copy.statusApproved,
+		AWAITING_DEPOSIT: content.eventsDashboard.statusAwaitingDeposit,
+		BOOKED: content.eventsDashboard.statusBooked,
 		CLOSED_BY_OWNER: copy.statusClosed,
 		CLOSED_BY_CUSTOMER: copy.statusClosed,
 		CANCELLED_BY_CUSTOMER: copy.statusClosed,

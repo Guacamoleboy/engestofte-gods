@@ -245,4 +245,17 @@ public class EventDAO extends EntityManagerDAO<Event> {
 			return managedEvent;
 		});
 	}
+
+	// _________________________________________________________________________________________________________________
+
+	public Event updateStatus(Event event, EventStatus eventStatus, EnquiryStatus enquiryStatus) {
+		return executeQuery(() -> {
+			Event managedEvent = em.merge(event);
+			WeddingEnquiry managedEnquiry = em.merge(managedEvent.getWeddingEnquiry());
+			managedEvent.setWeddingEnquiry(managedEnquiry);
+			managedEvent.setStatus(eventStatus);
+			managedEnquiry.setStatus(enquiryStatus);
+			return managedEvent;
+		});
+	}
 }

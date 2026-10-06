@@ -46,7 +46,9 @@ public class WeddingEnquiryDAO extends EntityManagerDAO<WeddingEnquiry> {
 					EnquiryStatus.AWAITING_CUSTOMER,
 					EnquiryStatus.FOLLOW_UP_REQUIRED,
 					EnquiryStatus.OWNER_FOLLOW_UP_REQUIRED,
-					EnquiryStatus.APPROVED))
+					EnquiryStatus.APPROVED,
+					EnquiryStatus.AWAITING_DEPOSIT,
+					EnquiryStatus.BOOKED))
 			.getResultList());
 	}
 

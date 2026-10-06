@@ -2,7 +2,7 @@
 // _______
 // src/features/events-dashboard-page/EventsDashboardPage.tsx
 
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import type { EnquirySummary } from '../../api/endpoints/myEnquiries'
 import PageContainer from '../../shared/components/PageContainer'
 import { useTranslate } from '../../shared/hooks/useTranslate'
@@ -12,14 +12,20 @@ import styles from './EventsDashboardPage.module.css'
 export default function EventsDashboardPage() {
 	const { content, language } = useTranslate()
 	const copy = content.eventsDashboard
+	const isBookingsPage = useLocation().pathname === '/dashboard/bookings'
 	const { enquiries, importantMessages, loadEnquiries, state } = useEventsDashboard()
+	const visibleEnquiries = enquiries.filter((enquiry) => isBookingsPage
+		? enquiry.status === 'BOOKED'
+		: enquiry.status !== 'BOOKED')
+	const visibleEventIds = new Set(visibleEnquiries.flatMap((enquiry) => enquiry.event_id === null ? [] : [enquiry.event_id]))
+	const visibleImportantMessages = importantMessages.filter((item) => visibleEventIds.has(item.event_id))
 
 	return (
 		<div className={styles.dashboard}>
 			<PageContainer className={styles.content}>
 				<header className={styles.header}>
-					<h1>{copy.title}</h1>
-					<p>{copy.description}</p>
+					<h1>{isBookingsPage ? copy.bookingsTitle : copy.title}</h1>
+					<p>{isBookingsPage ? copy.bookingsDescription : copy.description}</p>
 				</header>
 
 				{state === 'loading' && <p className={styles.state} role="status">{copy.loading}</p>}
@@ -35,16 +41,16 @@ export default function EventsDashboardPage() {
 						<button className={styles.action} type="button" onClick={() => void loadEnquiries()}>{copy.retry}</button>
 					</section>
 				)}
-				{state === 'loaded' && enquiries.length === 0 && (
+				{state === 'loaded' && visibleEnquiries.length === 0 && (
 					<section className={styles.emptyState}>
-						<h2>{copy.emptyTitle}</h2>
-						<p>{copy.emptyDescription}</p>
+						<h2>{isBookingsPage ? copy.bookingsEmptyTitle : copy.emptyTitle}</h2>
+						<p>{isBookingsPage ? copy.bookingsEmptyDescription : copy.emptyDescription}</p>
 					</section>
 				)}
-				{state === 'loaded' && importantMessages.length > 0 && (
+				{state === 'loaded' && visibleImportantMessages.length > 0 && (
 					<section className={styles.list} aria-label={copy.importantMessagesTitle}>
 						<h2>{copy.importantMessagesTitle}</h2>
-						{importantMessages.map((item) => <Link className={styles.card} key={item.event_id} to={`/dashboard/events/${item.event_id}`}>
+						{visibleImportantMessages.map((item) => <Link className={styles.card} key={item.event_id} to={`/dashboard/events/${item.event_id}`}>
 							<div className={styles.cardContent}>
 								<p className={styles.status}>{copy.importantMessage}</p>
 								<h2>{item.event_name}</h2>
@@ -55,9 +61,9 @@ export default function EventsDashboardPage() {
 						</Link>)}
 					</section>
 				)}
-				{state === 'loaded' && enquiries.length > 0 && (
-					<section className={styles.list} aria-label={copy.title}>
-						{enquiries.map((enquiry) => (
+				{state === 'loaded' && visibleEnquiries.length > 0 && (
+					<section className={styles.list} aria-label={isBookingsPage ? copy.bookingsTitle : copy.title}>
+						{visibleEnquiries.map((enquiry) => (
 							<EnquiryCard key={enquiry.submission_id} enquiry={enquiry} language={language} copy={copy} />
 						))}
 					</section>
@@ -85,7 +91,7 @@ function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; lan
 	)
 
 	return isClickable
-		? <Link className={`${styles.card} ${styles.clickableCard}`} to={enquiry.status === 'APPROVED' && enquiry.event_id ? `/dashboard/events/${enquiry.event_id}` : `/dashboard/approval/${enquiry.submission_id}`}>{cardContent}</Link>
+		? <Link className={`${styles.card} ${styles.clickableCard}`} to={enquiry.event_id && ['APPROVED', 'AWAITING_DEPOSIT', 'BOOKED', 'CANCELLED_BY_CUSTOMER', 'CLOSED_BY_OWNER', 'CLOSED_BY_CUSTOMER'].includes(enquiry.status) ? `/dashboard/events/${enquiry.event_id}` : `/dashboard/approval/${enquiry.submission_id}`}>{cardContent}</Link>
 		: <article className={styles.card}>{cardContent}</article>
 }
 
@@ -95,6 +101,8 @@ function statusLabelsFor(status: EnquirySummary['status'], copy: ReturnType<type
 		UNDER_REVIEW: copy.statusUnderReview,
 		AWAITING_CUSTOMER: copy.statusAwaitingCustomer,
 		APPROVED: copy.statusApproved,
+		AWAITING_DEPOSIT: copy.statusAwaitingDeposit,
+		BOOKED: copy.statusBooked,
 		CANCELLED_BY_CUSTOMER: copy.statusCancelled,
 		FOLLOW_UP_REQUIRED: copy.statusFollowUpRequired,
 		OWNER_FOLLOW_UP_REQUIRED: copy.statusOwnerFollowUpRequired,

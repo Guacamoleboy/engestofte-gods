@@ -35,6 +35,7 @@ public class EventRouting {
 			post("/owner/{id}/change-proposals/{proposalId}/decision", context -> withController(context, EventController::decideChangeForOwner));
 			post("/owner/{id}/contacts", context -> withController(context, EventController::addContactForOwner));
 			post("/owner/{id}/close", context -> withController(context, EventController::closeByOwner));
+			post("/owner/{id}/depositum-request", context -> withController(context, EventController::requestDeposit));
 			get("/staff", context -> withController(context, EventController::findAllForStaff));
 			get("/staff/important-messages", context -> withController(context, EventController::findImportantMessagesForStaff));
 			get("/staff/{id}", context -> withController(context, EventController::findForStaff));
@@ -49,6 +50,7 @@ public class EventRouting {
 			get("/{id}/messages", context -> withController(context, EventController::findMessagesForAccount));
 			post("/{id}/messages", context -> withController(context, EventController::sendCustomerMessage));
 			post("/{id}/close", context -> withController(context, EventController::closeByCustomer));
+			post("/{id}/depositum", context -> withController(context, EventController::payDeposit));
 		});
 	}
 

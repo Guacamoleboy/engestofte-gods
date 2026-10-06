@@ -5,6 +5,7 @@ import engestofte.domain.enquiry.dto.response.EnquiryOwnerReviewResponseDTO;
 import engestofte.domain.enquiry.dto.response.EnquiryOwnerReviewSummaryResponseDTO;
 import engestofte.domain.enquiry.entity.WeddingEnquiry;
 import engestofte.domain.enquiry.enums.EnquiryStatus;
+import engestofte.domain.event.enums.EventStatus;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class EnquiryOwnerReviewResponseMapper {
 		response.setSubmissionId(enquiry.getSubmissionId());
 		response.setLanguage(enquiry.getLanguage());
 		response.setStatus(enquiry.getEvent() != null && enquiry.getEvent().getApprovedAt() != null
-				? EnquiryStatus.APPROVED
+				? ownerStatusFor(enquiry.getEvent().getStatus())
 				: enquiry.getStatus());
 		response.setEventId(enquiry.getEvent() == null ? null : enquiry.getEvent().getId());
 		response.setEventApprovedAt(enquiry.getEvent() == null ? null : enquiry.getEvent().getApprovedAt());
@@ -44,12 +45,22 @@ public class EnquiryOwnerReviewResponseMapper {
 		response.setCustomerName(enquiry.getRawDraft().path("customerName").asText(""));
 		response.setSummary(getSummary(enquiry.getAiAssessment()));
 		response.setStatus(enquiry.getEvent() != null && enquiry.getEvent().getApprovedAt() != null
-				? EnquiryStatus.APPROVED
+				? ownerStatusFor(enquiry.getEvent().getStatus())
 				: enquiry.getStatus());
 		response.setEventId(enquiry.getEvent() == null ? null : enquiry.getEvent().getId());
 		response.setEventApprovedAt(enquiry.getEvent() == null ? null : enquiry.getEvent().getApprovedAt());
 		response.setSubmittedAt(enquiry.getCreatedAt());
 		return response;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static EnquiryStatus ownerStatusFor(EventStatus status) {
+		return switch (status) {
+			case AWAITING_DEPOSIT -> EnquiryStatus.AWAITING_DEPOSIT;
+			case BOOKED -> EnquiryStatus.BOOKED;
+			default -> EnquiryStatus.APPROVED;
+		};
 	}
 
 	private static String getSummary(JsonNode assessment) {
