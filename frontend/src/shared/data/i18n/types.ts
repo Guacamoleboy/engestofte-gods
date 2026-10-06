@@ -29,8 +29,10 @@ export type TranslationContent = {
 		description: string
 		brand: string
 		navCustomerRequests: string
+		navCustomerBookings: string
 		navStaffEvents: string
 		navOwnerRequests: string
+		navOwnerBookings: string
 		toFront: string
 		logout: string
 		loading: string
@@ -40,12 +42,18 @@ export type TranslationContent = {
 		retry: string
 		emptyTitle: string
 		emptyDescription: string
+		bookingsTitle: string
+		bookingsDescription: string
+		bookingsEmptyTitle: string
+		bookingsEmptyDescription: string
 		requestTitle: string
 		submittedAt: string
 		statusSubmitted: string
 		statusUnderReview: string
 		statusAwaitingCustomer: string
 		statusApproved: string
+		statusAwaitingDeposit: string
+		statusBooked: string
 		statusCancelled: string
 		statusFollowUpRequired: string
 		statusOwnerFollowUpRequired: string
@@ -79,6 +87,10 @@ export type TranslationContent = {
 		retry: string
 		emptyTitle: string
 		emptyDescription: string
+		bookingsTitle: string
+		bookingsDescription: string
+		bookingsEmptyTitle: string
+		bookingsEmptyDescription: string
 		requestTitle: string
 		customer: string
 		guestCount: string
@@ -217,6 +229,21 @@ export type TranslationContent = {
 		deletingEvent: string
 		deleteEventDescription: string
 		deleteEventConfirm: string
+		requestDeposit: string
+		requestDepositSending: string
+		requestDepositError: string
+		depositReady: string
+		payDeposit: string
+		payDepositSending: string
+		payDepositError: string
+		bookingConfirmation: string
+		cancelEvent: string
+		cancelEventSending: string
+		cancelEventDescription: string
+		cancelEventConfirm: string
+		cancelEventFinalConfirm: string
+		cancelEventError: string
+		cancelledConfirmation: string
 		deleteEventError: string
 		customerName: string
 		customerEmail: string
@@ -236,6 +263,7 @@ export type TranslationContent = {
 		statusClosed: string
 		statusBooked: string
 		statusAwaitingDeposit: string
+		statusCancelledByCustomer: string
 		staffReadOnly: string
 		contactEmailLabel: string
 		addContact: string

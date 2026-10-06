@@ -9,6 +9,8 @@
 .eyebrow { margin: 0 0 0.4rem; color: var(--engestofte-muted); font-size: 0.82rem; font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; }
 .header h1 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; }
 .header > p:last-child { margin: 0.35rem 0 0; color: var(--engestofte-muted); line-height: 1.5; }
+.bookingNotice { border: 1px solid var(--engestofte-green-dark); margin-bottom: var(--engestofte-space-4); padding: 1rem; background: var(--engestofte-surface); color: var(--engestofte-heading); line-height: 1.5; }
+.bookingNotice p { margin: 0; }
 .panel { min-width: 0; min-height: min(65vh, 52rem); overflow: auto; border: 1px solid var(--engestofte-border); padding: clamp(1rem, 2vw, 1.5rem); background: var(--engestofte-white); box-shadow: var(--engestofte-shadow-card); }
 .staffPanel { min-height: 0; }
 .panel h2, .tabContent h2, .conversationPanel h2, .changeHistory h2 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: 1.4rem; font-weight: 400; }
@@ -25,6 +27,8 @@
 .facts dd { min-width: 0; justify-self: end; margin: 0; color: var(--engestofte-heading); font-weight: 600; text-align: right; overflow-wrap: anywhere; }
 .divider { border: 0; border-top: 1px solid var(--engestofte-border); margin: var(--engestofte-space-4) 0; }
 .specificDetails, .contactForm, .rejectForm { display: grid; gap: 0.8rem; }
+.bookingActions { display: grid; justify-items: start; gap: 0.7rem; margin-top: var(--engestofte-space-4); }
+.bookingActions p { margin: 0; color: var(--engestofte-muted); line-height: 1.5; }
 .contacts { margin-top: var(--engestofte-space-5); border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-4); }
 .contacts h3 { margin-bottom: var(--engestofte-space-3); }
 .contactForm p { margin: 0; }

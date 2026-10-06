@@ -173,6 +173,7 @@ public class EventResponseMapper {
 	private static EventStatus customerFacingStatus(Event event) {
 		if (event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER || event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CANCELLED_BY_CUSTOMER) return event.getStatus();
 		if (event.getStatus() == EventStatus.AWAITING_APPROVAL) return EventStatus.AWAITING_APPROVAL;
+		if (event.getStatus() == EventStatus.AWAITING_DEPOSIT || event.getStatus() == EventStatus.BOOKED) return event.getStatus();
 		return event.getApprovedAt() == null ? event.getStatus() : EventStatus.APPROVED;
 	}
 }

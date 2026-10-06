@@ -33,7 +33,7 @@ export type CustomerEvent = {
 
 export type OwnerEvent = {
 	event_id: number
-	status: 'APPROVED' | 'AWAITING_APPROVAL' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
+	status: 'APPROVED' | 'AWAITING_APPROVAL' | 'AWAITING_DEPOSIT' | 'BOOKED' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
 	approved_at: string
 	customer_name: string
 	event_name: string | null
@@ -135,6 +135,10 @@ export async function closeEvent(id: number) {
 	return response.data
 }
 
+export async function payEventDeposit(id: number) {
+	await client<ApiEnvelope<null>>(`/events/${id}/depositum`, { method: 'POST' })
+}
+
 export async function getOwnerEvent(id: number) {
 	const response = await client<ApiEnvelope<OwnerEvent>>(`/events/owner/${id}`)
 	return response.data
@@ -183,6 +187,10 @@ export async function addOwnerEventContact(id: number, email: string) {
 
 export async function closeOwnerEvent(id: number) {
 	await client<ApiEnvelope<null>>(`/events/owner/${id}/close`, { method: 'POST' })
+}
+
+export async function requestOwnerEventDeposit(id: number) {
+	await client<ApiEnvelope<null>>(`/events/owner/${id}/depositum-request`, { method: 'POST' })
 }
 
 export async function getEventChangeProposals(id: number) {

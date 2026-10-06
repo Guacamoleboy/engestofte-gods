@@ -39,6 +39,7 @@ export default function AppRoutes() {
 				<Route element={<ProtectedRoute allowedRoles={['CUSTOMER']} />}>
 					<Route element={<DashboardLayout />}>
 						<Route path="/dashboard/events/" element={<EventsDashboardPage />} />
+						<Route path="/dashboard/bookings" element={<EventsDashboardPage />} />
 						<Route path="/dashboard/approval/:id" element={<CustomerApprovalPage />} />
 						<Route path="/dashboard/events/:id" element={<EventPage />} />
 					</Route>
@@ -46,6 +47,7 @@ export default function AppRoutes() {
 				<Route element={<ProtectedRoute allowedRoles={['OWNER']} />}>
 					<Route element={<DashboardLayout />}>
 						<Route path="/owner/requests" element={<OwnerRequestsPage />} />
+						<Route path="/owner/bookings" element={<OwnerRequestsPage />} />
 						<Route path="/owner/requests/:id" element={<OwnerRequestPage />} />
 						<Route path="/owner/events/:id" element={<EventPage />} />
 					</Route>

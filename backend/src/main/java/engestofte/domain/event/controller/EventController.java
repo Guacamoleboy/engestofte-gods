@@ -215,6 +215,25 @@ public class EventController {
 
 	// _________________________________________________________________________________________________________________
 
+	public void requestDeposit(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			requireOwner(context);
+			eventService.requestDeposit(parseId(context.pathParam("id")));
+			return null;
+		}, "Deposit request sent");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void payDeposit(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			eventService.payDeposit(parseId(context.pathParam("id")), requireCustomer(context));
+			return null;
+		}, "Deposit recorded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	private static Integer requireCustomer(Context context) {
 		String token = ContextHelper.extractBearerToken(context);
 		if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");

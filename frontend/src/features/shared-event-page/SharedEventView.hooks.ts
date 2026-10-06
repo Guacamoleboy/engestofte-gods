@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, proposeEventChange, proposeOwnerEventChange, sendEventMessage, sendOwnerEventMessage, sendStaffEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
+import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, payEventDeposit, proposeEventChange, proposeOwnerEventChange, requestOwnerEventDeposit, sendEventMessage, sendOwnerEventMessage, sendStaffEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
 import { useAuth } from '../../shared/hooks/useAuth'
 
 export type SharedEventInfo = {
@@ -40,6 +40,7 @@ export function useSharedEventView() {
 	const [contactEmail, setContactEmail] = useState('')
 	const [contactState, setContactState] = useState<'idle' | 'adding' | 'added' | 'error'>('idle')
 	const [closeState, setCloseState] = useState<'idle' | 'closing' | 'error'>('idle')
+	const [depositState, setDepositState] = useState<'idle' | 'sending' | 'error'>('idle')
 	const [isPrimaryContact, setIsPrimaryContact] = useState(false)
 	const [proposals, setProposals] = useState<ChangeProposal[]>([])
 	const [proposalValues, setProposalValues] = useState<Record<EditableEventField, string>>(emptyProposalValues)
@@ -86,6 +87,8 @@ export function useSharedEventView() {
 					weddingDirection: customerEvent.event_data.wedding_direction ?? null,
 					approvedAt: customerEvent.approved_at,
 					status: customerEvent.status === 'AWAITING_APPROVAL' ? 'AWAITING_APPROVAL'
+						: customerEvent.status === 'AWAITING_DEPOSIT' ? 'AWAITING_DEPOSIT'
+							: customerEvent.status === 'BOOKED' ? 'BOOKED'
 						: customerEvent.status === 'CLOSED_BY_CUSTOMER' || customerEvent.status === 'CLOSED_BY_OWNER' || customerEvent.status === 'CANCELLED_BY_CUSTOMER'
 							? customerEvent.status : 'APPROVED',
 				})
@@ -149,13 +152,42 @@ export function useSharedEventView() {
 		if (!user || (user.role !== 'OWNER' && !isPrimaryContact)) return
 		setCloseState('closing')
 		try {
-			if (user.role === 'OWNER') await closeOwnerEvent(id)
-			else await closeCustomerEvent(id)
-			navigate(user.role === 'OWNER' ? '/owner/requests' : '/dashboard/events/', { replace: true })
+			if (user.role === 'OWNER') {
+				await closeOwnerEvent(id)
+				navigate('/owner/requests', { replace: true })
+			} else {
+				await closeCustomerEvent(id)
+				setCloseState('idle')
+				await loadEvent()
+			}
 		} catch {
 			setCloseState('error')
 		}
-	}, [id, isPrimaryContact, navigate, user])
+	}, [id, isPrimaryContact, loadEvent, navigate, user])
+
+	const requestDeposit = useCallback(async () => {
+		if (!user || user.role !== 'OWNER' || event?.status !== 'APPROVED') return
+		setDepositState('sending')
+		try {
+			await requestOwnerEventDeposit(id)
+			setDepositState('idle')
+			await loadEvent()
+		} catch {
+			setDepositState('error')
+		}
+	}, [event?.status, id, loadEvent, user])
+
+	const payDeposit = useCallback(async () => {
+		if (!user || user.role !== 'CUSTOMER' || !isPrimaryContact || event?.status !== 'AWAITING_DEPOSIT') return
+		setDepositState('sending')
+		try {
+			await payEventDeposit(id)
+			setDepositState('idle')
+			await loadEvent()
+		} catch {
+			setDepositState('error')
+		}
+	}, [event?.status, id, isPrimaryContact, loadEvent, user])
 
 	const setProposalValue = useCallback((fieldName: EditableEventField, value: string) => {
 		setProposalValues((current) => ({ ...current, [fieldName]: value }))
@@ -217,5 +249,5 @@ export function useSharedEventView() {
 		}
 	}, [id, isPrimaryContact, loadEvent, user])
 
-	return { addContact, closeCurrentEvent, closeState, contactEmail, contactState, decideProposal, decisionState, event, hasProposalChanges, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, proposalState, proposalValues, proposals, rejectionExplanation, rejectingProposalId, role: user?.role ?? null, sendMessage, setContactEmail, setMessage, setProposalValue, setRejectionExplanation, setRejectingProposalId, state, submitEventProposals }
+	return { addContact, closeCurrentEvent, closeState, contactEmail, contactState, decideProposal, decisionState, depositState, event, hasProposalChanges, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, payDeposit, proposalState, proposalValues, proposals, rejectionExplanation, rejectingProposalId, requestDeposit, role: user?.role ?? null, sendMessage, setContactEmail, setMessage, setProposalValue, setRejectionExplanation, setRejectingProposalId, state, submitEventProposals }
 }

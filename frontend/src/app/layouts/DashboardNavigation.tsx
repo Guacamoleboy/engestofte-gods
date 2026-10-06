@@ -13,14 +13,20 @@ export default function DashboardNavigation() {
 	const { content, language, setLanguage } = useTranslate()
 	const copy = content.eventsDashboard
 	const { logout, role } = useDashboardNavigation()
-	const navigationItem = role === 'CUSTOMER'
-		? { label: copy.navCustomerRequests, to: '/dashboard/events/' }
+	const navigationItems = role === 'CUSTOMER'
+		? [
+			{ label: copy.navCustomerRequests, to: '/dashboard/events/' },
+			{ label: copy.navCustomerBookings, to: '/dashboard/bookings' },
+		]
 		: role === 'OWNER'
-			? { label: copy.navOwnerRequests, to: '/owner/requests' }
+			? [
+				{ label: copy.navOwnerRequests, to: '/owner/requests' },
+				{ label: copy.navOwnerBookings, to: '/owner/bookings' },
+			]
 			: role === 'STAFF'
-				? { label: copy.navStaffEvents, to: '/staff/events' }
-				: null
-	const dashboardPath = navigationItem?.to ?? '/dashboard/events/'
+				? [{ label: copy.navStaffEvents, to: '/staff/events' }]
+				: []
+	const dashboardPath = navigationItems[0]?.to ?? '/dashboard/events/'
 
 	return (
 		<header className={styles.header}>
@@ -29,8 +35,8 @@ export default function DashboardNavigation() {
 					<img src="/images/shared/logo-white.png" alt="" />
 				</Link>
 				<div className={styles.workspace}>
-					{navigationItem && <nav className={styles.navigation} aria-label={copy.title}>
-						<NavLink className={({ isActive }) => isActive ? styles.activeLink : styles.link} to={navigationItem.to}>{navigationItem.label}</NavLink>
+					{navigationItems.length > 0 && <nav className={styles.navigation} aria-label={copy.title}>
+						{navigationItems.map((item) => <NavLink className={({ isActive }) => isActive ? styles.activeLink : styles.link} end key={item.to} to={item.to}>{item.label}</NavLink>)}
 					</nav>}
 					<div className={styles.actions}>
 						<Link className={styles.action} to="/kontakt">{copy.toFront}</Link>

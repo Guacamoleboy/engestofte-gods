@@ -78,7 +78,10 @@ public class EventService extends EntityManagerService<Event> {
 	public ChangeProposalResponseDTO proposeEventChange(Integer eventId, Integer accountId, String fieldName, String newValue, boolean owner) {
 		Event event = findApprovedEvent(eventId);
 		if (!owner && !eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can propose event changes");
-		if (event.getStatus() != EventStatus.APPROVED && event.getStatus() != EventStatus.AWAITING_APPROVAL) throw new ApiException(409, "This event cannot accept changes in its current state");
+		if (event.getStatus() != EventStatus.APPROVED && event.getStatus() != EventStatus.AWAITING_APPROVAL
+				&& event.getStatus() != EventStatus.AWAITING_DEPOSIT && event.getStatus() != EventStatus.BOOKED) {
+			throw new ApiException(409, "This event cannot accept changes in its current state");
+		}
 		if (newValue == null || (newValue.isBlank() && !"allergy_details".equals(fieldName))) throw new ApiException(400, "A new value is required");
 		String normalized = newValue.trim();
 		String oldValue = currentEventFieldValue(event, fieldName);
@@ -233,8 +236,11 @@ public class EventService extends EntityManagerService<Event> {
 		Event event = findApprovedEvent(eventId);
 		if (isClosed(event)) throw new ApiException(409, "A closed event cannot receive messages");
 		EventMessage message = createMessage(ownerAccountId, EventMessageSender.OWNER, content);
-		EventStatus eventStatus = changeProposalDAO.hasPendingForEvent(eventId) ? EventStatus.AWAITING_APPROVAL : EventStatus.APPROVED;
-		eventDAO.addMessage(event, message, eventStatus, EnquiryStatus.APPROVED);
+		boolean hasPendingChanges = changeProposalDAO.hasPendingForEvent(eventId);
+		EventStatus eventStatus = eventStatusAfterMessage(event, hasPendingChanges);
+		EnquiryStatus enquiryStatus = event.getStatus() == EventStatus.AWAITING_DEPOSIT || event.getStatus() == EventStatus.BOOKED
+				? event.getWeddingEnquiry().getStatus() : EnquiryStatus.APPROVED;
+		eventDAO.addMessage(event, message, eventStatus, enquiryStatus);
 		return EventMessageResponseMapper.toDTO(message, ownerAccountId);
 	}
 
@@ -302,10 +308,11 @@ public class EventService extends EntityManagerService<Event> {
 		Event event = findEventForAccount(eventId, accountId);
 		if (isClosed(event)) throw new ApiException(409, "A closed event cannot receive messages");
 		EventMessage message = createMessage(accountId, EventMessageSender.CUSTOMER, content);
-		EventStatus eventStatus = event.getApprovedAt() == null
-				? EventStatus.OWNER_FOLLOW_UP_REQUIRED
-				: changeProposalDAO.hasPendingForEvent(eventId) ? EventStatus.AWAITING_APPROVAL : EventStatus.APPROVED;
-		EnquiryStatus enquiryStatus = event.getApprovedAt() == null ? EnquiryStatus.OWNER_FOLLOW_UP_REQUIRED : EnquiryStatus.APPROVED;
+		boolean hasPendingChanges = changeProposalDAO.hasPendingForEvent(eventId);
+		EventStatus eventStatus = eventStatusAfterMessage(event, hasPendingChanges);
+		EnquiryStatus enquiryStatus = event.getStatus() == EventStatus.AWAITING_DEPOSIT || event.getStatus() == EventStatus.BOOKED
+				? event.getWeddingEnquiry().getStatus()
+				: event.getApprovedAt() == null ? EnquiryStatus.OWNER_FOLLOW_UP_REQUIRED : EnquiryStatus.APPROVED;
 		eventDAO.addMessage(event, message, eventStatus, enquiryStatus);
 		return EventMessageResponseMapper.toDTO(message, accountId);
 	}
@@ -315,8 +322,8 @@ public class EventService extends EntityManagerService<Event> {
 	public EventCustomerResponseDTO closeByCustomer(Integer eventId, Integer accountId) {
 		Event event = findEventForAccount(eventId, accountId);
 		if (!eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can remove this event");
-		ensureEventCanBeClosed(event);
-		eventDAO.close(event, EventStatus.CLOSED_BY_CUSTOMER, EnquiryStatus.CLOSED_BY_CUSTOMER);
+		if (isClosed(event)) throw new ApiException(409, "This event is already cancelled or closed");
+		eventDAO.updateStatus(event, EventStatus.CANCELLED_BY_CUSTOMER, EnquiryStatus.CANCELLED_BY_CUSTOMER);
 		return EventResponseMapper.toCustomerDTO(eventDAO.findForAccount(eventId, accountId), eventDAO.findPrimaryContactForEvent(eventId), true);
 	}
 
@@ -326,6 +333,25 @@ public class EventService extends EntityManagerService<Event> {
 		Event event = findApprovedEvent(eventId);
 		ensureEventCanBeClosed(event);
 		eventDAO.close(event, EventStatus.CLOSED_BY_OWNER, EnquiryStatus.CLOSED_BY_OWNER);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void requestDeposit(Integer eventId) {
+		Event event = findApprovedEvent(eventId);
+		if (event.getStatus() != EventStatus.APPROVED) throw new ApiException(409, "The event must be fully approved before requesting a deposit");
+		if (changeProposalDAO.hasPendingForEvent(eventId)) throw new ApiException(409, "Pending event changes must be resolved before requesting a deposit");
+		eventDAO.updateStatus(event, EventStatus.AWAITING_DEPOSIT, EnquiryStatus.AWAITING_DEPOSIT);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void payDeposit(Integer eventId, Integer accountId) {
+		Event event = findEventForAccount(eventId, accountId);
+		if (!eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can pay the deposit");
+		if (event.getStatus() != EventStatus.AWAITING_DEPOSIT) throw new ApiException(409, "The Owner must request the deposit before it can be paid");
+		if (changeProposalDAO.hasPendingForEvent(eventId)) throw new ApiException(409, "Pending event changes must be resolved before booking");
+		eventDAO.updateStatus(event, EventStatus.BOOKED, EnquiryStatus.BOOKED);
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -341,6 +367,14 @@ public class EventService extends EntityManagerService<Event> {
 
 	private static boolean isClosed(Event event) {
 		return event.getStatus() == EventStatus.CLOSED_BY_OWNER || event.getStatus() == EventStatus.CLOSED_BY_CUSTOMER || event.getStatus() == EventStatus.CANCELLED_BY_CUSTOMER;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private static EventStatus eventStatusAfterMessage(Event event, boolean hasPendingChanges) {
+		if (event.getStatus() == EventStatus.AWAITING_DEPOSIT || event.getStatus() == EventStatus.BOOKED) return event.getStatus();
+		if (hasPendingChanges) return EventStatus.AWAITING_APPROVAL;
+		return event.getApprovedAt() == null ? EventStatus.OWNER_FOLLOW_UP_REQUIRED : EventStatus.APPROVED;
 	}
 
 	// _________________________________________________________________________________________________________________
