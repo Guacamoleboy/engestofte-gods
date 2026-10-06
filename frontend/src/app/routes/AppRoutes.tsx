@@ -13,6 +13,7 @@ import CustomerApprovalPage from '../pages/CustomerApprovalPage'
 import OwnerRequestsPage from '../pages/OwnerRequestsPage'
 import OwnerRequestPage from '../pages/OwnerRequestPage'
 import StaffEventsPage from '../../features/staff-events-page/StaffEventsPage'
+import GuestInvitationPage from '../../features/guest-invitation-page/GuestInvitationPage'
 import AiFlowPage from '../../features/ai-flow-page'
 import AiFlowRedirectPage from '../../features/ai-flow-redirect-page'
 import ContactPage from '../../features/contact-page'
@@ -24,6 +25,7 @@ export default function AppRoutes() {
 	return (
 		<AiFlowTransitionProvider>
 			<Routes>
+				<Route path="/events/:id" element={<GuestInvitationPage />} />
 				<Route element={<PublicLayout />}>
 					<Route path="/" element={<Navigate to="/kontakt" replace />} />
 					<Route path="/kontakt" element={<ContactPage />} />

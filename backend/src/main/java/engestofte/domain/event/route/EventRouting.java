@@ -51,6 +51,8 @@ public class EventRouting {
 			post("/{id}/messages", context -> withController(context, EventController::sendCustomerMessage));
 			post("/{id}/close", context -> withController(context, EventController::closeByCustomer));
 			post("/{id}/depositum", context -> withController(context, EventController::payDeposit));
+			post("/{id}/invitation", context -> withController(context, EventController::createGuestInvitation));
+			get("/{id}/invitation", context -> withController(context, EventController::findGuestInvitation));
 		});
 	}
 

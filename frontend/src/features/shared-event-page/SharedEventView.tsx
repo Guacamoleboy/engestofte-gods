@@ -15,7 +15,7 @@ type EventTab = 'details' | 'conversation' | 'important' | 'settings' | 'resourc
 export default function SharedEventView() {
 	const { content, language } = useTranslate()
 	const copy = content.ownerEvent
-	const { addContact, closeCurrentEvent, closeState, contactEmail, contactState, decideProposal, decisionState, depositState, event, hasProposalChanges, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, payDeposit, proposalState, proposalValues, proposals, rejectionExplanation, rejectingProposalId, requestDeposit, role, sendMessage, setContactEmail, setMessage, setProposalValue, setRejectionExplanation, setRejectingProposalId, state, submitEventProposals } = useSharedEventView()
+	const { addContact, closeCurrentEvent, closeState, contactEmail, contactState, copyInvitationLink, decideProposal, decisionState, depositState, event, hasProposalChanges, invitationCopyState, invitationState, invitationUrl, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, openInvitation, payDeposit, proposalState, proposalValues, proposals, rejectionExplanation, rejectingProposalId, requestDeposit, role, sendMessage, setContactEmail, setMessage, setProposalValue, setRejectionExplanation, setRejectingProposalId, state, submitEventProposals } = useSharedEventView()
 	const [activeTab, setActiveTab] = useState<EventTab>('details')
 	useLayoutEffect(() => {
 		if (activeTab !== 'conversation' || !messagesContainerRef.current) return
@@ -110,6 +110,20 @@ export default function SharedEventView() {
 							<p>{copy.depositReady}</p>
 							<button className={styles.primaryAction} type="button" disabled={depositState === 'sending'} onClick={() => void payDeposit()}>{depositState === 'sending' ? copy.payDepositSending : copy.payDeposit}</button>
 							{depositState === 'error' && <p className={styles.error} role="alert">{copy.payDepositError}</p>}
+						</section>}
+						{role === 'CUSTOMER' && isPrimaryContact && event.status === 'BOOKED' && <section className={styles.invitationActions}>
+							<h3>{copy.invitationTitle}</h3>
+							<p>{copy.invitationDescription}</p>
+							<button className={styles.primaryAction} type="button" disabled={invitationState === 'opening'} onClick={openInvitation}>
+								{invitationState === 'opening' ? copy.invitationOpening : event.guestInvitationCreated ? copy.viewInvitation : copy.createInvitation}
+							</button>
+							{invitationState === 'error' && <p className={styles.error} role="alert">{copy.invitationError}</p>}
+							{invitationUrl && <div className={styles.invitationLink}>
+								<label htmlFor="guest-invitation-link">{copy.invitationUrlLabel}</label>
+								<div><input id="guest-invitation-link" type="url" readOnly value={invitationUrl} /><button className={styles.secondaryAction} type="button" onClick={() => void copyInvitationLink()}>{copy.copyInvitation}</button></div>
+								{invitationCopyState === 'copied' && <p role="status">{copy.invitationCopied}</p>}
+								{invitationCopyState === 'error' && <p className={styles.error} role="alert">{copy.invitationCopyError}</p>}
+							</div>}
 						</section>}
 						{mayProposeChanges && <section className={styles.contacts}>
 							<h3>{copy.contactsTitle}</h3>

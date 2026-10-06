@@ -29,6 +29,14 @@
 .specificDetails, .contactForm, .rejectForm { display: grid; gap: 0.8rem; }
 .bookingActions { display: grid; justify-items: start; gap: 0.7rem; margin-top: var(--engestofte-space-4); }
 .bookingActions p { margin: 0; color: var(--engestofte-muted); line-height: 1.5; }
+.invitationActions { display: grid; justify-items: start; gap: 0.7rem; margin-top: var(--engestofte-space-5); border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-4); }
+.invitationActions h3, .invitationActions p { margin: 0; }
+.invitationActions > p, .invitationLink p { color: var(--engestofte-muted); line-height: 1.5; }
+.invitationLink { display: grid; gap: 0.5rem; width: 100%; }
+.invitationLink label { color: var(--engestofte-heading); font-weight: 650; }
+.invitationLink > div { display: flex; flex-wrap: wrap; gap: var(--engestofte-space-2); }
+.invitationLink input { flex: 1 1 20rem; min-width: 0; border: 1px solid var(--engestofte-border); padding: 0.65rem; color: var(--engestofte-body); font: inherit; }
+.invitationLink input:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
 .contacts { margin-top: var(--engestofte-space-5); border-top: 1px solid var(--engestofte-border); padding-top: var(--engestofte-space-4); }
 .contacts h3 { margin-bottom: var(--engestofte-space-3); }
 .contactForm p { margin: 0; }

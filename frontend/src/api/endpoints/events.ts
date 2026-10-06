@@ -29,6 +29,14 @@ export type CustomerEvent = {
 	customer_email_redacted: string | null
 	is_primary_contact: boolean
 	primary_contact_name: string | null
+	guest_invitation_created: boolean
+}
+
+export type GuestInvitation = {
+	event_id: number
+	category: 'WEDDING'
+	event_name: string | null
+	requested_date: string | null
 }
 
 export type OwnerEvent = {
@@ -132,6 +140,16 @@ export async function addEventContact(id: number, email: string) {
 
 export async function closeEvent(id: number) {
 	const response = await client<ApiEnvelope<CustomerEvent>>(`/events/${id}/close`, { method: 'POST' })
+	return response.data
+}
+
+export async function createEventInvitation(id: number) {
+	const response = await client<ApiEnvelope<{ access: string }>>(`/events/${id}/invitation`, { method: 'POST' })
+	return response.data
+}
+
+export async function getGuestInvitation(id: number, access: string) {
+	const response = await client<ApiEnvelope<GuestInvitation>>(`/events/${id}/invitation?access=${encodeURIComponent(access)}`)
 	return response.data
 }
 

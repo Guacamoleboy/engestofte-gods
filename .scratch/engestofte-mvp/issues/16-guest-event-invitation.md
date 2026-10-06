@@ -1,15 +1,16 @@
 # 16: Create a guest invitation for an approved event
 
-**What to build:** The primary contact person can create a shareable, read-only guest invitation for an approved event. Guests open the event through a public access link and see the approved guest-facing schedule and planning information in an invitation-style page.
+**What to build:** Only the primary Customer contact can create a shareable, read-only guest invitation for a booked event. Guests open it through a public event access link and see approved guest-facing information in an invitation-style page.
 
 **Blocked by:** 15: Complete depositum, booking and customer cancellation
 
-**Status:** blocked
+**Status:** in progress
 
 ## In scope
 
-- An `Opret invitation` action for an approved event.
+- A one-time `Opret invitation` action for the primary Customer contact on a booked event, followed by `Se invitation`.
 - A guest URL in the form `/events/{id}?access={access}`. The access value is an unguessable invitation capability, separate from account JWTs.
+- The invitation link does not expire, and becomes invalid when the event is cancelled.
 - Copying the generated guest URL so it can be shared outside the application.
 - A public guest route that checks the invitation capability and renders only approved guest-facing event information.
 - A read-only invitation page with event details, schedule, timing and relevant planning/logistics information intended for guests.
@@ -26,8 +27,10 @@
 
 ## Acceptance criteria
 
-- [ ] The primary contact person can create an invitation only for an Owner-approved event.
+- [ ] Only the primary Customer contact can create an invitation, and only after the event is booked.
 - [ ] The application displays a shareable URL using `/events/{id}?access={access}` and supports copying it.
+- [ ] The one-time create action becomes `Se invitation`; opening it launches the invitation in a new tab.
+- [ ] The link remains valid until the event is cancelled.
 - [ ] A guest can open the link without an account and sees only the matching event's approved guest-facing information.
 - [ ] Missing or invalid access values do not expose event information.
 - [ ] The guest page is read-only and does not expose the dashboard or internal event controls.

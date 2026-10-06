@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, payEventDeposit, proposeEventChange, proposeOwnerEventChange, requestOwnerEventDeposit, sendEventMessage, sendOwnerEventMessage, sendStaffEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
+import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, createEventInvitation, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, payEventDeposit, proposeEventChange, proposeOwnerEventChange, requestOwnerEventDeposit, sendEventMessage, sendOwnerEventMessage, sendStaffEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
 import { useAuth } from '../../shared/hooks/useAuth'
 
 export type SharedEventInfo = {
@@ -21,6 +21,7 @@ export type SharedEventInfo = {
 	weddingDirection: number | null
 	approvedAt: string
 	status: 'APPROVED' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'AWAITING_APPROVAL' | 'AWAITING_DEPOSIT' | 'BOOKED' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
+	guestInvitationCreated: boolean
 }
 
 type EditableEventField = 'event_name' | 'expected_guest_count' | 'requested_date' | 'expected_vegan_count' | 'has_allergies' | 'allergy_details' | 'wedding_direction'
@@ -41,6 +42,9 @@ export function useSharedEventView() {
 	const [contactState, setContactState] = useState<'idle' | 'adding' | 'added' | 'error'>('idle')
 	const [closeState, setCloseState] = useState<'idle' | 'closing' | 'error'>('idle')
 	const [depositState, setDepositState] = useState<'idle' | 'sending' | 'error'>('idle')
+	const [invitationState, setInvitationState] = useState<'idle' | 'opening' | 'error'>('idle')
+	const [invitationUrl, setInvitationUrl] = useState<string | null>(null)
+	const [invitationCopyState, setInvitationCopyState] = useState<'idle' | 'copied' | 'error'>('idle')
 	const [isPrimaryContact, setIsPrimaryContact] = useState(false)
 	const [proposals, setProposals] = useState<ChangeProposal[]>([])
 	const [proposalValues, setProposalValues] = useState<Record<EditableEventField, string>>(emptyProposalValues)
@@ -60,7 +64,7 @@ export function useSharedEventView() {
 		try {
 			if (user.role === 'OWNER') {
 				const [ownerEvent, ownerMessages, ownerProposals] = await Promise.all([getOwnerEvent(id), getOwnerEventMessages(id), getOwnerEventChangeProposals(id)])
-				setEvent({ eventId: ownerEvent.event_id, eventName: ownerEvent.event_name, customerName: ownerEvent.customer_name, primaryContactName: ownerEvent.primary_contact_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, hasAllergies: ownerEvent.has_allergies, allergyDetails: ownerEvent.allergy_details, expectedVeganCount: ownerEvent.expected_vegan_count, weddingDirection: ownerEvent.wedding_direction, approvedAt: ownerEvent.approved_at, status: ownerEvent.status })
+				setEvent({ eventId: ownerEvent.event_id, eventName: ownerEvent.event_name, customerName: ownerEvent.customer_name, primaryContactName: ownerEvent.primary_contact_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, hasAllergies: ownerEvent.has_allergies, allergyDetails: ownerEvent.allergy_details, expectedVeganCount: ownerEvent.expected_vegan_count, weddingDirection: ownerEvent.wedding_direction, approvedAt: ownerEvent.approved_at, status: ownerEvent.status, guestInvitationCreated: false })
 				setProposalValues(emptyProposalValues)
 				setProposalTouched({})
 				setIsPrimaryContact(false)
@@ -86,6 +90,7 @@ export function useSharedEventView() {
 					expectedVeganCount: customerEvent.event_data.expected_vegan_count ?? null,
 					weddingDirection: customerEvent.event_data.wedding_direction ?? null,
 					approvedAt: customerEvent.approved_at,
+					guestInvitationCreated: customerEvent.guest_invitation_created,
 					status: customerEvent.status === 'AWAITING_APPROVAL' ? 'AWAITING_APPROVAL'
 						: customerEvent.status === 'AWAITING_DEPOSIT' ? 'AWAITING_DEPOSIT'
 							: customerEvent.status === 'BOOKED' ? 'BOOKED'
@@ -99,7 +104,7 @@ export function useSharedEventView() {
 				setProposals(customerProposals)
 			} else {
 				const staffEvent = await getStaffEvent(id)
-				setEvent({ eventId: staffEvent.event_id, eventName: staffEvent.event_name, customerName: staffEvent.customer_name, primaryContactName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, hasAllergies: staffEvent.has_allergies, allergyDetails: staffEvent.allergy_details, expectedVeganCount: staffEvent.expected_vegan_count, weddingDirection: staffEvent.wedding_direction, approvedAt: staffEvent.approved_at, status: staffEvent.status })
+				setEvent({ eventId: staffEvent.event_id, eventName: staffEvent.event_name, customerName: staffEvent.customer_name, primaryContactName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, hasAllergies: staffEvent.has_allergies, allergyDetails: staffEvent.allergy_details, expectedVeganCount: staffEvent.expected_vegan_count, weddingDirection: staffEvent.wedding_direction, approvedAt: staffEvent.approved_at, status: staffEvent.status, guestInvitationCreated: false })
 				setMessages([])
 				setProposals([])
 			}
@@ -189,6 +194,39 @@ export function useSharedEventView() {
 		}
 	}, [event?.status, id, isPrimaryContact, loadEvent, user])
 
+	const openInvitation = useCallback(() => {
+		if (!user || user.role !== 'CUSTOMER' || !isPrimaryContact || event?.status !== 'BOOKED') return
+		const invitationWindow = window.open('about:blank', '_blank')
+		setInvitationState('opening')
+		void (async () => {
+			try {
+				const { access } = await createEventInvitation(id)
+				const url = new URL(`/events/${id}`, window.location.origin)
+				url.searchParams.set('access', access)
+				setInvitationUrl(url.toString())
+				setEvent((current) => current ? { ...current, guestInvitationCreated: true } : current)
+				if (invitationWindow) {
+					invitationWindow.opener = null
+					invitationWindow.location.replace(url.toString())
+				}
+				setInvitationState('idle')
+			} catch {
+				invitationWindow?.close()
+				setInvitationState('error')
+			}
+		})()
+	}, [event?.status, id, isPrimaryContact, user])
+
+	const copyInvitationLink = useCallback(async () => {
+		if (!invitationUrl) return
+		try {
+			await navigator.clipboard.writeText(invitationUrl)
+			setInvitationCopyState('copied')
+		} catch {
+			setInvitationCopyState('error')
+		}
+	}, [invitationUrl])
+
 	const setProposalValue = useCallback((fieldName: EditableEventField, value: string) => {
 		setProposalValues((current) => ({ ...current, [fieldName]: value }))
 		setProposalTouched((current) => ({ ...current, [fieldName]: value === '' && (fieldName === 'has_allergies' || fieldName === 'wedding_direction') ? false : true }))
@@ -249,5 +287,5 @@ export function useSharedEventView() {
 		}
 	}, [id, isPrimaryContact, loadEvent, user])
 
-	return { addContact, closeCurrentEvent, closeState, contactEmail, contactState, decideProposal, decisionState, depositState, event, hasProposalChanges, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, payDeposit, proposalState, proposalValues, proposals, rejectionExplanation, rejectingProposalId, requestDeposit, role: user?.role ?? null, sendMessage, setContactEmail, setMessage, setProposalValue, setRejectionExplanation, setRejectingProposalId, state, submitEventProposals }
+	return { addContact, closeCurrentEvent, closeState, contactEmail, contactState, copyInvitationLink, decideProposal, decisionState, depositState, event, hasProposalChanges, invitationCopyState, invitationState, invitationUrl, isPrimaryContact, loadEvent, message, messageState, messages, messagesContainerRef, openInvitation, payDeposit, proposalState, proposalValues, proposals, rejectionExplanation, rejectingProposalId, requestDeposit, role: user?.role ?? null, sendMessage, setContactEmail, setMessage, setProposalValue, setRejectionExplanation, setRejectingProposalId, state, submitEventProposals }
 }

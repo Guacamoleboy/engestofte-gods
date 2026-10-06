@@ -248,6 +248,28 @@ public class EventDAO extends EntityManagerDAO<Event> {
 
 	// _________________________________________________________________________________________________________________
 
+	public Event findForGuestInvitation(Integer eventId) {
+		return executeQuery(() -> em.createQuery(
+				"SELECT event FROM Event event JOIN FETCH event.weddingEnquiry WHERE event.id = :eventId",
+				Event.class)
+			.setParameter("eventId", eventId)
+			.getResultStream()
+			.findFirst()
+			.orElse(null));
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void setGuestAccessTokenHash(Event event, String accessTokenHash) {
+		executeQuery(() -> {
+			Event managedEvent = em.merge(event);
+			managedEvent.setGuestAccessTokenHash(accessTokenHash);
+			return null;
+		});
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public Event updateStatus(Event event, EventStatus eventStatus, EnquiryStatus enquiryStatus) {
 		return executeQuery(() -> {
 			Event managedEvent = em.merge(event);

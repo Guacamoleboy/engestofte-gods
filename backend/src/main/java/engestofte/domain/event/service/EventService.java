@@ -10,6 +10,8 @@ import engestofte.domain.event.dto.response.ChangeProposalResponseDTO;
 import engestofte.domain.event.entity.ChangeProposal;
 import engestofte.domain.event.mapper.response.ChangeProposalResponseMapper;
 import engestofte.domain.event.dto.response.EventCustomerResponseDTO;
+import engestofte.domain.event.dto.response.GuestInvitationAccessResponseDTO;
+import engestofte.domain.event.dto.response.GuestInvitationResponseDTO;
 import engestofte.domain.event.dto.response.EventMessageResponseDTO;
 import engestofte.domain.event.dto.response.EventOwnerResponseDTO;
 import engestofte.domain.event.dto.response.EventOperationalResponseDTO;
@@ -21,6 +23,7 @@ import engestofte.domain.event.enums.EventStatus;
 import engestofte.domain.enquiry.enums.EnquiryStatus;
 import engestofte.domain.event.mapper.response.EventResponseMapper;
 import engestofte.domain.event.mapper.response.EventMessageResponseMapper;
+import engestofte.domain.event.mapper.response.GuestInvitationResponseMapper;
 import engestofte.domain.useraccount.dao.UserAccountDAO;
 import engestofte.domain.useraccount.entity.UserAccount;
 import engestofte.exception.ApiException;
@@ -325,6 +328,33 @@ public class EventService extends EntityManagerService<Event> {
 		if (isClosed(event)) throw new ApiException(409, "This event is already cancelled or closed");
 		eventDAO.updateStatus(event, EventStatus.CANCELLED_BY_CUSTOMER, EnquiryStatus.CANCELLED_BY_CUSTOMER);
 		return EventResponseMapper.toCustomerDTO(eventDAO.findForAccount(eventId, accountId), eventDAO.findPrimaryContactForEvent(eventId), true);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public GuestInvitationAccessResponseDTO createGuestInvitation(Integer eventId, Integer accountId) {
+		Event event = findEventForAccount(eventId, accountId);
+		if (!eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can create the guest invitation");
+		if (event.getStatus() != EventStatus.BOOKED || event.getApprovedAt() == null) throw new ApiException(409, "A guest invitation can only be created for a booked event");
+		String access = GuestInvitationTokenService.createAccessToken(event.getId(), event.getApprovedAt().toEpochMilli());
+		String accessHash = GuestInvitationTokenService.hashAccessToken(access);
+		if (!GuestInvitationTokenService.matchesHash(access, event.getGuestAccessTokenHash())) {
+			eventDAO.setGuestAccessTokenHash(event, accessHash);
+		}
+		GuestInvitationAccessResponseDTO response = new GuestInvitationAccessResponseDTO();
+		response.setAccess(access);
+		return response;
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public GuestInvitationResponseDTO findGuestInvitation(Integer eventId, String access) {
+		Event event = eventDAO.findForGuestInvitation(eventId);
+		if (event == null || event.getStatus() != EventStatus.BOOKED || event.getApprovedAt() == null
+				|| !GuestInvitationTokenService.matchesHash(access, event.getGuestAccessTokenHash())) {
+			throw new ApiException(404, "Invitation not found");
+		}
+		return GuestInvitationResponseMapper.toDTO(event);
 	}
 
 	// _________________________________________________________________________________________________________________
