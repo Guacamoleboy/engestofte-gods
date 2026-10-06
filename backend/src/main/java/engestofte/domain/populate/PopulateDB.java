@@ -85,6 +85,7 @@ public class PopulateDB {
 				account.setRole(staffRole);
 				userAccountDAO.update(account);
 			}
+			return null;
 		});
 	}
 

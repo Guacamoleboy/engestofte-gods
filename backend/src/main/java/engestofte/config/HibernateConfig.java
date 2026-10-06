@@ -1,6 +1,7 @@
 package engestofte.config;
 
 import engestofte.domain.enquiry.enums.EnquiryStatus;
+import engestofte.domain.event.enums.EventMessageSender;
 import engestofte.exception.ResourceNotFoundException;
 import engestofte.util.Util;
 import jakarta.persistence.EntityManager;
@@ -112,7 +113,7 @@ public class HibernateConfig {
 
             SessionFactory sf = configuration.buildSessionFactory(serviceRegistry);
             EntityManagerFactory entityManagerFactory = sf.unwrap(EntityManagerFactory.class);
-            if (!forTest) updateEnquiryStatusConstraint(entityManagerFactory);
+            if (!forTest) updateDatabaseConstraints(entityManagerFactory);
             return entityManagerFactory;
 
         } catch (Throwable ex) {
@@ -124,16 +125,21 @@ public class HibernateConfig {
 
     // _________________________________________________________________________________________________________________
 
-    private static void updateEnquiryStatusConstraint(EntityManagerFactory entityManagerFactory) {
+    private static void updateDatabaseConstraints(EntityManagerFactory entityManagerFactory) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         String statuses = Arrays.stream(EnquiryStatus.values())
                 .map(status -> "'" + status.name() + "'")
                 .collect(Collectors.joining(", "));
+        String senders = Arrays.stream(EventMessageSender.values())
+                .map(sender -> "'" + sender.name() + "'")
+                .collect(Collectors.joining(", "));
         try {
             transaction.begin();
             entityManager.createNativeQuery("ALTER TABLE wedding_enquiries DROP CONSTRAINT IF EXISTS wedding_enquiries_status_check").executeUpdate();
             entityManager.createNativeQuery("ALTER TABLE wedding_enquiries ADD CONSTRAINT wedding_enquiries_status_check CHECK (status IN (" + statuses + "))").executeUpdate();
+            entityManager.createNativeQuery("ALTER TABLE event_messages DROP CONSTRAINT IF EXISTS event_messages_sender_type_check").executeUpdate();
+            entityManager.createNativeQuery("ALTER TABLE event_messages ADD CONSTRAINT event_messages_sender_type_check CHECK (sender_type IN (" + senders + "))").executeUpdate();
             transaction.commit();
         } catch (RuntimeException exception) {
             if (transaction.isActive()) transaction.rollback();

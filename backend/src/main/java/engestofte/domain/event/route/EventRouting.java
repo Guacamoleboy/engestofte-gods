@@ -36,7 +36,9 @@ public class EventRouting {
 			post("/owner/{id}/contacts", context -> withController(context, EventController::addContactForOwner));
 			post("/owner/{id}/close", context -> withController(context, EventController::closeByOwner));
 			get("/staff", context -> withController(context, EventController::findAllForStaff));
+			get("/staff/important-messages", context -> withController(context, EventController::findImportantMessagesForStaff));
 			get("/staff/{id}", context -> withController(context, EventController::findForStaff));
+			post("/staff/{id}/messages", context -> withController(context, EventController::sendStaffMessage));
 			get("/owner/{id}/messages", context -> withController(context, EventController::findMessagesForOwner));
 			post("/owner/{id}/messages", context -> withController(context, EventController::sendOwnerMessage));
 			get("/{id}", context -> withController(context, EventController::findForAccount));

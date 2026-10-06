@@ -47,4 +47,14 @@ public class EventMessageDAO extends EntityManagerDAO<EventMessage> {
 			.setParameter("cutoff", cutoff)
 			.getResultList());
 	}
+
+	// _________________________________________________________________________________________________________________
+
+	public List<EventMessageRecipient> findUnreadForAccount(Integer accountId) {
+		return executeQuery(() -> em.createQuery(
+				"SELECT recipient FROM EventMessageRecipient recipient JOIN FETCH recipient.message message JOIN FETCH message.event event JOIN FETCH message.senderAccount WHERE recipient.recipient.id = :accountId AND recipient.readAt IS NULL ORDER BY message.createdAt DESC",
+				EventMessageRecipient.class)
+			.setParameter("accountId", accountId)
+			.getResultList());
+	}
 }

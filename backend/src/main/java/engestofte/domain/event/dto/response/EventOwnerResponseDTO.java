@@ -24,6 +24,10 @@ public class EventOwnerResponseDTO {
 	//			"customer_email_redacted": "ale....@example.com",
 	//			"expected_guest_count": 60,
 	//			"requested_date": "June 2027",
+	//			"has_allergies": true,
+	//			"allergy_details": "Peanuts",
+	//			"expected_vegan_count": 2,
+	//			"wedding_direction": 1,
 	//			"created_at": "2026-10-04T12:30:00Z"
 	//		}
 	//
@@ -59,6 +63,18 @@ public class EventOwnerResponseDTO {
 
 	@JsonProperty("requested_date")
 	private String requestedDate;
+
+	@JsonProperty("has_allergies")
+	private Boolean hasAllergies;
+
+	@JsonProperty("allergy_details")
+	private String allergyDetails;
+
+	@JsonProperty("expected_vegan_count")
+	private Integer expectedVeganCount;
+
+	@JsonProperty("wedding_direction")
+	private Integer weddingDirection;
 
 	@JsonProperty("created_at")
 	private Instant createdAt;

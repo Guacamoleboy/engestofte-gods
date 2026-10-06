@@ -10,6 +10,7 @@
 .header h1 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; }
 .header > p:last-child { margin: 0.35rem 0 0; color: var(--engestofte-muted); line-height: 1.5; }
 .panel { min-width: 0; min-height: min(65vh, 52rem); overflow: auto; border: 1px solid var(--engestofte-border); padding: clamp(1rem, 2vw, 1.5rem); background: var(--engestofte-white); box-shadow: var(--engestofte-shadow-card); }
+.staffPanel { min-height: 0; }
 .panel h2, .tabContent h2, .conversationPanel h2, .changeHistory h2 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: 1.4rem; font-weight: 400; }
 .tabs { display: flex; gap: var(--engestofte-space-2); overflow-x: auto; border-bottom: 1px solid var(--engestofte-border); }
 .tab, .activeTab, .lockedTab { flex: 0 0 auto; border: 0; border-bottom: 3px solid transparent; padding: 0.8rem 0.85rem; background: transparent; color: var(--engestofte-muted); font: inherit; font-weight: 650; cursor: pointer; }
@@ -43,6 +44,7 @@
 .dangerAction { min-height: 2.7rem; border: 1px solid #8d2525; padding: 0.55rem 0.9rem; background: #8d2525; color: var(--engestofte-white); font: inherit; font-weight: 650; cursor: pointer; }
 .dangerAction:disabled { opacity: 0.55; cursor: not-allowed; }
 .conversationPanel { display: flex; flex-direction: column; height: min(110vh, 70rem); min-height: 40rem; }
+.staffPanel .conversationPanel { height: auto; min-height: 0; }
 .messages { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: var(--engestofte-space-3); margin: var(--engestofte-space-4) 0; scrollbar-width: none; -ms-overflow-style: none; }
 .messages::-webkit-scrollbar { display: none; }
 .message { max-width: 92%; border: 1px solid var(--engestofte-border); padding: 0.75rem 0.9rem; background: var(--engestofte-surface); }

@@ -198,8 +198,14 @@ export type TranslationContent = {
 		trelloTab: string
 		resourcesTab: string
 		checklistTab: string
-		operationalDetailsTitle: string
-		noOperationalDetails: string
+		staffSendMessage: string
+		allergies: string
+		allergyDetails: string
+		expectedVeganCount: string
+		weddingDirection: string
+		yes: string
+		no: string
+		notProvided: string
 		staffChecklistEmpty: string
 		staffResourcesEmpty: string
 		generalTitle: string
@@ -275,6 +281,13 @@ export type TranslationContent = {
 		intimateRecommendation: string
 		answerLabel: string
 		answerPlaceholder: string
+		allergiesQuestion: string
+		allergyDetailsLabel: string
+		allergyDetailsPlaceholder: string
+		expectedVeganCountLabel: string
+		selectAnswer: string
+		yes: string
+		no: string
 		assistantName: string
 		customerName: string
 		statusSending: string

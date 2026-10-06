@@ -4,22 +4,28 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, proposeEventChange, proposeOwnerEventChange, sendEventMessage, sendOwnerEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
+import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, proposeEventChange, proposeOwnerEventChange, sendEventMessage, sendOwnerEventMessage, sendStaffEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
 import { useAuth } from '../../shared/hooks/useAuth'
 
 export type SharedEventInfo = {
 	eventId: number
 	eventName: string | null
+	customerName: string | null
 	primaryContactName: string | null
 	customerEmail: string | null
 	expectedGuestCount: number | null
 	requestedDate: string | null
-	operationalDetails: { question: string; answer: string }[]
+	hasAllergies: boolean | null
+	allergyDetails: string | null
+	expectedVeganCount: number | null
+	weddingDirection: number | null
 	approvedAt: string
 	status: 'APPROVED' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'AWAITING_APPROVAL' | 'AWAITING_DEPOSIT' | 'BOOKED' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER'
 }
 
-type EditableEventField = 'event_name' | 'expected_guest_count' | 'requested_date'
+type EditableEventField = 'event_name' | 'expected_guest_count' | 'requested_date' | 'expected_vegan_count' | 'has_allergies' | 'allergy_details' | 'wedding_direction'
+
+const emptyProposalValues: Record<EditableEventField, string> = { event_name: '', expected_guest_count: '', requested_date: '', expected_vegan_count: '', has_allergies: '', allergy_details: '', wedding_direction: '' }
 
 export function useSharedEventView() {
 	const { id: rawId } = useParams()
@@ -36,7 +42,8 @@ export function useSharedEventView() {
 	const [closeState, setCloseState] = useState<'idle' | 'closing' | 'error'>('idle')
 	const [isPrimaryContact, setIsPrimaryContact] = useState(false)
 	const [proposals, setProposals] = useState<ChangeProposal[]>([])
-	const [proposalValues, setProposalValues] = useState<Record<EditableEventField, string>>({ event_name: '', expected_guest_count: '', requested_date: '' })
+	const [proposalValues, setProposalValues] = useState<Record<EditableEventField, string>>(emptyProposalValues)
+	const [proposalTouched, setProposalTouched] = useState<Partial<Record<EditableEventField, boolean>>>({})
 	const [proposalState, setProposalState] = useState<'idle' | 'submitting' | 'error'>('idle')
 	const [rejectingProposalId, setRejectingProposalId] = useState<number | null>(null)
 	const [rejectionExplanation, setRejectionExplanation] = useState('')
@@ -52,8 +59,9 @@ export function useSharedEventView() {
 		try {
 			if (user.role === 'OWNER') {
 				const [ownerEvent, ownerMessages, ownerProposals] = await Promise.all([getOwnerEvent(id), getOwnerEventMessages(id), getOwnerEventChangeProposals(id)])
-				setEvent({ eventId: ownerEvent.event_id, eventName: ownerEvent.event_name, primaryContactName: ownerEvent.primary_contact_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, operationalDetails: [], approvedAt: ownerEvent.approved_at, status: ownerEvent.status })
-				setProposalValues({ event_name: '', expected_guest_count: '', requested_date: '' })
+				setEvent({ eventId: ownerEvent.event_id, eventName: ownerEvent.event_name, customerName: ownerEvent.customer_name, primaryContactName: ownerEvent.primary_contact_name, customerEmail: ownerEvent.customer_email_redacted, expectedGuestCount: ownerEvent.expected_guest_count, requestedDate: ownerEvent.requested_date, hasAllergies: ownerEvent.has_allergies, allergyDetails: ownerEvent.allergy_details, expectedVeganCount: ownerEvent.expected_vegan_count, weddingDirection: ownerEvent.wedding_direction, approvedAt: ownerEvent.approved_at, status: ownerEvent.status })
+				setProposalValues(emptyProposalValues)
+				setProposalTouched({})
 				setIsPrimaryContact(false)
 				setMessages(ownerMessages)
 				setProposals(ownerProposals)
@@ -67,23 +75,28 @@ export function useSharedEventView() {
 				setEvent({
 					eventId: customerEvent.event_id,
 					eventName: customerEvent.event_data.event_name ?? null,
+					customerName: customerEvent.event_data.customer_name ?? null,
 					primaryContactName: customerEvent.primary_contact_name,
 					customerEmail: customerEvent.customer_email_redacted,
 					expectedGuestCount: customerEvent.event_data.expected_guest_count ?? null,
 					requestedDate: customerEvent.event_data.requested_date ?? null,
-					operationalDetails: [],
+					hasAllergies: customerEvent.event_data.has_allergies ?? null,
+					allergyDetails: customerEvent.event_data.allergy_details ?? null,
+					expectedVeganCount: customerEvent.event_data.expected_vegan_count ?? null,
+					weddingDirection: customerEvent.event_data.wedding_direction ?? null,
 					approvedAt: customerEvent.approved_at,
 					status: customerEvent.status === 'AWAITING_APPROVAL' ? 'AWAITING_APPROVAL'
 						: customerEvent.status === 'CLOSED_BY_CUSTOMER' || customerEvent.status === 'CLOSED_BY_OWNER' || customerEvent.status === 'CANCELLED_BY_CUSTOMER'
 							? customerEvent.status : 'APPROVED',
 				})
-				setProposalValues({ event_name: '', expected_guest_count: '', requested_date: '' })
+				setProposalValues(emptyProposalValues)
+				setProposalTouched({})
 				setIsPrimaryContact(customerEvent.is_primary_contact)
 				setMessages(customerMessages)
 				setProposals(customerProposals)
 			} else {
 				const staffEvent = await getStaffEvent(id)
-				setEvent({ eventId: staffEvent.event_id, eventName: staffEvent.event_name, primaryContactName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, operationalDetails: staffEvent.operational_details, approvedAt: staffEvent.approved_at, status: staffEvent.status })
+				setEvent({ eventId: staffEvent.event_id, eventName: staffEvent.event_name, customerName: staffEvent.customer_name, primaryContactName: null, customerEmail: null, expectedGuestCount: staffEvent.expected_guest_count, requestedDate: staffEvent.requested_date, hasAllergies: staffEvent.has_allergies, allergyDetails: staffEvent.allergy_details, expectedVeganCount: staffEvent.expected_vegan_count, weddingDirection: staffEvent.wedding_direction, approvedAt: staffEvent.approved_at, status: staffEvent.status })
 				setMessages([])
 				setProposals([])
 			}
@@ -102,12 +115,14 @@ export function useSharedEventView() {
 
 	const sendMessage = useCallback(async (formEvent: FormEvent<HTMLFormElement>) => {
 		formEvent.preventDefault()
-		if (!message.trim() || !user || user.role === 'STAFF') return
+		if (!message.trim() || !user) return
 		setMessageState('sending')
 		try {
 			const sentMessage = user.role === 'OWNER'
 				? await sendOwnerEventMessage(id, message)
-				: await sendEventMessage(id, message)
+				: user.role === 'STAFF'
+					? await sendStaffEventMessage(id, message)
+					: await sendEventMessage(id, message)
 			setMessages((current) => [...current, sentMessage])
 			setMessage('')
 			setMessageState('idle')
@@ -144,13 +159,24 @@ export function useSharedEventView() {
 
 	const setProposalValue = useCallback((fieldName: EditableEventField, value: string) => {
 		setProposalValues((current) => ({ ...current, [fieldName]: value }))
+		setProposalTouched((current) => ({ ...current, [fieldName]: value === '' && (fieldName === 'has_allergies' || fieldName === 'wedding_direction') ? false : true }))
+		if (fieldName === 'has_allergies' && value === 'false') {
+			setProposalValues((current) => ({ ...current, allergy_details: '' }))
+			setProposalTouched((current) => ({ ...current, allergy_details: false }))
+		}
 	}, [])
 
 	const changedProposalFields = (Object.keys(proposalValues) as EditableEventField[]).filter((fieldName) => {
+		if (!proposalTouched[fieldName]) return false
 		const currentValue = fieldName === 'event_name' ? event?.eventName ?? 'Bryllupsevent'
 			: fieldName === 'expected_guest_count' ? event?.expectedGuestCount == null ? '' : String(event.expectedGuestCount)
-				: event?.requestedDate ?? ''
-		return proposalValues[fieldName].trim() !== '' && proposalValues[fieldName].trim() !== currentValue
+				: fieldName === 'requested_date' ? event?.requestedDate ?? ''
+					: fieldName === 'expected_vegan_count' ? event?.expectedVeganCount == null ? '' : String(event.expectedVeganCount)
+						: fieldName === 'has_allergies' ? event?.hasAllergies == null ? '' : String(event.hasAllergies)
+							: fieldName === 'allergy_details' ? event?.allergyDetails ?? ''
+								: event?.weddingDirection == null ? '' : String(event.weddingDirection)
+		const proposedValue = proposalValues[fieldName].trim()
+		return (fieldName === 'allergy_details' || proposedValue !== '') && proposedValue !== currentValue
 	})
 	const hasProposalChanges = changedProposalFields.length > 0
 
@@ -164,14 +190,15 @@ export function useSharedEventView() {
 					? await proposeOwnerEventChange(id, fieldName, newValue)
 					: await proposeEventChange(id, fieldName, newValue)
 				setProposals((current) => [proposal, ...current])
-				setProposalValue(fieldName, '')
+				setProposalValues((current) => ({ ...current, [fieldName]: '' }))
+				setProposalTouched((current) => ({ ...current, [fieldName]: false }))
 			}
 			setProposalState('idle')
 			await loadEvent()
 		} catch {
 			setProposalState('error')
 		}
-	}, [changedProposalFields, hasProposalChanges, id, isPrimaryContact, loadEvent, proposalValues, setProposalValue, user])
+	}, [changedProposalFields, hasProposalChanges, id, isPrimaryContact, loadEvent, proposalValues, user])
 
 	const decideProposal = useCallback(async (proposalId: number, decision: 'APPROVED' | 'REJECTED', explanation?: string) => {
 		if (!user || (user.role !== 'OWNER' && !isPrimaryContact)) return

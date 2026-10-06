@@ -48,6 +48,12 @@ public class EventController {
 
 	// _________________________________________________________________________________________________________________
 
+	public void findImportantMessagesForStaff(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> eventService.findStaffImportantMessages(requireStaffAccount(context)), "Important messages loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public void findImportantMessagesForAccount(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> eventService.findImportantMessages(requireCustomer(context)), "Important messages loaded");
 	}
@@ -133,8 +139,8 @@ public class EventController {
 
 	public void findForStaff(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
-			requireStaff(context);
-			return eventService.findForStaff(parseId(context.pathParam("id")));
+			Integer staffAccountId = requireStaffAccount(context);
+			return eventService.findForStaff(parseId(context.pathParam("id")), staffAccountId);
 		}, "Operational event loaded");
 	}
 
@@ -145,6 +151,16 @@ public class EventController {
 			requireStaff(context);
 			return eventService.findAllForStaff();
 		}, "Operational events loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void sendStaffMessage(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> {
+			Integer staffAccountId = requireStaffAccount(context);
+			EventMessageRequestDTO request = context.bodyAsClass(EventMessageRequestDTO.class);
+			return eventService.sendStaffMessage(parseId(context.pathParam("id")), staffAccountId, request.getContent());
+		}, "Staff event message sent");
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -221,6 +237,13 @@ public class EventController {
 		String token = ContextHelper.extractBearerToken(context);
 		if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");
 		if (!"STAFF".equals(JwtService.getClaimRole(token))) throw new ApiException(403, "Staff access is required");
+	}
+
+	private static Integer requireStaffAccount(Context context) {
+		String token = ContextHelper.extractBearerToken(context);
+		if (!JwtUtil.isAccessTokenValid(token)) throw new ApiException(401, "A valid access token is required");
+		if (!"STAFF".equals(JwtService.getClaimRole(token))) throw new ApiException(403, "Staff access is required");
+		return JwtService.getClaimAccountId(token);
 	}
 
 	// _________________________________________________________________________________________________________________

@@ -9,9 +9,9 @@ import { useStaffEvents } from './StaffEventsPage.hooks'
 import styles from './StaffEventsPage.module.css'
 
 export default function StaffEventsPage() {
-	const { content, language } = useTranslate()
+	const { content } = useTranslate()
 	const copy = content.eventsDashboard
-	const { events, loadEvents, state } = useStaffEvents()
+	const { events, importantMessages, loadEvents, state } = useStaffEvents()
 
 	return (
 		<main className={styles.page}>
@@ -30,13 +30,26 @@ export default function StaffEventsPage() {
 					<h2>{copy.staffEmptyTitle}</h2>
 					<p>{copy.staffEmptyDescription}</p>
 				</section>}
+				{state === 'loaded' && importantMessages.length > 0 && <section className={styles.list} aria-label={copy.importantMessagesTitle}>
+					<h2>{copy.importantMessagesTitle}</h2>
+					{importantMessages.map((item) => <Link className={styles.card} key={item.event_id} to={`/staff/events/${item.event_id}`}>
+						<div className={styles.cardContent}>
+							<p className={styles.status}>{copy.importantMessage}</p>
+							<h2>{item.event_name}</h2>
+							<p>{copy.unreadCount.replace('{count}', String(item.unread_count))}</p>
+							<p>{item.latest_message}</p>
+						</div>
+						<span className={styles.cardIndicator} aria-hidden="true">â†’</span>
+					</Link>)}
+				</section>}
 				{state === 'loaded' && events.length > 0 && <section className={styles.list} aria-label={copy.staffTitle}>
 					{events.map((event) => <Link className={styles.card} key={event.event_id} to={`/staff/events/${event.event_id}`}>
-						<div>
+						<div className={styles.cardContent}>
+							<p className={`${styles.status} ${event.status === 'APPROVED' ? styles.approvedStatus : ''}`}>{eventStatusLabel(event.status, content.ownerEvent)}</p>
 							<h2>{event.event_name || copy.eventTitleDefault}</h2>
-							{event.requested_date && <p>{copy.eventRequestedDate}: {event.requested_date}</p>}
-							{event.expected_guest_count != null && <p>{copy.eventGuestCount}: {event.expected_guest_count}</p>}
-							<p>{copy.eventApprovedAt}: {new Intl.DateTimeFormat(language, { dateStyle: 'long' }).format(new Date(event.approved_at))}</p>
+							{event.customer_name && <p>{content.ownerEvent.customerName}: {event.customer_name}</p>}
+							<p>{copy.eventGuestCount}: {event.expected_guest_count ?? '—'}</p>
+							<p className={styles.submittedAt}><span>{copy.eventRequestedDate}</span>{event.requested_date || '—'}</p>
 						</div>
 						<span className={styles.cardIndicator} aria-hidden="true">→</span>
 					</Link>)}
@@ -44,4 +57,12 @@ export default function StaffEventsPage() {
 			</PageContainer>
 		</main>
 	)
+}
+
+function eventStatusLabel(status: string, copy: ReturnType<typeof useTranslate>['content']['ownerEvent']) {
+	if (status === 'AWAITING_APPROVAL') return copy.statusAwaitingApproval
+	if (status === 'AWAITING_DEPOSIT') return copy.statusAwaitingDeposit
+	if (status === 'BOOKED') return copy.statusBooked
+	if (status === 'CLOSED_BY_CUSTOMER' || status === 'CLOSED_BY_OWNER' || status === 'CANCELLED_BY_CUSTOMER') return copy.statusClosed
+	return copy.statusApproved
 }

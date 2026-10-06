@@ -19,6 +19,10 @@ export type CustomerEvent = {
 		event_name?: string
 		expected_guest_count?: number
 		requested_date?: string
+		has_allergies?: boolean
+		allergy_details?: string
+		expected_vegan_count?: number
+		wedding_direction?: number
 	}
 	customer_note: string | null
 	created_at: string
@@ -37,6 +41,10 @@ export type OwnerEvent = {
 	customer_email_redacted: string
 	expected_guest_count: number | null
 	requested_date: string | null
+	has_allergies: boolean | null
+	allergy_details: string | null
+	expected_vegan_count: number | null
+	wedding_direction: number | null
 	created_at: string
 }
 
@@ -45,16 +53,20 @@ export type StaffEvent = {
 	category: 'WEDDING'
 	status: 'APPROVED' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'AWAITING_APPROVAL' | 'CLOSED_BY_CUSTOMER' | 'CLOSED_BY_OWNER' | 'CANCELLED_BY_CUSTOMER' | 'AWAITING_DEPOSIT' | 'BOOKED'
 	approved_at: string
+	customer_name: string | null
 	event_name: string | null
 	expected_guest_count: number | null
 	requested_date: string | null
-	operational_details: { question: string; answer: string }[]
+	has_allergies: boolean | null
+	allergy_details: string | null
+	expected_vegan_count: number | null
+	wedding_direction: number | null
 	created_at: string
 }
 
 export type EventMessage = {
 	id: number
-	sender_type: 'OWNER' | 'CUSTOMER'
+	sender_type: 'OWNER' | 'CUSTOMER' | 'STAFF'
 	sender_name: string
 	is_mine: boolean
 	content: string
@@ -135,6 +147,19 @@ export async function getStaffEvent(id: number) {
 
 export async function getStaffEvents() {
 	const response = await client<ApiEnvelope<StaffEvent[]>>('/events/staff')
+	return response.data
+}
+
+export async function getStaffImportantMessages() {
+	const response = await client<ApiEnvelope<ImportantMessage[]>>('/events/staff/important-messages')
+	return response.data
+}
+
+export async function sendStaffEventMessage(id: number, content: string) {
+	const response = await client<ApiEnvelope<EventMessage>>(`/events/staff/${id}/messages`, {
+		method: 'POST',
+		body: JSON.stringify({ content }),
+	})
 	return response.data
 }
 

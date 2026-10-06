@@ -315,10 +315,17 @@
 .composer {
 	min-height: 4.1rem;
 	display: flex;
+	flex-wrap: wrap;
 	align-items: stretch;
 	gap: 0.65rem;
 	padding: 0;
 }
+
+.dietaryFields { flex: 1 0 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--engestofte-space-3); }
+.dietaryFields label { display: grid; gap: 0.4rem; color: var(--engestofte-heading); font-size: 0.88rem; font-weight: 650; }
+.dietaryFields select, .dietaryFields input { width: 100%; min-height: 2.75rem; border: 1px solid var(--engestofte-border); padding: 0.55rem 0.7rem; background: var(--engestofte-white); color: var(--engestofte-text); font: inherit; }
+.dietaryFields .allergyDetails { grid-column: 1 / -1; }
+.dietaryFields select:focus-visible, .dietaryFields input:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 2px; }
 
 .composer textarea:focus { outline: 0; }
 .composer:focus-within textarea { border-color: var(--engestofte-green); }
@@ -414,6 +421,7 @@
 		padding: var(--engestofte-space-4);
 	}
 	.composer { gap: 0.5rem; }
+	.dietaryFields { grid-template-columns: 1fr; }
 	.composerActions { gap: 0.4rem; padding-left: 0.5rem; }
 	.messageList { gap: var(--engestofte-space-4); padding-block: var(--engestofte-space-5); }
 	.messageContent { width: 78%; max-width: 78%; }

@@ -212,11 +212,19 @@ public class EventDAO extends EntityManagerDAO<Event> {
 				UserAccount.class)
 			.setParameter("enquiry", event.getWeddingEnquiry())
 			.getResultList());
-		if (message.getSenderType() == EventMessageSender.CUSTOMER) recipients.addAll(em.createQuery(
-				"SELECT account FROM UserAccount account WHERE account.role.name = :ownerRole",
-				UserAccount.class)
-			.setParameter("ownerRole", engestofte.domain.role.enums.RoleName.OWNER)
-			.getResultList());
+		if (message.getSenderType() == EventMessageSender.CUSTOMER) {
+			recipients.addAll(em.createQuery(
+					"SELECT account FROM UserAccount account WHERE account.role.name = :ownerRole",
+					UserAccount.class)
+				.setParameter("ownerRole", engestofte.domain.role.enums.RoleName.OWNER)
+				.getResultList());
+			recipients.addAll(em.createQuery(
+					"SELECT DISTINCT message.senderAccount FROM EventMessage message WHERE message.event = :event AND message.senderType = :senderType",
+					UserAccount.class)
+				.setParameter("event", event)
+				.setParameter("senderType", EventMessageSender.STAFF)
+				.getResultList());
+		}
 		for (UserAccount recipient : recipients.stream().distinct().toList()) {
 			if (recipient.getId().equals(message.getSenderAccount().getId())) continue;
 			EventMessageRecipient messageRecipient = new EventMessageRecipient();

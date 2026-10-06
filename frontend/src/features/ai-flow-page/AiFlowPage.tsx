@@ -16,7 +16,7 @@ export default function AiFlowPage() {
 	const { content, language } = useTranslate()
 	const copy = content.aiFlow
 	const { startFinalTransition } = useAiFlowTransition()
-	const { answer, currentStep, customerName, expectedGuestCount, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finalMessage, copy.customerName, copy.aiUnavailable, language)
+	const { answer, currentStep, customerName, expectedGuestCount, hasAllergies, allergyDetails, expectedVeganCount, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, setHasAllergies, setAllergyDetails, setExpectedVeganCount, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finalMessage, copy.customerName, copy.aiUnavailable, language)
 	const progressLabel = isComplete
 		? copy.flowComplete
 		: copy.flowProgress.replace('{step}', String(currentStep))
@@ -149,6 +149,28 @@ export default function AiFlowPage() {
 					</div>
 				) : !isComplete && !isAiUnavailable && !hasUnrecognizedDraft && (
 				<form className={styles.composer} onSubmit={submitAnswer}>
+					{currentStep === 5 && <div className={styles.dietaryFields}>
+						<label>
+							<span>{copy.allergiesQuestion}</span>
+							<select value={hasAllergies === null ? '' : String(hasAllergies)} onChange={(event) => {
+								const selected = event.currentTarget.value === '' ? null : event.currentTarget.value === 'true'
+								setHasAllergies(selected)
+								if (selected !== true) setAllergyDetails('')
+							}} disabled={isPending}>
+								<option value="">{copy.selectAnswer}</option>
+								<option value="true">{copy.yes.toUpperCase()}</option>
+								<option value="false">{copy.no.toUpperCase()}</option>
+							</select>
+						</label>
+						<label>
+							<span>{copy.expectedVeganCountLabel}</span>
+							<input type="number" min="0" max={expectedGuestCount ?? 150} step="1" value={expectedVeganCount ?? ''} onChange={(event) => setExpectedVeganCount(event.currentTarget.value === '' ? null : Number(event.currentTarget.value))} disabled={isPending} />
+						</label>
+						{hasAllergies && <label className={styles.allergyDetails}>
+							<span>{copy.allergyDetailsLabel}</span>
+							<input type="text" maxLength={1000} value={allergyDetails} placeholder={copy.allergyDetailsPlaceholder} onChange={(event) => setAllergyDetails(event.currentTarget.value)} disabled={isPending} />
+						</label>}
+					</div>}
 					<label className="visually-hidden" htmlFor="ai-answer">{copy.answerLabel}</label>
 					<textarea
 						id="ai-answer"
