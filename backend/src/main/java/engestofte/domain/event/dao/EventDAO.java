@@ -48,6 +48,15 @@ public class EventDAO extends EntityManagerDAO<Event> {
 
 	// _________________________________________________________________________________________________________________
 
+	public java.util.List<Event> findAllApprovedForStaff() {
+		return executeQuery(() -> em.createQuery(
+				"SELECT event FROM Event event JOIN FETCH event.weddingEnquiry WHERE event.approvedAt IS NOT NULL ORDER BY event.createdAt ASC",
+				Event.class)
+			.getResultList());
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public UserAccount findPrimaryContactForEvent(Integer eventId) {
 		return executeQuery(() -> em.createQuery(
 				"SELECT account FROM Event event JOIN event.weddingEnquiry enquiry JOIN EnquiryContact contact ON contact.enquiry = enquiry JOIN contact.userAccount account WHERE event.id = :eventId AND contact.primary = true",
@@ -203,11 +212,19 @@ public class EventDAO extends EntityManagerDAO<Event> {
 				UserAccount.class)
 			.setParameter("enquiry", event.getWeddingEnquiry())
 			.getResultList());
-		if (message.getSenderType() == EventMessageSender.CUSTOMER) recipients.addAll(em.createQuery(
-				"SELECT account FROM UserAccount account WHERE account.role.name = :ownerRole",
-				UserAccount.class)
-			.setParameter("ownerRole", engestofte.domain.role.enums.RoleName.OWNER)
-			.getResultList());
+		if (message.getSenderType() == EventMessageSender.CUSTOMER) {
+			recipients.addAll(em.createQuery(
+					"SELECT account FROM UserAccount account WHERE account.role.name = :ownerRole",
+					UserAccount.class)
+				.setParameter("ownerRole", engestofte.domain.role.enums.RoleName.OWNER)
+				.getResultList());
+			recipients.addAll(em.createQuery(
+					"SELECT DISTINCT message.senderAccount FROM EventMessage message WHERE message.event = :event AND message.senderType = :senderType",
+					UserAccount.class)
+				.setParameter("event", event)
+				.setParameter("senderType", EventMessageSender.STAFF)
+				.getResultList());
+		}
 		for (UserAccount recipient : recipients.stream().distinct().toList()) {
 			if (recipient.getId().equals(message.getSenderAccount().getId())) continue;
 			EventMessageRecipient messageRecipient = new EventMessageRecipient();

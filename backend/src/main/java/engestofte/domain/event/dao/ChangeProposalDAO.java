@@ -140,6 +140,14 @@ public class ChangeProposalDAO extends EntityManagerDAO<ChangeProposal> {
 			case "customer_name" -> eventData.put("customerName", proposal.getNewValue());
 			case "event_name" -> eventData.put("eventName", proposal.getNewValue());
 			case "expected_guest_count" -> eventData.put("expectedGuestCount", Integer.parseInt(proposal.getNewValue()));
+			case "expected_vegan_count" -> eventData.put("expectedVeganCount", Integer.parseInt(proposal.getNewValue()));
+			case "has_allergies" -> {
+				boolean hasAllergies = Boolean.parseBoolean(proposal.getNewValue());
+				eventData.put("hasAllergies", hasAllergies);
+				if (!hasAllergies) eventData.put("allergyDetails", "");
+			}
+			case "allergy_details" -> eventData.put("allergyDetails", proposal.getNewValue());
+			case "wedding_direction" -> eventData.put("weddingDirection", Integer.parseInt(proposal.getNewValue()));
 			case "requested_date" -> {
 				com.fasterxml.jackson.databind.node.ArrayNode conversation = (com.fasterxml.jackson.databind.node.ArrayNode) eventData.path("conversation");
 				com.fasterxml.jackson.databind.node.ObjectNode dateTurn = (com.fasterxml.jackson.databind.node.ObjectNode) conversation.get(1);

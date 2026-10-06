@@ -79,7 +79,7 @@ public class EventService extends EntityManagerService<Event> {
 		Event event = findApprovedEvent(eventId);
 		if (!owner && !eventDAO.isPrimaryContact(eventId, accountId)) throw new ApiException(403, "Only the primary contact can propose event changes");
 		if (event.getStatus() != EventStatus.APPROVED && event.getStatus() != EventStatus.AWAITING_APPROVAL) throw new ApiException(409, "This event cannot accept changes in its current state");
-		if (newValue == null || newValue.isBlank()) throw new ApiException(400, "A new value is required");
+		if (newValue == null || (newValue.isBlank() && !"allergy_details".equals(fieldName))) throw new ApiException(400, "A new value is required");
 		String normalized = newValue.trim();
 		String oldValue = currentEventFieldValue(event, fieldName);
 		if (oldValue == null) throw new ApiException(400, "This event field cannot be changed");
@@ -90,6 +90,25 @@ public class EventService extends EntityManagerService<Event> {
 				if (guestCount < 1 || guestCount > 5000) throw new NumberFormatException();
 			} catch (NumberFormatException exception) {
 				throw new ApiException(400, "Enter a valid guest count");
+			}
+		}
+		if ("expected_vegan_count".equals(fieldName)) {
+			try {
+				int veganCount = Integer.parseInt(normalized);
+				int guestCount = event.getEventData().path("expectedGuestCount").asInt(150);
+				if (veganCount < 0 || veganCount > 150 || veganCount > guestCount) throw new NumberFormatException();
+			} catch (NumberFormatException exception) {
+				throw new ApiException(400, "Enter a valid vegan guest count");
+			}
+		}
+		if ("has_allergies".equals(fieldName) && !"true".equalsIgnoreCase(normalized) && !"false".equalsIgnoreCase(normalized)) throw new ApiException(400, "Allergy status must be yes or no");
+		if ("allergy_details".equals(fieldName) && normalized.length() > 1000) throw new ApiException(400, "Allergy details are too long");
+		if ("wedding_direction".equals(fieldName)) {
+			try {
+				int direction = Integer.parseInt(normalized);
+				if (direction < 1 || direction > 3) throw new NumberFormatException();
+			} catch (NumberFormatException exception) {
+				throw new ApiException(400, "Choose a valid wedding package");
 			}
 		}
 		if ("requested_date".equals(fieldName) && normalized.length() > 1000) throw new ApiException(400, "The requested date is too long");
@@ -113,6 +132,13 @@ public class EventService extends EntityManagerService<Event> {
 			case "expected_guest_count" -> event.getEventData().path("expectedGuestCount").isNumber()
 					? event.getEventData().path("expectedGuestCount").asText()
 					: null;
+			case "expected_vegan_count" -> event.getEventData().path("expectedVeganCount").isNumber()
+					? event.getEventData().path("expectedVeganCount").asText() : "";
+			case "has_allergies" -> event.getEventData().path("hasAllergies").isBoolean()
+					? event.getEventData().path("hasAllergies").asText() : "";
+			case "allergy_details" -> event.getEventData().path("allergyDetails").asText("");
+			case "wedding_direction" -> event.getEventData().path("weddingDirection").isNumber()
+					? event.getEventData().path("weddingDirection").asText() : "";
 			case "requested_date" -> {
 				com.fasterxml.jackson.databind.JsonNode conversation = event.getEventData().path("conversation");
 				if (!conversation.isArray() || conversation.size() <= 1) yield null;
@@ -171,8 +197,26 @@ public class EventService extends EntityManagerService<Event> {
 
 	// _________________________________________________________________________________________________________________
 
-	public EventOperationalResponseDTO findForStaff(Integer eventId) {
-		return EventResponseMapper.toOperationalDTO(findApprovedEvent(eventId));
+	public EventOperationalResponseDTO findForStaff(Integer eventId, Integer staffAccountId) {
+		Event event = findApprovedEvent(eventId);
+		eventMessageDAO.markEventMessagesRead(eventId, staffAccountId);
+		return toOperationalDTOForStaff(event);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public java.util.List<EventOperationalResponseDTO> findAllForStaff() {
+		return eventDAO.findAllApprovedForStaff().stream().map(this::toOperationalDTOForStaff).toList();
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private EventOperationalResponseDTO toOperationalDTOForStaff(Event event) {
+		UserAccount primaryContact = eventDAO.findPrimaryContactForEvent(event.getId());
+		StaffEventDataRedactor.RedactedEventData redacted = StaffEventDataRedactor.redact(event, primaryContact == null ? null : primaryContact.getFullName());
+		EventOperationalResponseDTO response = EventResponseMapper.toOperationalDTO(event, redacted.customerName(), redacted.eventName(), StaffEventDataRedactor.redactRequestedDate(event));
+		response.setAllergyDetails(StaffEventDataRedactor.redactContactDetails(response.getAllergyDetails()));
+		return response;
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -196,6 +240,19 @@ public class EventService extends EntityManagerService<Event> {
 
 	// _________________________________________________________________________________________________________________
 
+	public EventMessageResponseDTO sendStaffMessage(Integer eventId, Integer staffAccountId, String content) {
+		Event event = findApprovedEvent(eventId);
+		if (isClosed(event)) throw new ApiException(409, "A closed event cannot receive messages");
+		EventMessage message = createMessage(staffAccountId, EventMessageSender.STAFF, content);
+		eventDAO.addMessage(event, message, event.getStatus(), event.getWeddingEnquiry().getStatus());
+		EventMessageResponseDTO response = EventMessageResponseMapper.toDTO(message, staffAccountId);
+		response.setSenderName(StaffEventDataRedactor.redactContactDetails(response.getSenderName()));
+		response.setContent(StaffEventDataRedactor.redactContactDetails(response.getContent()));
+		return response;
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public java.util.List<EventMessageResponseDTO> findMessagesForAccount(Integer eventId, Integer accountId) {
 		Event event = findEventForAccount(eventId, accountId);
 		eventMessageDAO.markEventMessagesRead(event.getId(), accountId);
@@ -206,16 +263,31 @@ public class EventService extends EntityManagerService<Event> {
 
 	public java.util.List<ImportantMessageResponseDTO> findImportantMessages(Integer accountId) {
 		java.time.Instant cutoff = java.time.Instant.now().minus(java.time.Duration.ofDays(7));
+		return summarizeMessages(eventMessageDAO.findEscalatedForAccount(accountId, cutoff), false);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public java.util.List<ImportantMessageResponseDTO> findStaffImportantMessages(Integer accountId) {
+		return summarizeMessages(eventMessageDAO.findUnreadForAccount(accountId), true);
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	private java.util.List<ImportantMessageResponseDTO> summarizeMessages(java.util.List<engestofte.domain.event.entity.EventMessageRecipient> recipients, boolean redactContactDetails) {
 		java.util.Map<Integer, ImportantMessageResponseDTO> grouped = new java.util.LinkedHashMap<>();
-		for (var recipient : eventMessageDAO.findEscalatedForAccount(accountId, cutoff)) {
+		for (var recipient : recipients) {
 			EventMessage message = recipient.getMessage();
 			Event event = message.getEvent();
 			ImportantMessageResponseDTO summary = grouped.computeIfAbsent(event.getId(), eventId -> {
 				ImportantMessageResponseDTO item = new ImportantMessageResponseDTO();
 				item.setEventId(eventId);
 				String name = event.getEventData().path("eventName").asText();
+				if (redactContactDetails) name = StaffEventDataRedactor.redactContactDetails(name);
 				item.setEventName(name.isBlank() ? "Bryllupsevent" : name);
-				item.setLatestMessage(message.getContent());
+				item.setLatestMessage(redactContactDetails
+						? StaffEventDataRedactor.redactContactDetails(message.getContent())
+						: message.getContent());
 				item.setLatestMessageAt(message.getCreatedAt());
 				return item;
 			});

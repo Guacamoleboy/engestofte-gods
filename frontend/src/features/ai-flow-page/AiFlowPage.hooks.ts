@@ -30,6 +30,10 @@ type StoredDraft = {
 	currentStep: number
 	customerName: string
 	expectedGuestCount: number | null
+	hasAllergies: boolean | null
+	allergyDetails: string
+	expectedVeganCount: number | null
+	weddingDirection: number | null
 	isComplete: boolean
 	isOutOfScope: boolean
 	isAiUnavailable: boolean
@@ -100,6 +104,10 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 	const [question, setQuestion] = useState(initialDraft?.question ?? stepQuestions[0])
 	const [currentStep, setCurrentStep] = useState(initialDraft?.currentStep ?? 1)
 	const [expectedGuestCount, setExpectedGuestCount] = useState<number | null>(initialDraft?.expectedGuestCount ?? null)
+	const [hasAllergies, setHasAllergies] = useState<boolean | null>(initialDraft?.hasAllergies ?? null)
+	const [allergyDetails, setAllergyDetails] = useState(initialDraft?.allergyDetails ?? '')
+	const [expectedVeganCount, setExpectedVeganCount] = useState<number | null>(initialDraft?.expectedVeganCount ?? null)
+	const [weddingDirection, setWeddingDirection] = useState<number | null>(initialDraft?.weddingDirection ?? null)
 	const [answer, setAnswer] = useState(initialDraft?.answer ?? '')
 	const [isPending, setIsPending] = useState(false)
 	const [isComplete, setIsComplete] = useState(initialDraft?.isComplete ?? false)
@@ -117,6 +125,10 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 			currentStep,
 			customerName: customerName.current,
 			expectedGuestCount,
+			hasAllergies,
+			allergyDetails,
+			expectedVeganCount,
+			weddingDirection,
 			isComplete,
 			isOutOfScope,
 			isAiUnavailable,
@@ -127,7 +139,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 			submissionId: initialDraft?.submissionId,
 		}
 		window.localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
-	}, [answer, currentStep, expectedGuestCount, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, language, messages, question])
+	}, [allergyDetails, answer, currentStep, expectedGuestCount, expectedVeganCount, hasAllergies, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, language, messages, question, weddingDirection])
 
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
@@ -169,6 +181,11 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 		setError('')
 		setAnswer('')
 		const submittedTurn = { question, answer: submittedAnswer }
+		if (currentStep === 4) {
+			const normalizedAnswer = submittedAnswer.toLocaleLowerCase(language).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+			const direction = normalizedAnswer.match(/(?:option|mulighed|moglichkeit)\s*([1-3])/)?.[1]
+			if (direction) setWeddingDirection(Number(direction))
+		}
 		try {
 			const result: AiInteractionResponse = await submitAiAnswer(
 				submittedAnswer,
@@ -252,7 +269,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 		}
 	}
 
-	return { answer, currentStep, customerName: customerName.current || defaultCustomerName, expectedGuestCount, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, submitAnswer }
+	return { answer, currentStep, customerName: customerName.current || defaultCustomerName, expectedGuestCount, hasAllergies, allergyDetails, expectedVeganCount, weddingDirection, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, setHasAllergies, setAllergyDetails, setExpectedVeganCount, submitAnswer }
 }
 
 function findExpectedGuestCount(conversation: AiConversationTurn[]) {

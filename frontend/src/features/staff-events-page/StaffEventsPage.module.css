@@ -1,0 +1,30 @@
+/* Pathing
+   _______
+   src/features/staff-events-page/StaffEventsPage.module.css */
+
+.page { flex: 1; background: var(--engestofte-surface); }
+.content { padding-block: clamp(2.5rem, 8vh, 6rem); }
+.header { max-width: 48rem; margin-bottom: var(--engestofte-space-8); }
+.header h1 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; }
+.header > p, .emptyState p, .state p { color: var(--engestofte-muted); line-height: 1.6; }
+.list { display: grid; gap: var(--engestofte-space-4); }
+.card, .emptyState, .state { border: 1px solid var(--engestofte-border); padding: clamp(1.25rem, 3vw, 2rem); background: var(--engestofte-white); box-shadow: var(--engestofte-shadow-card); }
+.card { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--engestofte-space-6); color: inherit; text-decoration: none; transition: var(--engestofte-transition-control); }
+.card:hover { border-color: var(--engestofte-green); }
+.card:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
+.cardContent { min-width: 0; }
+.card h2, .emptyState h2 { margin: 0; color: var(--engestofte-heading); font-family: var(--engestofte-font-display); font-size: 1.55rem; font-weight: 400; }
+.cardIndicator { padding: 0.25rem; color: var(--engestofte-green-dark); font-size: 1.5rem; }
+.status { width: fit-content; margin: 0 0 0.8rem; border: 1px solid var(--engestofte-border); padding: 0.3rem 0.65rem; background: var(--engestofte-surface); color: var(--engestofte-muted); font-size: 0.74rem; font-weight: 650; line-height: 1.3; }
+.approvedStatus { border-color: var(--engestofte-green); color: var(--engestofte-green-dark); }
+.cardContent > p:not(.status) { margin: 0.5rem 0 0; color: var(--engestofte-muted); line-height: 1.5; }
+.submittedAt { display: grid; gap: 0.25rem; margin: var(--engestofte-space-4) 0 0; color: var(--engestofte-muted); font-size: 0.88rem; }
+.submittedAt span { font-weight: 650; }
+.state { width: min(100%, 46rem); }
+.state p:first-child { margin-top: 0; }
+.state button { min-height: 2.8rem; border: 1px solid var(--engestofte-green-dark); padding: 0.65rem 1rem; background: var(--engestofte-green-dark); color: var(--engestofte-white); font: inherit; font-weight: 650; cursor: pointer; }
+.state button:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
+.emptyState { text-align: center; }
+.emptyState p { margin-bottom: 0; }
+
+@media (max-width: 620px) { .card { gap: var(--engestofte-space-3); } }

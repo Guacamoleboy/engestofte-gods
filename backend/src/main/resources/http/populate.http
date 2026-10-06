@@ -8,3 +8,6 @@ POST {{baseUrl}}/populate/roles
 
 ### Create or promote the local Owner accounts (password: Password12345!)
 POST {{baseUrl}}/populate/owners
+
+### Create STAFF
+POST {{baseUrl}}/populate/staff

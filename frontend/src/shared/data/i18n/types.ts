@@ -55,6 +55,14 @@ export type TranslationContent = {
 		importantMessagesTitle: string
 		importantMessage: string
 		unreadCount: string
+		staffTitle: string
+		staffDescription: string
+		staffEmptyTitle: string
+		staffEmptyDescription: string
+		eventTitleDefault: string
+		eventRequestedDate: string
+		eventGuestCount: string
+		eventApprovedAt: string
 	}
 	ownerReview: {
 		aiTab: string
@@ -190,6 +198,16 @@ export type TranslationContent = {
 		trelloTab: string
 		resourcesTab: string
 		checklistTab: string
+		staffSendMessage: string
+		allergies: string
+		allergyDetails: string
+		expectedVeganCount: string
+		weddingDirection: string
+		yes: string
+		no: string
+		notProvided: string
+		staffChecklistEmpty: string
+		staffResourcesEmpty: string
 		generalTitle: string
 		specificDetailsTitle: string
 		eventName: string
@@ -216,6 +234,8 @@ export type TranslationContent = {
 		statusApproved: string
 		statusAwaitingApproval: string
 		statusClosed: string
+		statusBooked: string
+		statusAwaitingDeposit: string
 		staffReadOnly: string
 		contactEmailLabel: string
 		addContact: string
@@ -261,6 +281,13 @@ export type TranslationContent = {
 		intimateRecommendation: string
 		answerLabel: string
 		answerPlaceholder: string
+		allergiesQuestion: string
+		allergyDetailsLabel: string
+		allergyDetailsPlaceholder: string
+		expectedVeganCountLabel: string
+		selectAnswer: string
+		yes: string
+		no: string
 		assistantName: string
 		customerName: string
 		statusSending: string

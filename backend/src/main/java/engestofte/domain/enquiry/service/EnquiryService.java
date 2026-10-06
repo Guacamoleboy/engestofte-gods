@@ -355,6 +355,16 @@ public class EnquiryService extends EntityManagerService<WeddingEnquiry> {
 		if (!language.equals(draft.path("language").asText())) {
 			throw new ApiException(400, "Submission language must match the saved draft");
 		}
+		JsonNode hasAllergies = draft.path("hasAllergies");
+		if (!hasAllergies.isMissingNode() && !hasAllergies.isNull() && !hasAllergies.isBoolean()) throw new ApiException(400, "Allergy status must be yes or no");
+		JsonNode allergyDetails = draft.path("allergyDetails");
+		if (!allergyDetails.isMissingNode() && !allergyDetails.isNull() && (!allergyDetails.isTextual() || allergyDetails.asText().length() > 1000)) throw new ApiException(400, "Allergy details are invalid");
+		JsonNode veganCount = draft.path("expectedVeganCount");
+		if (!veganCount.isMissingNode() && !veganCount.isNull() && (!veganCount.isIntegralNumber() || veganCount.asInt() < 0 || veganCount.asInt() > 150)) throw new ApiException(400, "Expected vegan count must be between 0 and 150");
+		JsonNode guestCount = draft.path("expectedGuestCount");
+		if (veganCount.isIntegralNumber() && guestCount.isIntegralNumber() && veganCount.asInt() > guestCount.asInt()) throw new ApiException(400, "Expected vegan count cannot exceed expected guest count");
+		JsonNode weddingDirection = draft.path("weddingDirection");
+		if (!weddingDirection.isMissingNode() && !weddingDirection.isNull() && (!weddingDirection.isIntegralNumber() || weddingDirection.asInt() < 1 || weddingDirection.asInt() > 3)) throw new ApiException(400, "Wedding direction must be between 1 and 3");
 		return draft;
 	}
 

@@ -10,7 +10,7 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useSharedEventView } from './SharedEventView.hooks'
 import styles from './SharedEventView.module.css'
 
-type EventTab = 'details' | 'conversation' | 'important' | 'settings'
+type EventTab = 'details' | 'conversation' | 'important' | 'settings' | 'resources' | 'checklist'
 
 export default function SharedEventView() {
 	const { content, language } = useTranslate()
@@ -33,7 +33,7 @@ export default function SharedEventView() {
 
 	const backPath = role === 'OWNER' ? '/owner/requests' : role === 'STAFF' ? '/staff/events' : '/dashboard/events/'
 	const isClosed = event.status === 'CLOSED_BY_CUSTOMER' || event.status === 'CLOSED_BY_OWNER' || event.status === 'CANCELLED_BY_CUSTOMER'
-	const mayMessage = !isClosed && (role === 'OWNER' || role === 'CUSTOMER')
+	const mayMessage = !isClosed && (role === 'OWNER' || role === 'CUSTOMER' || role === 'STAFF')
 	const mayProposeChanges = !isClosed && (role === 'OWNER' || (role === 'CUSTOMER' && isPrimaryContact))
 
 	return (
@@ -41,19 +41,26 @@ export default function SharedEventView() {
 			<PageContainer className={styles.content}>
 				<Link className={styles.backLink} to={backPath}>← {copy.back}</Link>
 				<header className={styles.header}>
-					<p className={styles.eyebrow}>{copy.eyebrow} · {event.status === 'AWAITING_APPROVAL' ? copy.statusAwaitingApproval : isClosed ? copy.statusClosed : copy.statusApproved}</p>
+					<p className={styles.eyebrow}>{copy.eyebrow} · {event.status === 'AWAITING_APPROVAL' ? copy.statusAwaitingApproval
+						: isClosed ? copy.statusClosed
+							: event.status === 'BOOKED' ? copy.statusBooked
+								: event.status === 'AWAITING_DEPOSIT' ? copy.statusAwaitingDeposit : copy.statusApproved}</p>
 					<h1>{event.eventName || copy.defaultEventName}</h1>
 					<p>{copy.description}</p>
 				</header>
 
-				<section className={styles.panel}>
+				<section className={`${styles.panel} ${role === 'STAFF' ? styles.staffPanel : ''}`}>
 					<nav className={styles.tabs} aria-label={copy.detailsTitle}>
 						<TabButton activeTab={activeTab} tab="details" onSelect={setActiveTab}>{copy.detailsTab}</TabButton>
-						<TabButton activeTab={activeTab} tab="conversation" onSelect={setActiveTab}>{copy.conversationTab}</TabButton>
-						<TabButton activeTab={activeTab} tab="important" onSelect={setActiveTab}>{copy.importantTab}</TabButton>
+						<TabButton activeTab={activeTab} tab="conversation" onSelect={setActiveTab}>{role === 'STAFF' ? copy.staffSendMessage : copy.conversationTab}</TabButton>
+						{role !== 'STAFF' && <TabButton activeTab={activeTab} tab="important" onSelect={setActiveTab}>{copy.importantTab}</TabButton>}
 						{mayProposeChanges && <TabButton activeTab={activeTab} tab="settings" onSelect={setActiveTab}>{copy.settingsTab}</TabButton>}
 						{role === 'OWNER' && <>
 							<button className={styles.lockedTab} type="button" disabled>{copy.trelloTab}</button>
+							<button className={styles.lockedTab} type="button" disabled>{copy.resourcesTab}</button>
+							<button className={styles.lockedTab} type="button" disabled>{copy.checklistTab}</button>
+						</>}
+						{role === 'STAFF' && <>
 							<button className={styles.lockedTab} type="button" disabled>{copy.resourcesTab}</button>
 							<button className={styles.lockedTab} type="button" disabled>{copy.checklistTab}</button>
 						</>}
@@ -65,19 +72,32 @@ export default function SharedEventView() {
 							<h3>{copy.generalTitle}</h3>
 							<dl className={styles.facts}>
 								{event.customerEmail && <Fact label={copy.customerEmail} value={event.customerEmail} />}
-								{event.primaryContactName && <Fact label={copy.createdBy} value={event.primaryContactName} />}
+								{(event.customerName || event.primaryContactName) && <Fact label={copy.customerName} value={event.customerName || event.primaryContactName || ''} />}
 								<Fact label={copy.approvedAt} value={new Intl.DateTimeFormat(language, { dateStyle: 'long', timeStyle: 'short' }).format(new Date(event.approvedAt))} />
 							</dl>
 						</section>
 						<hr className={styles.divider} />
-						<form className={styles.specificDetails} onSubmit={(formEvent) => { formEvent.preventDefault(); void submitEventProposals() }}>
+						{role === 'STAFF' ? <section className={styles.specificDetails}>
+							<h3>{copy.specificDetailsTitle}</h3>
+							<InputText label={copy.eventName} name="staff-event-name" value={event.eventName || ''} placeholder={copy.notProvided} disabled />
+							<InputText label={copy.guestCount} name="staff-event-guest-count" value={event.expectedGuestCount == null ? '' : String(event.expectedGuestCount)} placeholder={copy.notProvided} disabled />
+							<InputText label={copy.requestedDate} name="staff-event-requested-date" value={event.requestedDate || ''} placeholder={copy.notProvided} disabled />
+							<InputText label={copy.expectedVeganCount} name="staff-event-vegan-count" type="number" value={event.expectedVeganCount == null ? '' : String(event.expectedVeganCount)} placeholder={copy.notProvided} disabled />
+							<InputText label={copy.allergies} name="staff-event-allergies" value={event.hasAllergies == null ? '' : event.hasAllergies ? copy.yes : copy.no} placeholder={copy.notProvided} disabled />
+							{event.hasAllergies && <InputText label={copy.allergyDetails} name="staff-event-allergy-details" value={event.allergyDetails || ''} placeholder={copy.notProvided} disabled />}
+							<InputText label={copy.weddingDirection} name="staff-event-wedding-direction" value={weddingDirectionLabel(event.weddingDirection, content.aiFlow.weddingDirectionOptions, '')} placeholder={copy.notProvided} disabled />
+						</section> : <form className={styles.specificDetails} onSubmit={(formEvent) => { formEvent.preventDefault(); void submitEventProposals() }}>
 							<h3>{copy.specificDetailsTitle}</h3>
 							<InputText label={copy.eventName} name="event-name" placeholder={event.eventName || copy.defaultEventName} value={proposalValues.event_name} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('event_name', value)} />
 							<InputText label={copy.guestCount} name="event-guest-count" type="number" min={1} max={5000} step={1} placeholder={event.expectedGuestCount == null ? '' : String(event.expectedGuestCount)} value={proposalValues.expected_guest_count} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('expected_guest_count', value)} />
 							<InputText label={copy.requestedDate} name="event-requested-date" placeholder={event.requestedDate ?? ''} value={proposalValues.requested_date} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('requested_date', value)} />
+							<InputText label={copy.expectedVeganCount} name="event-vegan-count" type="number" min={0} max={event.expectedGuestCount ?? 150} step={1} value={proposalValues.expected_vegan_count} placeholder={event.expectedVeganCount == null ? copy.notProvided : String(event.expectedVeganCount)} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('expected_vegan_count', value)} />
+							<InputText label={copy.allergies} name="event-allergies" value={proposalValues.has_allergies} placeholder={event.hasAllergies == null ? copy.notProvided : event.hasAllergies ? copy.yes.toUpperCase() : copy.no.toUpperCase()} options={[{ label: copy.yes.toUpperCase(), value: 'true' }, { label: copy.no.toUpperCase(), value: 'false' }]} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('has_allergies', value)} />
+							{(proposalValues.has_allergies === 'true' || (proposalValues.has_allergies === '' && event.hasAllergies)) && <InputText label={copy.allergyDetails} name="event-allergy-details" value={proposalValues.allergy_details} placeholder={event.allergyDetails || copy.notProvided} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('allergy_details', value)} />}
+							<InputText label={copy.weddingDirection} name="event-wedding-direction" value={proposalValues.wedding_direction} placeholder={weddingDirectionLabel(event.weddingDirection, content.aiFlow.weddingDirectionOptions, copy.notProvided)} options={content.aiFlow.weddingDirectionOptions.map((option, index) => ({ label: option.title, value: String(index + 1) }))} disabled={!mayProposeChanges} onChange={(value) => setProposalValue('wedding_direction', value)} />
 							{proposalState === 'error' && <p className={styles.error} role="alert">{copy.proposalError}</p>}
 							{mayProposeChanges && <button className={styles.primaryAction} type="submit" disabled={!hasProposalChanges || proposalState === 'submitting'}>{proposalState === 'submitting' ? copy.proposalSending : copy.proposeChange}</button>}
-						</form>
+						</form>}
 						{mayProposeChanges && <section className={styles.contacts}>
 							<h3>{copy.contactsTitle}</h3>
 							<form className={styles.contactForm} onSubmit={addContact}>
@@ -90,17 +110,17 @@ export default function SharedEventView() {
 					</section>}
 
 					{activeTab === 'conversation' && <section className={styles.conversationPanel}>
-						<h2>{copy.conversationTitle}</h2>
+						<h2>{role === 'STAFF' ? copy.staffSendMessage : copy.conversationTitle}</h2>
 						{mayMessage ? <>
-							<div className={styles.messages} aria-live="polite" ref={messagesContainerRef}>
+							{role !== 'STAFF' && <div className={styles.messages} aria-live="polite" ref={messagesContainerRef}>
 								{messages.map((item) => (
-									<article className={`${styles.message} ${item.is_mine ? styles.ownMessage : styles.otherMessage} ${item.sender_type === 'OWNER' ? styles.ownerMessage : styles.customerMessage}`} key={item.id}>
+								<article className={`${styles.message} ${item.is_mine ? styles.ownMessage : styles.otherMessage} ${item.sender_type === 'OWNER' || item.sender_type === 'STAFF' ? styles.ownerMessage : styles.customerMessage}`} key={item.id}>
 										<p className={styles.messageMeta}><strong>{item.sender_name}</strong><time dateTime={item.created_at}>{new Intl.DateTimeFormat(language, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.created_at))}</time></p>
 										<p>{item.content}</p>
 									</article>
 								))}
 								{messages.length === 0 && <p>{copy.noMessages}</p>}
-							</div>
+							</div>}
 							<form className={styles.composer} onSubmit={sendMessage}>
 								<label htmlFor="shared-event-message">{copy.messageLabel}</label>
 								<textarea id="shared-event-message" value={message} maxLength={5000} onChange={(formEvent) => setMessage(formEvent.currentTarget.value)} />
@@ -145,6 +165,16 @@ export default function SharedEventView() {
 						<button className={styles.dangerAction} type="button" disabled={closeState === 'closing'} onClick={() => { if (window.confirm(copy.deleteEventConfirm)) void closeCurrentEvent() }}>{closeState === 'closing' ? copy.deletingEvent : copy.deleteEvent}</button>
 						{closeState === 'error' && <p className={styles.error} role="alert">{copy.deleteEventError}</p>}
 					</section>}
+
+					{role === 'STAFF' && activeTab === 'checklist' && <section className={styles.tabContent}>
+						<h2>{copy.checklistTab}</h2>
+						<p className={styles.readOnly}>{copy.staffChecklistEmpty}</p>
+					</section>}
+
+					{role === 'STAFF' && activeTab === 'resources' && <section className={styles.tabContent}>
+						<h2>{copy.resourcesTab}</h2>
+						<p className={styles.readOnly}>{copy.staffResourcesEmpty}</p>
+					</section>}
 				</section>
 			</PageContainer>
 		</main>
@@ -158,4 +188,9 @@ function TabButton({ activeTab, tab, onSelect, children }: { activeTab: EventTab
 
 function Fact({ label, value }: { label: string; value: string }) {
 	return <><dt>{label}</dt><dd>{value}</dd></>
+}
+
+function weddingDirectionLabel(direction: number | null, options: { title: string; description: string; choice: string }[], fallback: string) {
+	const selectedOption = direction == null ? null : options[direction - 1]
+	return selectedOption ? selectedOption.title : fallback
 }
