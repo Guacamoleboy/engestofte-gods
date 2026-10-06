@@ -1,0 +1,37 @@
+.page { min-height: 100vh; background: var(--engestofte-white); color: var(--engestofte-heading); font-family: Georgia, 'Times New Roman', serif; }
+.weddingTheme { --invitation-accent: #c4a36c; --invitation-deep: #213b31; }
+.defaultTheme { --invitation-accent: var(--engestofte-green-dark); --invitation-deep: var(--engestofte-green-dark); }
+.hero { position: relative; display: grid; min-height: min(92vh, 58rem); place-items: center; overflow: hidden; background: var(--invitation-deep, var(--engestofte-green-dark)); color: var(--engestofte-white); text-align: center; }
+.heroImage, .heroShade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.heroImage { object-fit: cover; object-position: center 42%; }
+.heroShade { background: linear-gradient(180deg, rgba(18, 38, 30, 0.48), rgba(18, 38, 30, 0.14) 35%, rgba(18, 38, 30, 0.72)); }
+.brand { position: absolute; z-index: 1; top: clamp(1.25rem, 4vw, 2.75rem); left: 50%; color: inherit; font-family: Georgia, 'Times New Roman', serif; font-size: 0.82rem; letter-spacing: 0.24em; text-transform: uppercase; transform: translateX(-50%); white-space: nowrap; }
+.heroContent { position: relative; z-index: 1; display: grid; justify-items: center; width: min(100% - 2rem, 58rem); padding: 8rem 0 4rem; }
+.eyebrow, .sectionEyebrow { margin: 0; color: var(--invitation-accent, #c4a36c); font-family: Arial, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; }
+.ornament { margin: 1.25rem 0 0.35rem; color: var(--invitation-accent, #c4a36c); font-size: 1.6rem; }
+.hero h1 { max-width: 15ch; margin: 0; font-size: clamp(2.8rem, 8vw, 6.5rem); font-weight: 400; line-height: 1.04; text-wrap: balance; }
+.welcome { max-width: 34rem; margin: 1.25rem 0 0; color: rgba(255, 255, 255, 0.92); font-size: clamp(1.08rem, 2vw, 1.35rem); line-height: 1.7; }
+.scrollCue { display: grid; gap: 0.4rem; justify-items: center; margin-top: clamp(2rem, 9vh, 5rem); color: var(--engestofte-white); font-family: Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.16em; text-decoration: none; text-transform: uppercase; }
+.scrollCue span { color: var(--invitation-accent, #c4a36c); font-size: 1.2rem; }
+.invitationDetails { display: grid; justify-items: center; padding: clamp(4rem, 10vw, 8rem) 1.25rem; text-align: center; }
+.invitationDetails h2 { max-width: 18ch; margin: 0.9rem 0 0; color: var(--invitation-deep, var(--engestofte-green-dark)); font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 400; text-wrap: balance; }
+.rule { display: flex; align-items: center; gap: 0.8rem; width: min(16rem, 60vw); margin: 1.75rem 0 2.5rem; color: var(--invitation-accent, #c4a36c); }
+.rule::before, .rule::after { height: 1px; flex: 1; background: currentColor; content: ''; opacity: 0.65; }
+.detailGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; width: min(100%, 54rem); }
+.detailCard { display: grid; justify-items: center; align-content: start; gap: 0.65rem; min-height: 12rem; border: 1px solid var(--engestofte-border); padding: 1.75rem; background: var(--engestofte-surface); }
+.detailIcon { color: var(--invitation-accent, #c4a36c); font-family: Arial, sans-serif; font-size: 1.65rem; }
+.detailCard h3 { margin: 0; color: var(--invitation-deep, var(--engestofte-green-dark)); font-size: 1.2rem; font-weight: 400; }
+.detailCard p { margin: 0; color: var(--engestofte-body); font-family: Arial, sans-serif; line-height: 1.6; }
+.programSection { display: grid; justify-items: center; padding: clamp(3.5rem, 8vw, 6.5rem) 1.25rem; background: var(--invitation-deep, var(--engestofte-green-dark)); color: var(--engestofte-white); text-align: center; }
+.programSection .rule { margin: 1rem 0 1.3rem; }
+.programSection > p:last-child { max-width: 39rem; margin: 0; color: rgba(255, 255, 255, 0.88); font-family: Arial, sans-serif; line-height: 1.75; }
+.practicalSection { display: grid; place-items: center; padding: clamp(3rem, 8vw, 6rem) 1.25rem; }
+.practicalCard { width: min(100%, 48rem); padding: clamp(1.5rem, 5vw, 3rem); border: 1px solid var(--engestofte-border); text-align: center; }
+.practicalCard > p:last-child { max-width: 38rem; margin: 0.8rem auto 0; color: var(--engestofte-body); font-family: Arial, sans-serif; line-height: 1.75; }
+.closing { display: grid; justify-items: center; gap: 0.8rem; padding: 0 1.25rem 3.5rem; color: var(--invitation-deep, var(--engestofte-green-dark)); text-align: center; }
+.closing span { color: var(--invitation-accent, #c4a36c); }
+.state { width: min(100% - 2rem, 38rem); margin: 18vh auto; padding: clamp(1.5rem, 5vw, 3rem); border: 1px solid var(--engestofte-border); text-align: center; }
+.state p { margin: 0 0 1rem; font-family: Arial, sans-serif; line-height: 1.6; }
+.state button { min-height: 2.75rem; border: 0; padding: 0.65rem 1rem; background: var(--engestofte-green-dark); color: var(--engestofte-white); font: inherit; cursor: pointer; }
+.scrollCue:focus-visible, .state button:focus-visible { outline: 3px solid var(--engestofte-focus); outline-offset: 3px; }
+@media (max-width: 640px) { .hero { min-height: 88svh; } .heroImage { object-position: 38% center; } .detailGrid { grid-template-columns: 1fr; } .detailCard { min-height: 9rem; } }

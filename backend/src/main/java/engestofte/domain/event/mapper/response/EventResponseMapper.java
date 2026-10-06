@@ -9,6 +9,7 @@ import engestofte.domain.event.dto.response.EventOperationalResponseDTO;
 import engestofte.domain.event.dto.response.EventOwnerResponseDTO;
 import engestofte.domain.event.entity.Event;
 import engestofte.domain.event.enums.EventStatus;
+import engestofte.domain.event.service.GuestInvitationTokenService;
 import engestofte.domain.useraccount.entity.UserAccount;
 import engestofte.util.EmailRedactor;
 
@@ -33,6 +34,8 @@ public class EventResponseMapper {
 		response.setEventId(event.getId());
 		response.setCategory(event.getCategory());
 		response.setStatus(customerFacingStatus(event));
+		response.setGuestInvitationCreated(event.getApprovedAt() != null
+				&& GuestInvitationTokenService.isInvitationCreated(event.getId(), event.getApprovedAt().toEpochMilli(), event.getGuestAccessTokenHash()));
 		response.setApprovedAt(event.getApprovedAt());
 		response.setEventData(event.getApprovedAt() == null
 				? PoolConfig.getMapper().createObjectNode()

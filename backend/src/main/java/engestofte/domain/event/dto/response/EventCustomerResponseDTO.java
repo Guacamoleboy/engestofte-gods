@@ -62,6 +62,9 @@ public class EventCustomerResponseDTO {
 	@JsonProperty("is_primary_contact")
 	private boolean primaryContact;
 
+	@JsonProperty("guest_invitation_created")
+	private boolean guestInvitationCreated;
+
 	@JsonProperty("primary_contact_name")
 	private String primaryContactName;
 }

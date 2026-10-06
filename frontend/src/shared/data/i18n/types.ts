@@ -232,6 +232,16 @@ export type TranslationContent = {
 		requestDeposit: string
 		requestDepositSending: string
 		requestDepositError: string
+		invitationTitle: string
+		invitationDescription: string
+		createInvitation: string
+		viewInvitation: string
+		invitationOpening: string
+		invitationError: string
+		invitationUrlLabel: string
+		copyInvitation: string
+		invitationCopied: string
+		invitationCopyError: string
 		depositReady: string
 		payDeposit: string
 		payDepositSending: string
@@ -289,6 +299,26 @@ export type TranslationContent = {
 		rejectionReason: string
 		cancelChange: string
 		decisionError: string
+	}
+	guestInvitation: {
+		loading: string
+		unavailable: string
+		retry: string
+		brand: string
+		heroAlt: string
+		invitationEyebrow: string
+		fallbackTitle: string
+		welcome: string
+		scrollCue: string
+		dateLabel: string
+		datePending: string
+		venueLabel: string
+		programTitle: string
+		programDescription: string
+		practicalTitle: string
+		practicalDescription: string
+		footer: string
+		categoryFallback: string
 	}
 	aiFlow: {
 		introMessage: string

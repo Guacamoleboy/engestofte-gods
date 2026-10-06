@@ -215,6 +215,18 @@ public class EventController {
 
 	// _________________________________________________________________________________________________________________
 
+	public void createGuestInvitation(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> eventService.createGuestInvitation(parseId(context.pathParam("id")), requireCustomer(context)), "Guest invitation created");
+	}
+
+	// _________________________________________________________________________________________________________________
+
+	public void findGuestInvitation(Context context) {
+		TryCatchHelper.tryCatchHelper(context, () -> eventService.findGuestInvitation(parseId(context.pathParam("id")), context.queryParam("access")), "Guest invitation loaded");
+	}
+
+	// _________________________________________________________________________________________________________________
+
 	public void requestDeposit(Context context) {
 		TryCatchHelper.tryCatchHelper(context, () -> {
 			requireOwner(context);
