@@ -154,9 +154,9 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 		}).format(date)
 	}
 
-	async function submitAnswer(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault()
-		const submittedAnswer = answer.trim()
+	async function submitAnswer(event: FormEvent<HTMLFormElement> | null, suggestedAnswer?: string) {
+		event?.preventDefault()
+		const submittedAnswer = (suggestedAnswer ?? answer).trim()
 		if (!submittedAnswer || isPending || isComplete || isOutOfScope || isAiUnavailable) return
 
 		const retryMessage = [...messages].reverse().find((message) =>

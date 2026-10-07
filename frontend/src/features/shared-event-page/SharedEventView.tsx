@@ -152,6 +152,7 @@ export default function SharedEventView() {
 								<label htmlFor="shared-event-message">{copy.messageLabel}</label>
 								<textarea id="shared-event-message" value={message} maxLength={5000} onChange={(formEvent) => setMessage(formEvent.currentTarget.value)} />
 								{messageState === 'error' && <p className={styles.error} role="alert">{copy.messageError}</p>}
+								{messageState === 'sent' && <p role="status">{copy.messageSent}</p>}
 								<button type="submit" disabled={messageState === 'sending' || !message.trim()}>{messageState === 'sending' ? copy.sending : copy.sendMessage}</button>
 							</form>
 						</> : <div className={styles.readOnly}><p>{copy.staffReadOnly}</p></div>}

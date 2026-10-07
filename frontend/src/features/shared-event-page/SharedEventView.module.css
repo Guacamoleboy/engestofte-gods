@@ -49,7 +49,7 @@
 .proposal p { margin: 0.3rem 0; line-height: 1.5; overflow-wrap: anywhere; }
 .proposalMeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; color: var(--engestofte-muted); font-size: 0.8rem; }
 .proposalStatus { color: var(--engestofte-muted); font-size: 0.82rem; }
-.proposalActions { display: flex; flex-wrap: wrap; gap: var(--engestofte-space-2); margin-top: var(--engestofte-space-3); }
+.proposalActions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: var(--engestofte-space-3); }
 .rejectForm { margin-top: var(--engestofte-space-3); }
 .settingsPanel { padding-top: var(--engestofte-space-4); }
 .settingsPanel p { color: var(--engestofte-muted); line-height: 1.5; }

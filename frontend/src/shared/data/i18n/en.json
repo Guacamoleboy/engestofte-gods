@@ -223,6 +223,7 @@
 		"messageLabel": "Write a message to the customer",
 		"sendMessage": "Send message",
 		"sending": "Sending…",
+		"messageSent": "Message sent.",
 		"messageError": "The message could not be sent.",
 		"statusApproved": "Approved",
 		"statusAwaitingApproval": "Awaiting approval",

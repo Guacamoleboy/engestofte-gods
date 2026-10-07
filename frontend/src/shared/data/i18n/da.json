@@ -223,6 +223,7 @@
 		"messageLabel": "Skriv en besked til kunden",
 		"sendMessage": "Send besked",
 		"sending": "Sender…",
+		"messageSent": "Beskeden er sendt.",
 		"messageError": "Beskeden kunne ikke sendes.",
 		"statusApproved": "Godkendt",
 		"statusAwaitingApproval": "Afventer godkendelse",
