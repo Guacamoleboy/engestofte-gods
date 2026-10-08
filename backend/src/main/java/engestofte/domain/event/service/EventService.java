@@ -354,7 +354,7 @@ public class EventService extends EntityManagerService<Event> {
 				|| !GuestInvitationTokenService.matchesHash(access, event.getGuestAccessTokenHash())) {
 			throw new ApiException(404, "Invitation not found");
 		}
-		return GuestInvitationResponseMapper.toDTO(event);
+		return GuestInvitationResponseMapper.toDTO(event, eventDAO.findPrimaryContactForEvent(eventId));
 	}
 
 	// _________________________________________________________________________________________________________________

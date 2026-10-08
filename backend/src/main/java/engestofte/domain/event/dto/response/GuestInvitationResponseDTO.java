@@ -16,7 +16,10 @@ public class GuestInvitationResponseDTO {
 	//			"event_id": 18,
 	//			"category": "WEDDING",
 	//			"event_name": "Camilla & Emil",
-	//			"requested_date": "June 2027"
+	//			"requested_date": "June 2027",
+	//			"expected_guest_count": 60,
+	//			"primary_contact_name": "Camilla Morgan",
+	//			"primary_contact_email": "camilla@example.com"
 	//		}
 	//
 	// ____________________
@@ -36,4 +39,13 @@ public class GuestInvitationResponseDTO {
 
 	@JsonProperty("requested_date")
 	private String requestedDate;
+
+	@JsonProperty("expected_guest_count")
+	private Integer expectedGuestCount;
+
+	@JsonProperty("primary_contact_name")
+	private String primaryContactName;
+
+	@JsonProperty("primary_contact_email")
+	private String primaryContactEmail;
 }

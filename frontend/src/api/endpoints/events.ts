@@ -37,6 +37,9 @@ export type GuestInvitation = {
 	category: 'WEDDING'
 	event_name: string | null
 	requested_date: string | null
+	expected_guest_count: number | null
+	primary_contact_name: string | null
+	primary_contact_email: string | null
 }
 
 export type OwnerEvent = {

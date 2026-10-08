@@ -4,7 +4,7 @@
 
 **Blocked by:** 15: Complete depositum, booking and customer cancellation
 
-**Status:** in progress
+**Status:** complete
 
 ## In scope
 
@@ -13,7 +13,8 @@
 - The invitation link does not expire, and becomes invalid when the event is cancelled.
 - Copying the generated guest URL so it can be shared outside the application.
 - A public guest route that checks the invitation capability and renders only approved guest-facing event information.
-- A read-only invitation page with event details, schedule, timing and relevant planning/logistics information intended for guests.
+- A read-only invitation page with event details, a package-based schedule, duration and relevant planning/logistics information intended for guests.
+- Guest count and primary contact name and email on the invitation; these contact details are available only through the invitation access capability.
 - One shared invitation-page structure for all arrangement categories, with category-specific visual themes selected from the event category.
 - A wedding visual theme as the only implemented theme in this MVP. Keep the category-to-theme seam ready for later conference, summer-house and other themes.
 
@@ -23,21 +24,22 @@
 - Conference, summer-house, party or other non-wedding theme visuals.
 - Sending invitations by email, SMS or a third-party service.
 - Guest accounts, guest messaging, RSVPs or guest-side changes to event data.
-- Exposing Messenger, internal notes, direct contact details or other non-guest-facing information.
+- Exposing Messenger, internal notes or other non-guest-facing information.
 
 ## Acceptance criteria
 
-- [ ] Only the primary Customer contact can create an invitation, and only after the event is booked.
-- [ ] The application displays a shareable URL using `/events/{id}?access={access}` and supports copying it.
-- [ ] The one-time create action becomes `Se invitation`; opening it launches the invitation in a new tab.
-- [ ] The link remains valid until the event is cancelled.
-- [ ] A guest can open the link without an account and sees only the matching event's approved guest-facing information.
-- [ ] Missing or invalid access values do not expose event information.
-- [ ] The guest page is read-only and does not expose the dashboard or internal event controls.
-- [ ] The page presents the event as an invitation, including its approved schedule, timing and relevant guest logistics, rather than as a dashboard.
-- [ ] All categories use the same invitation-page structure; the event category selects the visual theme.
-- [ ] Wedding is the only category with completed visuals in this MVP, and adding another category's theme does not require a separate page structure.
-- [ ] Invitation content and theme cannot be edited by guests or selected by users.
+- [x] Only the primary Customer contact can create an invitation, and only after the event is booked.
+- [x] The application displays a shareable URL using `/events/{id}?access={access}` and supports copying it.
+- [x] The one-time create action becomes `Se invitation`; opening it launches the invitation in a new tab.
+- [x] The link remains valid until the event is cancelled.
+- [x] A guest can open the link without an account and sees only the matching event's approved guest-facing information.
+- [x] Missing or invalid access values do not expose event information.
+- [x] The guest page is read-only and does not expose the dashboard or internal event controls.
+- [x] The page presents the event as an invitation, including a package-based schedule, duration and relevant guest logistics, rather than as a dashboard.
+- [x] The invitation displays the guest count and primary contact details to guests who hold the access capability.
+- [x] All categories use the same invitation-page structure; the event category selects the visual theme.
+- [x] Wedding is the only category with completed visuals in this MVP, and adding another category's theme does not require a separate page structure.
+- [x] Invitation content and theme cannot be edited by guests or selected by users.
 
 ## Verification
 
