@@ -30,6 +30,9 @@ Pre-approval steps. Seperate dashboard. Once it has been accepted by an owner - 
 Event changes approval system including role based navbar to allow Johan to implement Source of Truth with Trello along with resource tracking.
 ![Customer Dashboard](docs/display/display-4.png)
 
+Custom event invitation link
+![Event link](docs/display/display-9.png)
+
 ---
 
 ## MVP overview
