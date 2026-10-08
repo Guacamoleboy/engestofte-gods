@@ -309,14 +309,21 @@ export type TranslationContent = {
 		invitationEyebrow: string
 		fallbackTitle: string
 		welcome: string
-		scrollCue: string
+		detailsTitle: string
 		dateLabel: string
 		datePending: string
 		venueLabel: string
+		guestCountLabel: string
+		guestCountPending: string
+		programEyebrow: string
 		programTitle: string
-		programDescription: string
+		programItems: { title: string; description: string }[]
+		practicalEyebrow: string
 		practicalTitle: string
 		practicalDescription: string
+		contactTitle: string
+		contactFallback: string
+		additionalInformation: string
 		footer: string
 		categoryFallback: string
 	}

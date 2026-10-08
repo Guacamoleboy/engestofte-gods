@@ -94,7 +94,7 @@ export default function AiFlowPage() {
 														{copy.weddingDirectionOptions.map((option, index) => {
 															if (index === 1 && !(expectedGuestCount !== null && expectedGuestCount <= 60)) return null
 															return (
-																<button className={styles.weddingDirectionCard} type="button" key={option.choice} onClick={() => setAnswer(option.choice)}>
+											<button className={styles.weddingDirectionCard} type="button" key={option.choice} disabled={isPending} onClick={() => void submitAnswer(null, option.choice)}>
 																	<strong>{option.title}</strong>
 																	<span>{option.description}</span>
 																	{index === 1 && expectedGuestCount !== null && expectedGuestCount <= 60 && <small>{copy.intimateRecommendation}</small>}

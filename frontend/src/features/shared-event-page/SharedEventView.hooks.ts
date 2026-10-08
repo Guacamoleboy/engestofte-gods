@@ -37,7 +37,7 @@ export function useSharedEventView() {
 	const [messages, setMessages] = useState<EventMessage[]>([])
 	const [message, setMessage] = useState('')
 	const [state, setState] = useState<'loading' | 'loaded' | 'error'>('loading')
-	const [messageState, setMessageState] = useState<'idle' | 'sending' | 'error'>('idle')
+	const [messageState, setMessageState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 	const [contactEmail, setContactEmail] = useState('')
 	const [contactState, setContactState] = useState<'idle' | 'adding' | 'added' | 'error'>('idle')
 	const [closeState, setCloseState] = useState<'idle' | 'closing' | 'error'>('idle')
@@ -133,7 +133,7 @@ export function useSharedEventView() {
 					: await sendEventMessage(id, message)
 			setMessages((current) => [...current, sentMessage])
 			setMessage('')
-			setMessageState('idle')
+			setMessageState('sent')
 		} catch {
 			setMessageState('error')
 		}
