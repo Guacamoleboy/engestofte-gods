@@ -279,7 +279,8 @@ function findExpectedGuestCount(conversation: AiConversationTurn[]) {
 		const range = turn.answer.match(/\b\d{1,3}\s*(?:-|–|til|to)\s*(\d{1,3})\s*(?:gæster|guest(?:s)?|gäste|personer?)\b/i)
 		const explicitCount = turn.answer.match(/\b(\d{1,3})\s*(?:gæster|guest(?:s)?|gäste|personer?)\b/i)
 		if (!askedGuestCount && !range && !explicitCount) continue
-		const count = range?.[1] ?? explicitCount?.[1] ?? (/^\d{1,3}$/.test(turn.answer.trim()) ? turn.answer.trim() : null)
+		const countFromAskedQuestion = askedGuestCount ? turn.answer.match(/\b(\d{1,3})\b/)?.[1] : null
+		const count = range?.[1] ?? explicitCount?.[1] ?? (/^\d{1,3}$/.test(turn.answer.trim()) ? turn.answer.trim() : countFromAskedQuestion ?? null)
 		if (!count) continue
 
 		const parsedCount = Number(count)

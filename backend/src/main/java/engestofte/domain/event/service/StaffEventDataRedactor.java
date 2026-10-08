@@ -22,8 +22,7 @@ public final class StaffEventDataRedactor {
 	public static String redactRequestedDate(Event event) {
 		JsonNode conversation = event.getEventData().path("conversation");
 		if (!conversation.isArray() || conversation.size() <= 1) return null;
-		String requestedDate = redactText(conversation.get(1).path("answer").asText());
-		return requestedDate.isBlank() ? null : requestedDate;
+		return RequestedDateExtractor.extract(conversation.get(1).path("answer").asText());
 	}
 
 	// _________________________________________________________________________________________________________________
