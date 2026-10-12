@@ -148,8 +148,7 @@ public class EventService extends EntityManagerService<Event> {
 			case "requested_date" -> {
 				com.fasterxml.jackson.databind.JsonNode conversation = event.getEventData().path("conversation");
 				if (!conversation.isArray() || conversation.size() <= 1) yield null;
-				String value = conversation.get(1).path("answer").asText();
-				yield value.isBlank() ? null : value;
+				yield RequestedDateExtractor.extract(conversation.get(1).path("answer").asText());
 			}
 			default -> null;
 		};

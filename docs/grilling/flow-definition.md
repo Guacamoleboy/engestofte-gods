@@ -15,8 +15,8 @@ Samtalen præsenterer de godkendte oplysninger i denne personlige rækkefølge. 
 
 1. Kontaktpersonens navn til personlig tiltale; et fornavn er tilstrækkeligt.
 2. Ønsket bryllupsdato eller datointerval. Datoens ledighed er ikke bekræftet, før Engestofte har undersøgt den.
-3. Forventet gæsteantal (maksimalt 150) og overnatningsbehov. Hvis kunden ønsker overnatning, afklares hvem og perioden; ved "alle dage" bekræftes datoen og antal nætter. Hvis kunden har gæster, men ikke ønsker overnatning på godset, anbefaler AI'en at arrangere bus og tilbyder at undersøge muligheden.
-4. Kunden vælger mellem Standard, Intim (kun højst 60 gæster) og Skræddersyet. AI'en afklarer kun, om vielsen ønskes på Engestofte, et andet sted eller endnu ikke er besluttet.
+3. Forventet gæsteantal (maksimalt 150) og overnatningsbehov. Hvis kunden siger, at alle gæster overnatter, og gæsteantallet allerede er kendt, bruges det antal også som overnatningsantal; spørg ikke igen hvor mange. Når der er én kendt bryllupsdato, og kunden bekræfter, at alle overnatter i perioden, forstås det som én nat fra bryllupsdatoen til dagen efter. Brug datoerne uden at spørge om nætterne igen, medmindre kunden selv nævner et længere eller andet ophold, som stadig er uklart. Hvis kunden har gæster, men ikke ønsker overnatning på godset, anbefaler AI'en at arrangere bus og tilbyder at undersøge muligheden.
+4. Kunden vælger mellem Normal, Intim (kun højst 60 gæster) og Skræddersyet. AI'en afklarer kun, om vielsen ønskes på Engestofte, et andet sted eller endnu ikke er besluttet.
 5. Mad, drikke, relevante kosthensyn, tilvalg og øvrige særlige ønsker. Budget er frivilligt.
 
 Introspørgsmålene er faste og lokaliserede. Trin 4 viser valgene som cards, og kunden kan vælge med knapperne eller ved at skrive "Mulighed 1", "Mulighed 2" eller "Mulighed 3". AI'en spørger ikke til detaljeret program, kirke eller by. Valgfrie oplysninger må ikke blokere.
@@ -27,7 +27,7 @@ Introspørgsmålene er faste og lokaliserede. Trin 4 viser valgene som cards, og
 | Arrangementstype | Kritisk | MVP'en understøtter bryllup; flowet skal kende den aktive arrangementstype. |
 | Ønsket dato eller datointerval | Kritisk | Johan skal kunne vurdere kapacitet og næste skridt. En manglende dato er specifikt nævnt som en blokering i projektbeskrivelsen. |
 | Antal gæster | Kritisk | Gæsteantallet påvirker kapacitet, tilbud, tillæg og mersalgslogik. |
-| Bryllupsretning | Kritisk | Kunden vælger Standard, Intim (kun højst 60 gæster) eller Skræddersyet. |
+| Bryllupsretning | Kritisk | Kunden vælger Normal, Intim (kun højst 60 gæster) eller Skræddersyet. Svar med kortets navn eller mulighedens nummer accepteres. |
 | Vielse på Engestofte eller andet sted | Kritisk med “ikke besluttet” som gyldigt svar | Den første forespørgsel skal kun fastslå, om vielsen ønskes på godset, et andet sted eller ikke er besluttet. Detaljer om kirke, by og program afklares senere. |
 
 ### Mersalg ved 60 eller færre gæster
