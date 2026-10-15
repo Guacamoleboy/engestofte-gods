@@ -1,5 +1,10 @@
 # Engestofte Gods
 
+> [!NOTE]  
+> This project has been **100% coded by AI** using techniques learned during my AIDA course.\
+> This has been done - not by will - but by need from my AIDA course which I respect.\
+> Focus has been on architecture, prompting, specs, tickets & learning using LLM CLI integrated in my workflow.
+
 This project is created for Engestofte Gods for my final AIDA Course project.
 During Engestoftes presentation at Lyngby I noted potential cases which later resulted in this product.
 
