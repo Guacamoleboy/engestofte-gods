@@ -13,6 +13,8 @@ Hvis du skal forstå den nuværende MVP hurtigt, så læs i denne rækkefølge:
 5. [Flow-definition](grilling/flow-definition.md) — konkrete trin og feltklassifikation.
 6. [Domæneordbog](../CONTEXT.md) — fælles betydning af projektets begreber.
 7. [Systemskitse](diagrammer/systemskitse.md) — applikationens hovedflow.
+   [AI-flow: prompts og rubric](diagrammer/ai-prompt-flow.svg) — viser hvilke beskeder appen selv skriver, hvordan AI-kaldet sammensættes, og hvornår rubricen bruges.
+   [AI-flow: kladdestruktur](diagrammer/ai-structure.svg) — viser det samme localStorage-objekt ved intro, undervejs og efter gennemført flow.
 8. [MVP-specifikation](../.scratch/engestofte-mvp/spec.md) — samlet buildbar kontrakt for implementation.
 9. [Arkitektur- og filkonventioner](standards/architecture-and-file-conventions.md) — forventet struktur for frontend og backend.
 10. [Forventede entities](forventet/entities.md) — foreløbige domæneområder og entities.

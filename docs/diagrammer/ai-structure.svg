@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1240" viewBox="0 0 1680 1240" role="img" aria-labelledby="title desc">
+  <title id="title">AI-flowets lokale kladde gennem forløbet</title>
+  <desc id="desc">Sammenligner samme localStorage-kladdestruktur ved intro, midt i flowet og efter færdiggørelse. Felterne består; deres værdier ændres.</desc>
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #475569; }
+      .section { font: 700 16px Arial, sans-serif; fill: #334155; }
+      .head { font: 700 18px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 13px Arial, sans-serif; fill: #475569; }
+      .code { font: 12px Consolas, "Courier New", monospace; fill: #263445; }
+      .label { font: 700 12px Arial, sans-serif; fill: #fff; text-anchor: middle; }
+      .card { stroke-width: 1.5; rx: 0; }
+    </style>
+  </defs>
+  <rect width="1680" height="1240" fill="#f8fafc"/>
+  <rect width="1680" height="130" fill="#e6f4f1"/>
+  <text x="48" y="55" class="title">Den lokale kladde ændrer værdier — ikke struktur</text>
+  <text x="48" y="89" class="subtitle">Samme localStorage-objekt gemmes igen undervejs. Her er tre snapshots af de felter, kladden indeholder.</text>
+
+  <text x="48" y="166" class="section">AI-FLOWENS LOCALSTORAGE-KLADDE · ÉT ARRAY-OBJEKT VIST</text>
+
+  <g transform="translate(48 190)">
+    <rect width="510" height="850" class="card" fill="#fff" stroke="#93c5fd"/>
+    <path d="M1 1 H509 V60 H1 Z" fill="#dbeafe"/>
+    <circle cx="30" cy="30" r="16" fill="#2563eb"/><text x="30" y="34" class="label">1</text>
+    <text x="58" y="36" class="head">Intro · før første svar</text>
+    <text x="18" y="88" class="code">{</text>
+    <text x="30" y="111" class="code">"version": 1,</text>
+    <text x="30" y="134" class="code">"answer": "",</text>
+    <text x="30" y="157" class="code">"conversation": [],</text>
+    <text x="30" y="180" class="code">"currentStep": 1,</text>
+    <text x="30" y="203" class="code">"customerName": "",</text>
+    <text x="30" y="226" class="code">"expectedGuestCount": null,</text>
+    <text x="30" y="249" class="code">"expectedVeganCount": null,</text>
+    <text x="30" y="272" class="code">"hasAllergies": null,</text>
+    <text x="30" y="295" class="code">"allergyDetails": "",</text>
+    <text x="30" y="318" class="code">"weddingDirection": null,</text>
+    <text x="30" y="341" class="code">"isComplete": false,</text>
+    <text x="30" y="364" class="code">"isOutOfScope": false,</text>
+    <text x="30" y="387" class="code">"isAiUnavailable": false,</text>
+    <text x="30" y="410" class="code">"messages": [</text>
+    <text x="42" y="433" class="code">{</text>
+    <text x="56" y="456" class="code">"id": 1,</text>
+    <text x="56" y="479" class="code">"sender": "assistant",</text>
+    <text x="56" y="502" class="code">"text": "Hvad navn skal ...?",</text>
+    <text x="56" y="525" class="code">"animate": true,</text>
+    <text x="56" y="548" class="code">"createdAt": "tidspunkt",</text>
+    <text x="56" y="571" class="code">"status": "new"</text>
+    <text x="42" y="594" class="code">}</text>
+    <text x="30" y="617" class="code">],</text>
+    <text x="30" y="640" class="code">"question": "Hvad navn skal ...?",</text>
+    <text x="30" y="663" class="code">"language": "da",</text>
+    <text x="30" y="686" class="code">"savedAt": "tidspunkt"</text>
+    <text x="18" y="709" class="code">}</text>
+  </g>
+
+  <path d="M565 218 H578" stroke="#64748b" stroke-width="2.5"/>
+  <path d="M568 212 L578 218 L568 224 Z" fill="#64748b"/>
+
+  <g transform="translate(585 190)">
+    <rect width="510" height="850" class="card" fill="#fff" stroke="#c4b5fd"/>
+    <path d="M1 1 H509 V60 H1 Z" fill="#ede9fe"/>
+    <circle cx="30" cy="30" r="16" fill="#7c3aed"/><text x="30" y="34" class="label">2</text>
+    <text x="58" y="36" class="head">Undervejs · trin 5</text>
+    <text x="18" y="88" class="code">{</text>
+    <text x="30" y="111" class="code">"version": 1,</text>
+    <text x="30" y="134" class="code">"answer": "Ellers alt ok.",</text>
+    <text x="30" y="157" class="code">"conversation": [</text>
+    <text x="42" y="180" class="code">{</text>
+    <text x="56" y="203" class="code">"question": "Planlægger I ceremonien ...?",</text>
+    <text x="56" y="226" class="code">"answer": "Hos jer"</text>
+    <text x="42" y="249" class="code">}</text>
+    <text x="30" y="272" class="code">],</text>
+    <text x="30" y="295" class="code">"currentStep": 5,</text>
+    <text x="30" y="318" class="code">"customerName": "Camilla",</text>
+    <text x="30" y="341" class="code">"expectedGuestCount": 61,</text>
+    <text x="30" y="364" class="code">"expectedVeganCount": 5,</text>
+    <text x="30" y="387" class="code">"hasAllergies": false,</text>
+    <text x="30" y="410" class="code">"allergyDetails": "",</text>
+    <text x="30" y="433" class="code">"weddingDirection": 1,</text>
+    <text x="30" y="456" class="code">"isComplete": false,</text>
+    <text x="30" y="479" class="code">"isOutOfScope": false,</text>
+    <text x="30" y="502" class="code">"isAiUnavailable": false,</text>
+    <text x="30" y="525" class="code">"messages": [</text>
+    <text x="42" y="548" class="code">{</text>
+    <text x="56" y="571" class="code">"id": 2,</text>
+    <text x="56" y="594" class="code">"sender": "customer",</text>
+    <text x="56" y="617" class="code">"senderName": "Camilla",</text>
+    <text x="56" y="640" class="code">"text": "Camilla",</text>
+    <text x="56" y="663" class="code">"status": "sent",</text>
+    <text x="56" y="686" class="code">"createdAt": "tidspunkt"</text>
+    <text x="42" y="709" class="code">}</text>
+    <text x="30" y="732" class="code">],</text>
+    <text x="30" y="755" class="code">"question": "AI-genereret spørgsmål",</text>
+    <text x="30" y="778" class="code">"language": "da",</text>
+    <text x="30" y="801" class="code">"savedAt": "opdateres løbende"</text>
+    <text x="18" y="824" class="code">}</text>
+  </g>
+
+  <path d="M1102 218 H1115" stroke="#64748b" stroke-width="2.5"/>
+  <path d="M1105 212 L1115 218 L1105 224 Z" fill="#64748b"/>
+
+  <g transform="translate(1122 190)">
+    <rect width="510" height="850" class="card" fill="#fff" stroke="#86efac"/>
+    <path d="M1 1 H509 V60 H1 Z" fill="#dcfce7"/>
+    <circle cx="30" cy="30" r="16" fill="#16a34a"/><text x="30" y="34" class="label">3</text>
+    <text x="58" y="36" class="head">Afsluttet · login/register</text>
+    <text x="18" y="88" class="code">{</text>
+    <text x="30" y="111" class="code">"version": 1,</text>
+    <text x="30" y="134" class="code">"answer": "",</text>
+    <text x="30" y="157" class="code">"conversation": [</text>
+    <text x="42" y="180" class="code">{</text>
+    <text x="56" y="203" class="code">"question": "Hvad ønsker I jer ...?",</text>
+    <text x="56" y="226" class="code">"answer": "Ellers alt ok."</text>
+    <text x="42" y="249" class="code">}</text>
+    <text x="30" y="272" class="code">],</text>
+    <text x="30" y="295" class="code">"currentStep": 6,</text>
+    <text x="30" y="318" class="code">"customerName": "Camilla",</text>
+    <text x="30" y="341" class="code">"expectedGuestCount": 61,</text>
+    <text x="30" y="364" class="code">"expectedVeganCount": 5,</text>
+    <text x="30" y="387" class="code">"hasAllergies": false,</text>
+    <text x="30" y="410" class="code">"allergyDetails": "",</text>
+    <text x="30" y="433" class="code">"weddingDirection": 1,</text>
+    <text x="30" y="456" class="code">"isComplete": true,</text>
+    <text x="30" y="479" class="code">"isOutOfScope": false,</text>
+    <text x="30" y="502" class="code">"isAiUnavailable": false,</text>
+    <text x="30" y="525" class="code">"messages": [</text>
+    <text x="42" y="548" class="code">{</text>
+    <text x="56" y="571" class="code">"id": 2,</text>
+    <text x="56" y="594" class="code">"sender": "customer",</text>
+    <text x="56" y="617" class="code">"senderName": "Camilla",</text>
+    <text x="56" y="640" class="code">"text": "Camilla",</text>
+    <text x="56" y="663" class="code">"status": "sent",</text>
+    <text x="56" y="686" class="code">"createdAt": "tidspunkt"</text>
+    <text x="42" y="709" class="code">}</text>
+    <text x="30" y="732" class="code">],</text>
+    <text x="30" y="755" class="code">"question": "AI-genereret spørgsmål",</text>
+    <text x="30" y="778" class="code">"language": "da",</text>
+    <text x="30" y="801" class="code">"savedAt": "opdateret"</text>
+    <text x="18" y="824" class="code">}</text>
+  </g>
+
+  <rect x="48" y="1060" width="1584" height="76" rx="12" fill="#e2e8f0"/>
+  <text x="72" y="1090" class="small">Dette er browserens localStorage-kladde — ikke OpenAI's svarobjekt. OpenAI's acknowledgement vises inde i messages; den er AI-genereret.</text>
+  <text x="72" y="1116" class="small">Dato udtrækkes af backend fra chatten; gæsteantal udtrækkes af frontend med AI-resultat som reserve. Allergi, veganertal og retning gemmes i frontend-kladden.</text>
+  <text x="48" y="1174" class="small">Når login starter indsendelsen, tilføjes submissionId til den samme kladde.</text>
+
+</svg>
