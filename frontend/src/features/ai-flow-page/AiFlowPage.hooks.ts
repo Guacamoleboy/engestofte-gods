@@ -7,6 +7,8 @@ import { submitAiAnswer, type AiConversationTurn, type AiInteractionResponse } f
 import { AI_FLOW_DRAFT } from '../../shared/data/aiFlowDraft'
 import type { Language } from '../../shared/data/i18n/types'
 
+// ------------------------------------------------------------------------------------------------------
+
 type Message = {
 	id: number
 	requestId?: string
@@ -23,10 +25,14 @@ type Message = {
 	status: 'sending' | 'sent' | 'received' | 'new' | 'failed'
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 const DRAFT_KEY = AI_FLOW_DRAFT.key
 const DRAFT_VERSION = AI_FLOW_DRAFT.version
 const YEAR_2027_BOOKING = /\b2027\b/i
 const BOOKED_STATUS = /\b(?:fully\s+booked|booked|fuldt\s+booket|booket|ausgebucht)\b/i
+
+// ------------------------------------------------------------------------------------------------------
 
 type StoredDraft = {
 	version: number
@@ -49,12 +55,16 @@ type StoredDraft = {
 	submissionId?: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function remove2027BookingSentences(text: string) {
 	return text.split(/(?<=[.!?])\s+/u)
 		.filter((sentence) => !(YEAR_2027_BOOKING.test(sentence) && BOOKED_STATUS.test(sentence)))
 		.join(' ')
 		.trim()
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function composeAssistantMessage(acknowledgement: string, followUp: string, status: AiInteractionResponse['status'], currentStep: number, language: Language) {
 	let reply = acknowledgement.trimEnd()
@@ -81,6 +91,8 @@ function composeAssistantMessage(acknowledgement: string, followUp: string, stat
 	return [reply, nextQuestion].filter(Boolean).join('\n\n')
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function readDraft(): StoredDraft | null {
 	try {
 		const value: unknown = JSON.parse(window.localStorage.getItem(DRAFT_KEY) ?? 'null')
@@ -101,6 +113,8 @@ function readDraft(): StoredDraft | null {
 		return null
 	}
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export function useAiFlow(introMessage: string, stepQuestions: string[], finalMessage: string, defaultCustomerName: string, language: Language) {
 	const [initialDraft] = useState(readDraft)
@@ -297,6 +311,8 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 	return { answer, currentStep, customerName: customerName.current || defaultCustomerName, expectedGuestCount, hasAllergies, allergyDetails, expectedVeganCount, weddingDirection, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, setHasAllergies, setAllergyDetails, setExpectedVeganCount, submitAnswer }
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function findExpectedGuestCount(conversation: AiConversationTurn[]) {
 	for (const turn of [...conversation].reverse()) {
 		const question = turn.question.toLocaleLowerCase()
@@ -313,6 +329,8 @@ function findExpectedGuestCount(conversation: AiConversationTurn[]) {
 	}
 	return null
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export function useAiMessageTyping(text: string, animate: boolean) {
 	const [visibleText, setVisibleText] = useState(animate ? '' : text)

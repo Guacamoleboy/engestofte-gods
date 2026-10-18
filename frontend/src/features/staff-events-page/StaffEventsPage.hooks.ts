@@ -5,6 +5,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { getStaffEvents, getStaffImportantMessages, type ImportantMessage, type StaffEvent } from '../../api/endpoints/events'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function useStaffEvents() {
 	const [events, setEvents] = useState<StaffEvent[]>([])
 	const [importantMessages, setImportantMessages] = useState<ImportantMessage[]>([])

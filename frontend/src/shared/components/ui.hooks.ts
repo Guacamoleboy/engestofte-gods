@@ -4,9 +4,14 @@
 
 import { useEffect, useRef } from 'react'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function useDialogControls(open: boolean, onClose: () => void) {
+
+	// Setup
 	const closeButtonRef = useRef<HTMLButtonElement>(null)
 
+	// useEffect
 	useEffect(() => {
 		if (!open) return
 
@@ -43,5 +48,7 @@ export function useDialogControls(open: boolean, onClose: () => void) {
 		}
 	}, [open, onClose])
 
+	// Return
 	return closeButtonRef
+	
 }

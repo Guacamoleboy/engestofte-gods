@@ -4,7 +4,11 @@
 
 import styles from './PreloaderAiFlow.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 type PreloaderAiFlowEntryProps = { phase: 'filling' | 'revealing' }
+
+// ------------------------------------------------------------------------------------------------------
 
 export default function PreloaderAiFlowEntry({ phase }: PreloaderAiFlowEntryProps) {
 	return <div className={`${styles.overlay} ${styles.entry} ${phase === 'revealing' ? styles.revealing : ''}`} aria-hidden="true">

@@ -6,9 +6,13 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useGuestInvitation } from './GuestInvitationPage.hooks'
 import styles from './GuestInvitationPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 const invitationThemes = {
 	WEDDING: styles.weddingTheme,
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export default function GuestInvitationPage() {
 	const { content, language } = useTranslate()

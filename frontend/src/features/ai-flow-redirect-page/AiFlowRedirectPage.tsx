@@ -7,6 +7,8 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { AI_FLOW_DRAFT, getAiFlowDraftStatus } from '../../shared/data/aiFlowDraft'
 import styles from './AiFlowRedirectPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function AiFlowRedirectPage() {
 	const { content } = useTranslate()
 	const location = useLocation()

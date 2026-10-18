@@ -8,6 +8,8 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useStaffEvents } from './StaffEventsPage.hooks'
 import styles from './StaffEventsPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function StaffEventsPage() {
 	const { content } = useTranslate()
 	const copy = content.eventsDashboard
@@ -58,6 +60,8 @@ export default function StaffEventsPage() {
 		</main>
 	)
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function eventStatusLabel(status: string, copy: ReturnType<typeof useTranslate>['content']['ownerEvent']) {
 	if (status === 'AWAITING_APPROVAL') return copy.statusAwaitingApproval

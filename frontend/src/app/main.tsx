@@ -11,6 +11,8 @@ import { TranslationProvider } from '../shared/context/TranslationContext'
 import { AuthProvider } from '../shared/context/AuthContext'
 import '../shared/styles/global.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<HelmetProvider>

@@ -5,6 +5,8 @@
 import { useState, type FormEvent } from 'react'
 import { useTranslate } from '../../shared/hooks/useTranslate'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function usePublicNavigation() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const translation = useTranslate()

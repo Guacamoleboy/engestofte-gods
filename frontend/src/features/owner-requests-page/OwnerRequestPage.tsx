@@ -9,6 +9,8 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useOwnerEnquiryReview } from './OwnerRequestPage.hooks'
 import styles from './OwnerRequestsPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function OwnerRequestPage() {
 	const { content, language } = useTranslate()
 	const copy = content.ownerReview
@@ -95,6 +97,8 @@ export default function OwnerRequestPage() {
 		</main>
 	)
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function AssessmentList({ title, items }: { title: string; items: string[] }) {
 	const { content } = useTranslate()

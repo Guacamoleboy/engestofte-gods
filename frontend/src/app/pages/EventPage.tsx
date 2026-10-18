@@ -4,6 +4,8 @@
 
 import SharedEventView from '../../features/shared-event-page/SharedEventView'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function EventPage() {
 	return <SharedEventView />
 }

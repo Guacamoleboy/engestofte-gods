@@ -6,6 +6,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { getOwnerEnquiries, type OwnerEnquirySummary } from '../../api/endpoints/ownerEnquiries'
 import { getOwnerImportantMessages, type ImportantMessage } from '../../api/endpoints/events'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function useOwnerEnquiries() {
 	const [enquiries, setEnquiries] = useState<OwnerEnquirySummary[]>([])
 	const [importantMessages, setImportantMessages] = useState<ImportantMessage[]>([])

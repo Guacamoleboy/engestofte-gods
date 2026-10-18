@@ -9,6 +9,8 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useEventsDashboard } from './EventsDashboardPage.hooks'
 import styles from './EventsDashboardPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function EventsDashboardPage() {
 	const { content, language } = useTranslate()
 	const copy = content.eventsDashboard
@@ -73,6 +75,8 @@ export default function EventsDashboardPage() {
 	)
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; language: string; copy: ReturnType<typeof useTranslate>['content']['eventsDashboard'] }) {
 	const isClickable = true
 	const cardContent = (
@@ -94,6 +98,8 @@ function EnquiryCard({ enquiry, language, copy }: { enquiry: EnquirySummary; lan
 		? <Link className={`${styles.card} ${styles.clickableCard}`} to={enquiry.event_id && ['APPROVED', 'AWAITING_DEPOSIT', 'BOOKED', 'CANCELLED_BY_CUSTOMER', 'CLOSED_BY_OWNER', 'CLOSED_BY_CUSTOMER'].includes(enquiry.status) ? `/dashboard/events/${enquiry.event_id}` : `/dashboard/approval/${enquiry.submission_id}`}>{cardContent}</Link>
 		: <article className={styles.card}>{cardContent}</article>
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function statusLabelsFor(status: EnquirySummary['status'], copy: ReturnType<typeof useTranslate>['content']['eventsDashboard']) {
 	return {

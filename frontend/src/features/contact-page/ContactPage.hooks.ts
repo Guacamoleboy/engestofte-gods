@@ -5,6 +5,8 @@
 import type { FormEvent } from 'react'
 import type { TranslationContent } from '../../shared/data/i18n/types'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function useContactPage() {
 	function submitContactMessage(event: FormEvent<HTMLFormElement>, copy: TranslationContent['contact']) {
 		event.preventDefault()

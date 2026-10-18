@@ -9,8 +9,15 @@ import { AiFlowTransitionContext } from './AiFlowTransitionContext'
 import PreloaderAiFlowEntry from './PreloaderAiFlowEntry'
 import PreloaderAiFlowFinal from './PreloaderAiFlowFinal'
 
+// ------------------------------------------------------------------------------------------------------
+
 type TransitionState = { customerName?: string; destination: string; draftNotice?: Exclude<AiFlowDraftStatus, 'none'>; phase: 'filling' | 'revealing'; type: 'entry' | 'final' } | null
+
+// ------------------------------------------------------------------------------------------------------
+
 type AiFlowTransitionProviderProps = { children: ReactNode }
+
+// ------------------------------------------------------------------------------------------------------
 
 export default function AiFlowTransitionProvider({ children }: AiFlowTransitionProviderProps) {
 	const navigate = useNavigate()

@@ -10,7 +10,11 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useSharedEventView } from './SharedEventView.hooks'
 import styles from './SharedEventView.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 type EventTab = 'details' | 'conversation' | 'important' | 'invitation' | 'settings' | 'resources' | 'checklist'
+
+// ------------------------------------------------------------------------------------------------------
 
 export default function SharedEventView() {
 	const { content, language } = useTranslate()
@@ -219,14 +223,20 @@ export default function SharedEventView() {
 	)
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function TabButton({ activeTab, tab, onSelect, children }: { activeTab: EventTab; tab: EventTab; onSelect: (tab: EventTab) => void; children: string }) {
 	const active = activeTab === tab
 	return <button type="button" className={active ? styles.activeTab : styles.tab} aria-pressed={active} onClick={() => onSelect(tab)}>{children}</button>
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function Fact({ label, value }: { label: string; value: string }) {
 	return <><dt>{label}</dt><dd>{value}</dd></>
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function weddingDirectionLabel(direction: number | null, options: { title: string; description: string; choice: string }[], fallback: string) {
 	const selectedOption = direction == null ? null : options[direction - 1]

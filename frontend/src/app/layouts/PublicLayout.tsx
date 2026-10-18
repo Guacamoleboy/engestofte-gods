@@ -11,6 +11,8 @@ import type { Language } from '../../shared/data/i18n/types'
 import { usePublicNavigation } from '../../features/public-navigation/usePublicNavigation'
 import '../../features/public-navigation/PublicLayout.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 const navigationItems = [
 	{ key: 'wedding', href: 'https://www.engestofte.com/da/bryllup' },
 	{ key: 'party', href: 'https://www.engestofte.com/da/fest' },
@@ -19,6 +21,8 @@ const navigationItems = [
 	{ key: 'christmasMarket', href: 'https://www.engestofte.com/da/julemarked' },
 	{ key: 'about', href: 'https://www.engestofte.com/da/om-engestofte' },
 ] as const
+
+// ------------------------------------------------------------------------------------------------------
 
 const summerHouseLinks = [
 	'https://www.engestofte.com/da/sommerhuse-oversigt',
@@ -29,16 +33,24 @@ const summerHouseLinks = [
 	'https://www.engestofte.com/da/sommerhuse-grevindenshus',
 ]
 
+// ------------------------------------------------------------------------------------------------------
+
 const smileyReportUrl = 'https://www.findsmiley.dk/Sider/KontrolRapport.aspx?Virk6887688='
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function PublicLayout() {
+
+	// Setup
 	const { isMenuOpen, toggleMenu, closeMenu, language, setLanguage, content: copy, localizeHref, submitNewsletter } = usePublicNavigation()
 
+	// Language
 	function handleLanguageChange(event: ChangeEvent<HTMLSelectElement>) {
 		setLanguage(event.currentTarget.value as Language)
 		closeMenu()
 	}
 
+	// Return
 	return (
 		<div className="site-shell">
 			<header className="site-header">
@@ -129,4 +141,5 @@ export default function PublicLayout() {
 			</footer>
 		</div>
 	)
+	
 }

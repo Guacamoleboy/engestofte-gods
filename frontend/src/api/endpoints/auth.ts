@@ -14,9 +14,13 @@ export type AuthResponse = {
 	}
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 type ApiEnvelope<T> = {
 	data: T
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function login(email: string, password: string) {
 	const response = await client<ApiEnvelope<AuthResponse>>('/auth/login', {
@@ -25,6 +29,8 @@ export async function login(email: string, password: string) {
 	})
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function register(fullName: string, email: string, password: string) {
 	const response = await client<ApiEnvelope<AuthResponse>>('/auth/register', {

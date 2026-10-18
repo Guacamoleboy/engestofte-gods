@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { addEventContact, addOwnerEventContact, closeEvent as closeCustomerEvent, closeOwnerEvent, createEventInvitation, decideEventChange, decideOwnerEventChange, getEvent, getEventChangeProposals, getEventMessages, getOwnerEvent, getOwnerEventChangeProposals, getOwnerEventMessages, getStaffEvent, payEventDeposit, proposeEventChange, proposeOwnerEventChange, requestOwnerEventDeposit, sendEventMessage, sendOwnerEventMessage, sendStaffEventMessage, type ChangeProposal, type EventMessage } from '../../api/endpoints/events'
 import { useAuth } from '../../shared/hooks/useAuth'
 
+// ------------------------------------------------------------------------------------------------------
+
 export type SharedEventInfo = {
 	eventId: number
 	eventName: string | null
@@ -24,9 +26,15 @@ export type SharedEventInfo = {
 	guestInvitationCreated: boolean
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 type EditableEventField = 'event_name' | 'expected_guest_count' | 'requested_date' | 'expected_vegan_count' | 'has_allergies' | 'allergy_details' | 'wedding_direction'
 
+// ------------------------------------------------------------------------------------------------------
+
 const emptyProposalValues: Record<EditableEventField, string> = { event_name: '', expected_guest_count: '', requested_date: '', expected_vegan_count: '', has_allergies: '', allergy_details: '', wedding_direction: '' }
+
+// ------------------------------------------------------------------------------------------------------
 
 export function useSharedEventView() {
 	const { id: rawId } = useParams()

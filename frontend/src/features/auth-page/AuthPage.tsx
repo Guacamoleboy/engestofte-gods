@@ -7,9 +7,13 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useAuthPage } from './AuthPage.hooks'
 import styles from './AuthPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 type AuthPageProps = {
 	mode: 'login' | 'register' | 'forgot-password'
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export default function AuthPage({ mode }: AuthPageProps) {
 	const { content } = useTranslate()
@@ -30,6 +34,8 @@ export default function AuthPage({ mode }: AuthPageProps) {
 
 	return <AuthForm mode={mode} />
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function AuthForm({ mode }: { mode: 'login' | 'register' }) {
 	const { content } = useTranslate()

@@ -8,6 +8,8 @@ import { ApiError } from '../../api/client'
 import { getMyEnquiries, closeMyEnquiry, type EnquirySummary } from '../../api/endpoints/myEnquiries'
 import { closeEvent, getEvent, getEventMessages, sendEventMessage, type CustomerEvent, type EventMessage } from '../../api/endpoints/events'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function useCustomerApprovalView() {
 	const { id: rawId } = useParams()
 	const navigate = useNavigate()

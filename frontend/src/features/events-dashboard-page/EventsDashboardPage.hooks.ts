@@ -7,6 +7,8 @@ import { ApiError } from '../../api/client'
 import { getMyEnquiries, type EnquirySummary } from '../../api/endpoints/myEnquiries'
 import { getImportantMessages, type ImportantMessage } from '../../api/endpoints/events'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function useEventsDashboard() {
 	const [enquiries, setEnquiries] = useState<EnquirySummary[]>([])
 	const [importantMessages, setImportantMessages] = useState<ImportantMessage[]>([])

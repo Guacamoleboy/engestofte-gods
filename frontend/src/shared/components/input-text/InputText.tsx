@@ -5,6 +5,8 @@
 import styles from './InputText.module.css'
 import type { ChangeEvent } from 'react'
 
+// ------------------------------------------------------------------------------------------------------
+
 type InputTextProps = {
 	label: string
 	name: string
@@ -22,9 +24,15 @@ type InputTextProps = {
 	onChange?: (value: string) => void
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function InputText({ label, name, type = 'text', autoComplete, required = false, multiline = false, value, placeholder, disabled = false, min, max, step, options, onChange }: InputTextProps) {
+
+	// Setup
 	const inputId = name
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => onChange?.(event.currentTarget.value)
+
+	// Return
 	return (
 		<div className={styles.field}>
 			<label className={styles.label} htmlFor={inputId}>{label}</label>
@@ -38,4 +46,5 @@ export default function InputText({ label, name, type = 'text', autoComplete, re
 				: <input className={styles.input} id={inputId} name={name} type={type} autoComplete={autoComplete} required={required} value={value} placeholder={placeholder} disabled={disabled} min={min} max={max} step={step} onChange={handleChange} />}
 		</div>
 	)
+
 }

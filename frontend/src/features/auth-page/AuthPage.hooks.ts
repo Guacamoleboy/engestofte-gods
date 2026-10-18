@@ -11,12 +11,18 @@ import { AI_FLOW_DRAFT, clearAiFlowDraft, getAiFlowDraftStatus, getCompleteAiFlo
 import { canAccessDashboardPath, getDashboardPath, type AccountRole } from '../../shared/data/authSession'
 import { useAuth } from '../../shared/hooks/useAuth'
 
+// ------------------------------------------------------------------------------------------------------
+
 const PENDING_SUBMISSION_KEY = 'engestofte.pendingSubmissionId'
+
+// ------------------------------------------------------------------------------------------------------
 
 type AuthLocationState = {
 	from?: { pathname?: unknown }
 	enquiryDraft?: { draftKey?: unknown; draftVersion?: unknown }
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export function useAuthPage(mode: 'login' | 'register') {
 	const navigate = useNavigate()

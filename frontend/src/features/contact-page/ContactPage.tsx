@@ -12,6 +12,8 @@ import { useAiFlowTransition } from '../ai-flow-transition/AiFlowTransitionConte
 import { useContactPage } from './ContactPage.hooks'
 import styles from './ContactPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 const contactPeople = [
 	{
 		name: 'Mette Egeskov',
@@ -35,6 +37,8 @@ const contactPeople = [
 		image: '/images/contact-page/man-1.png',
 	},
 ]
+
+// ------------------------------------------------------------------------------------------------------
 
 export default function ContactPage() {
 	const { content: copy } = useTranslate()

@@ -13,14 +13,20 @@ export type EnquirySummary = {
 	customer_question: string | null
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 type ApiEnvelope<T> = {
 	data: T
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getMyEnquiries() {
 	const response = await client<ApiEnvelope<EnquirySummary[]>>('/enquiries')
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function closeMyEnquiry(submissionId: string) {
 	return client<ApiEnvelope<string>>(`/enquiries/${encodeURIComponent(submissionId)}/close`, { method: 'POST' })

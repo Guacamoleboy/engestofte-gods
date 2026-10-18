@@ -1,8 +1,6 @@
-/* Pathing
-   _______
-   src/shared/styles/global.css */
-
 :root {
+
+	/* Colors */
 	--engestofte-green: #344b38;
 	--engestofte-green-dark: #26392b;
 	--engestofte-green-light: #73866d;
@@ -21,9 +19,13 @@
 	--engestofte-success-bg: #e9f1e9;
 	--engestofte-warning: #805b16;
 	--engestofte-warning-bg: #f8f0dd;
+
+	/* Font */
 	--engestofte-font-body: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
 	--engestofte-font-display: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
 	--engestofte-font-size-control: 0.88rem;
+
+	/* Content + Sizing */
 	--engestofte-content-width: 84rem;
 	--engestofte-page-frame-inset: 2rem;
 	--engestofte-space-3: 0.75rem;
@@ -36,6 +38,8 @@
 	--engestofte-shadow-card: 0 0.7rem 2.2rem rgba(35, 45, 35, 0.055);
 	--engestofte-shadow-dialog: 0 1.2rem 4rem rgba(17, 26, 19, 0.2);
 	--engestofte-transition-control: all 0.2s ease-in-out;
+
+	/* Additional Unsorted */
 	font-family: var(--engestofte-font-body);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;

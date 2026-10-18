@@ -6,11 +6,15 @@ import { createContext, useCallback, useState, type PropsWithChildren } from 're
 import type { AuthResponse } from '../../api/endpoints/auth'
 import { clearAuthSession, type AccountRole } from '../data/authSession'
 
+// ------------------------------------------------------------------------------------------------------
+
 export type AuthUser = {
 	fullName: string
 	emailRedacted: string
 	role: AccountRole
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 type AuthContextValue = {
 	user: AuthUser | null
@@ -19,7 +23,11 @@ type AuthContextValue = {
 	clearSession: () => void
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export const AuthContext = createContext<AuthContextValue | null>(null)
+
+// ------------------------------------------------------------------------------------------------------
 
 export function AuthProvider({ children }: PropsWithChildren) {
 	const [user, setUser] = useState<AuthUser | null>(getStoredUser)
@@ -43,6 +51,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		</AuthContext.Provider>
 	)
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function getStoredUser(): AuthUser | null {
 	const token = window.localStorage.getItem('access_token')
@@ -71,6 +81,8 @@ function getStoredUser(): AuthUser | null {
 	}
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function decodeJwtPayload(token: string): Record<string, unknown> {
 	const encodedPayload = token.split('.')[1]
 	if (!encodedPayload) throw new Error('Invalid access token')
@@ -79,20 +91,28 @@ function decodeJwtPayload(token: string): Record<string, unknown> {
 	return JSON.parse(new TextDecoder().decode(Uint8Array.from(binaryPayload, (character) => character.charCodeAt(0)))) as Record<string, unknown>
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function getStoredRole(): AccountRole | null {
 	const role = window.localStorage.getItem('account_role')
 	return isAccountRole(role) ? role : null
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function isAccountRole(value: unknown): value is AccountRole {
 	return value === 'CUSTOMER' || value === 'STAFF' || value === 'OWNER'
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function getAccountField(account: unknown, field: 'full_name' | 'email_redacted'): string {
 	if (typeof account !== 'object' || account === null || !(field in account)) return ''
 	const value = (account as Record<string, unknown>)[field]
 	return typeof value === 'string' ? value : ''
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function removeLegacyEmail(account: unknown) {
 	if (typeof account !== 'object' || account === null || !('email' in account)) return

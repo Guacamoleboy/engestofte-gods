@@ -2,12 +2,15 @@
 // _______
 // src/api/client.ts
 
-// Local development API base URL; replace with the deployment API URL per environment.
 const BASE_URL = 'http://localhost:7070/v1'
+
+// ------------------------------------------------------------------------------------------------------
 
 type ErrorResponse = {
 	message?: string
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export class ApiError extends Error {
 	readonly status: number
@@ -23,12 +26,16 @@ export class ApiError extends Error {
 	}
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 function getErrorCode(data: unknown, status: number) {
 	if (typeof data === 'object' && data !== null && 'code' in data && typeof data.code === 'number') {
 		return data.code
 	}
 	return status
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function client<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 	const url = `${BASE_URL}${endpoint}`
@@ -55,6 +62,8 @@ export async function client<T>(endpoint: string, options: RequestInit = {}): Pr
 
 	return data as T
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 function isErrorResponse(value: unknown): value is ErrorResponse {
 	return typeof value === 'object' && value !== null && 'message' in value && typeof value.message === 'string'

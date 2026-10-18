@@ -14,14 +14,20 @@ export type AiInteractionResponse = {
 	status: 'IN_PROGRESS' | 'STEP_COMPLETE' | 'OUT_OF_SCOPE' | 'DONE'
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 type AiInteractionEnvelope = {
 	data: AiInteractionResponse
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export type AiConversationTurn = {
 	question: string
 	answer: string
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function submitAiAnswer(requestId: string, answer: string, currentQuestion: string, customerName: string, step: number, language: Language, conversation: AiConversationTurn[]): Promise<AiInteractionResponse> {
 	const response = await create<AiInteractionEnvelope>('ai-flow/interaction', {

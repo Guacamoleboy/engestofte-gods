@@ -4,11 +4,15 @@
 
 export type AccountRole = 'CUSTOMER' | 'STAFF' | 'OWNER'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function getDashboardPath(role: AccountRole) {
 	if (role === 'OWNER') return '/owner/requests'
 	if (role === 'STAFF') return '/staff/events'
 	return '/dashboard/events/'
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export function canAccessDashboardPath(pathname: string, role: AccountRole) {
 	const allowedSection = role === 'OWNER'
@@ -18,6 +22,8 @@ export function canAccessDashboardPath(pathname: string, role: AccountRole) {
 			: '/dashboard/events'
 	return pathname === allowedSection || pathname.startsWith(`${allowedSection}/`)
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export function clearAuthSession() {
 	window.localStorage.removeItem('access_token')

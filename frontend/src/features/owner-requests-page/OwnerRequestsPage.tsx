@@ -8,6 +8,8 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useOwnerEnquiries } from './OwnerRequestsPage.hooks'
 import styles from './OwnerRequestsPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function OwnerRequestsPage() {
 	const { content, language } = useTranslate()
 	const copy = content.ownerReview

@@ -8,6 +8,8 @@ import { AI_FLOW_DRAFT } from '../data/aiFlowDraft'
 import { loadTranslations } from '../data/i18n/translations'
 import type { Language, TranslationContent } from '../data/i18n/types'
 
+// ------------------------------------------------------------------------------------------------------
+
 function getInitialLanguage(): Language {
 	try {
 		const draft: unknown = JSON.parse(window.localStorage.getItem(AI_FLOW_DRAFT.key) ?? 'null')
@@ -20,11 +22,15 @@ function getInitialLanguage(): Language {
 	return 'da'
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export const TranslationContext = createContext<{
 	language: Language
 	setLanguage: (language: Language) => void
 	content: TranslationContent
 } | null>(null)
+
+// ------------------------------------------------------------------------------------------------------
 
 export function TranslationProvider({ children }: PropsWithChildren) {
 	const [language, setLanguage] = useState<Language>(getInitialLanguage)

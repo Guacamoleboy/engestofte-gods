@@ -7,7 +7,11 @@ export const AI_FLOW_DRAFT = {
 	version: 1,
 } as const
 
+// ------------------------------------------------------------------------------------------------------
+
 export type AiFlowDraftStatus = 'none' | 'saved' | 'complete' | 'unreadable'
+
+// ------------------------------------------------------------------------------------------------------
 
 export function getAiFlowDraftStatus(): AiFlowDraftStatus {
 	try {
@@ -23,6 +27,8 @@ export function getAiFlowDraftStatus(): AiFlowDraftStatus {
 	}
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export function getCompleteAiFlowDraft(): Record<string, unknown> | null {
 	if (getAiFlowDraftStatus() !== 'complete') return null
 	try {
@@ -33,6 +39,8 @@ export function getCompleteAiFlowDraft(): Record<string, unknown> | null {
 	}
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export function getOrCreateSubmissionId(): string {
 	const draft = getCompleteAiFlowDraft()
 	if (!draft) throw new Error('The completed enquiry draft is unavailable')
@@ -42,6 +50,8 @@ export function getOrCreateSubmissionId(): string {
 	window.localStorage.setItem(AI_FLOW_DRAFT.key, JSON.stringify({ ...draft, submissionId }))
 	return submissionId
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export function clearAiFlowDraft() {
 	window.localStorage.removeItem(AI_FLOW_DRAFT.key)

@@ -6,6 +6,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { getGuestInvitation, type GuestInvitation } from '../../api/endpoints/events'
 
+// ------------------------------------------------------------------------------------------------------
+
 export function useGuestInvitation() {
 	const { id: rawId } = useParams()
 	const [searchParams] = useSearchParams()

@@ -8,9 +8,13 @@ import PageContainer from '../../shared/components/PageContainer'
 import { useTranslate } from '../../shared/hooks/useTranslate'
 import styles from './PlaceholderPages.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 type PlaceholderPagesProps = {
 	route: string
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export default function PlaceholderPages({ route }: PlaceholderPagesProps) {
 	const { content: copy } = useTranslate()

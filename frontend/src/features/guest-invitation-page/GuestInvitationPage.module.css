@@ -1,7 +1,3 @@
-/* Pathing
-   _______
-   src/features/guest-invitation-page/GuestInvitationPage.module.css */
-
 .page { min-height: 100vh; padding: clamp(0.75rem, 4vw, 3.5rem); background: var(--engestofte-white); color: var(--engestofte-heading); font-family: Georgia, 'Times New Roman', serif; }
 .weddingTheme { --invitation-accent: #c4a36c; --invitation-deep: var(--engestofte-green-dark); }
 .defaultTheme { --invitation-accent: var(--engestofte-green); --invitation-deep: var(--engestofte-green-dark); }

@@ -10,9 +10,13 @@ export type EnquirySubmission = {
 	draft: Record<string, unknown>
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 type ApiEnvelope<T> = {
 	data: T
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function submitEnquiry(submission: EnquirySubmission) {
 	return client<ApiEnvelope<{ submission_id: string; language: string; status: string }>>('/enquiries', {

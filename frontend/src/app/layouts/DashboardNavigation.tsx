@@ -10,9 +10,13 @@ import { useDashboardNavigation } from './DashboardNavigation.hooks'
 import styles from './DashboardNavigation.module.css'
 
 export default function DashboardNavigation() {
+
+	// Setup
 	const { content, language, setLanguage } = useTranslate()
 	const copy = content.eventsDashboard
 	const { logout, role } = useDashboardNavigation()
+
+	// Nav based on Roles
 	const navigationItems = role === 'CUSTOMER'
 		? [
 			{ label: copy.navCustomerRequests, to: '/dashboard/events/' },
@@ -28,6 +32,7 @@ export default function DashboardNavigation() {
 				: []
 	const dashboardPath = navigationItems[0]?.to ?? '/dashboard/events/'
 
+	// Return
 	return (
 		<header className={styles.header}>
 			<PageContainer className={styles.inner}>
@@ -53,4 +58,5 @@ export default function DashboardNavigation() {
 			</PageContainer>
 		</header>
 	)
+
 }

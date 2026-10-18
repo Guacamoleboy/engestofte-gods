@@ -9,6 +9,8 @@ import { useTranslate } from '../../shared/hooks/useTranslate'
 import { useCustomerApprovalView } from './CustomerApprovalView.hooks'
 import styles from './CustomerApprovalView.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function CustomerApprovalView() {
 	const { content, language } = useTranslate()
 	const copy = content.eventPage

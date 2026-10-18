@@ -10,6 +10,8 @@ import AiFlowMessage from './AiFlowMessage'
 import { useAiFlow } from './AiFlowPage.hooks'
 import styles from './AiFlowPage.module.css'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function AiFlowPage() {
 	const navigate = useNavigate()
 	const location = useLocation()

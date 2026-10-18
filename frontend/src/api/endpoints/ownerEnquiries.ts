@@ -5,7 +5,12 @@
 import { client } from '../client'
 
 export type OwnerEnquiryStatus = 'SUBMITTED' | 'UNDER_REVIEW' | 'AWAITING_CUSTOMER' | 'FOLLOW_UP_REQUIRED' | 'OWNER_FOLLOW_UP_REQUIRED' | 'APPROVED' | 'AWAITING_DEPOSIT' | 'BOOKED' | 'CLOSED_BY_OWNER' | 'CLOSED_BY_CUSTOMER' | 'CANCELLED_BY_CUSTOMER'
+
+// ------------------------------------------------------------------------------------------------------
+
 export type OpenOwnerEnquiryStatus = Exclude<OwnerEnquiryStatus, 'CLOSED_BY_OWNER' | 'CLOSED_BY_CUSTOMER' | 'CANCELLED_BY_CUSTOMER'>
+
+// ------------------------------------------------------------------------------------------------------
 
 export type OwnerEnquirySummary = {
 	id: number
@@ -17,10 +22,14 @@ export type OwnerEnquirySummary = {
 	submitted_at: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export type EnquiryConversationTurn = {
 	question: string
 	answer: string
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export type AiEnquiryAssessment = {
 	summary: string
@@ -29,6 +38,8 @@ export type AiEnquiryAssessment = {
 	conflicts: string[]
 	upsell_suggestions: string[]
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export type OwnerEnquiryReview = {
 	id: number
@@ -49,11 +60,15 @@ export type OwnerEnquiryReview = {
 	customer_question: string | null
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export type EventApproval = {
 	event_id: number
 	status: 'APPROVED'
 	created_at: string
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export type EventMessage = {
 	id: number
@@ -63,17 +78,25 @@ export type EventMessage = {
 	created_at: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 type ApiEnvelope<T> = { data: T }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getOwnerEnquiries() {
 	const response = await client<ApiEnvelope<OwnerEnquirySummary[]>>('/enquiries/owner')
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getOwnerEnquiry(id: number) {
 	const response = await client<ApiEnvelope<OwnerEnquiryReview>>(`/enquiries/owner/${id}`)
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function saveOwnerEnquiryReview(id: number, internalNote: string, customerQuestion: string) {
 	const response = await client<ApiEnvelope<OwnerEnquiryReview>>(`/enquiries/owner/${id}`, {
@@ -83,6 +106,8 @@ export async function saveOwnerEnquiryReview(id: number, internalNote: string, c
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function approveOwnerEnquiry(id: number, customerNote: string) {
 	const response = await client<ApiEnvelope<EventApproval>>(`/enquiries/owner/${id}/approve`, {
 		method: 'POST',
@@ -91,10 +116,14 @@ export async function approveOwnerEnquiry(id: number, customerNote: string) {
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getOwnerEnquiryMessages(id: number) {
 	const response = await client<ApiEnvelope<EventMessage[]>>(`/enquiries/owner/${id}/messages`)
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function sendOwnerEnquiryMessage(id: number, content: string) {
 	const response = await client<ApiEnvelope<EventMessage>>(`/enquiries/owner/${id}/messages`, {
@@ -103,6 +132,8 @@ export async function sendOwnerEnquiryMessage(id: number, content: string) {
 	})
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function closeOwnerEnquiry(id: number, reason: string) {
 	return client<ApiEnvelope<string>>(`/enquiries/owner/${id}/close`, {

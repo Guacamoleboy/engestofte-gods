@@ -1,7 +1,3 @@
-/* Pathing
-   _______
-   src/features/placeholder-pages/PlaceholderPages.module.css */
-
 .placeholderPage {
 	min-height: 60vh;
 	padding-top: var(--engestofte-space-10);

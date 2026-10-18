@@ -9,6 +9,8 @@ export type EventConversationTurn = {
 	answer: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export type CustomerEvent = {
 	event_id: number
 	category: 'WEDDING'
@@ -32,6 +34,8 @@ export type CustomerEvent = {
 	guest_invitation_created: boolean
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export type GuestInvitation = {
 	event_id: number
 	category: 'WEDDING'
@@ -41,6 +45,8 @@ export type GuestInvitation = {
 	primary_contact_name: string | null
 	primary_contact_email: string | null
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export type OwnerEvent = {
 	event_id: number
@@ -59,6 +65,8 @@ export type OwnerEvent = {
 	created_at: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export type StaffEvent = {
 	event_id: number
 	category: 'WEDDING'
@@ -75,6 +83,8 @@ export type StaffEvent = {
 	created_at: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export type EventMessage = {
 	id: number
 	sender_type: 'OWNER' | 'CUSTOMER' | 'STAFF'
@@ -84,6 +94,8 @@ export type EventMessage = {
 	created_at: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export type ImportantMessage = {
 	event_id: number
 	event_name: string
@@ -91,6 +103,8 @@ export type ImportantMessage = {
 	latest_message: string
 	latest_message_at: string
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export type ChangeProposal = {
 	id: number
@@ -106,27 +120,39 @@ export type ChangeProposal = {
 	created_at: string
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 type ApiEnvelope<T> = { data: T }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getImportantMessages() {
 	const response = await client<ApiEnvelope<ImportantMessage[]>>('/events/important-messages')
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getOwnerImportantMessages() {
 	const response = await client<ApiEnvelope<ImportantMessage[]>>('/events/owner/important-messages')
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getEvent(id: number) {
 	const response = await client<ApiEnvelope<CustomerEvent>>(`/events/${id}`)
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getEventMessages(id: number) {
 	const response = await client<ApiEnvelope<EventMessage[]>>(`/events/${id}/messages`)
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function sendEventMessage(id: number, content: string) {
 	const response = await client<ApiEnvelope<EventMessage>>(`/events/${id}/messages`, {
@@ -136,49 +162,69 @@ export async function sendEventMessage(id: number, content: string) {
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function addEventContact(id: number, email: string) {
 	const response = await client<ApiEnvelope<null>>(`/events/${id}/contacts`, { method: 'POST', body: JSON.stringify({ email }) })
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function closeEvent(id: number) {
 	const response = await client<ApiEnvelope<CustomerEvent>>(`/events/${id}/close`, { method: 'POST' })
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function createEventInvitation(id: number) {
 	const response = await client<ApiEnvelope<{ access: string }>>(`/events/${id}/invitation`, { method: 'POST' })
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getGuestInvitation(id: number, access: string) {
 	const response = await client<ApiEnvelope<GuestInvitation>>(`/events/${id}/invitation?access=${encodeURIComponent(access)}`)
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function payEventDeposit(id: number) {
 	await client<ApiEnvelope<null>>(`/events/${id}/depositum`, { method: 'POST' })
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getOwnerEvent(id: number) {
 	const response = await client<ApiEnvelope<OwnerEvent>>(`/events/owner/${id}`)
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getStaffEvent(id: number) {
 	const response = await client<ApiEnvelope<StaffEvent>>(`/events/staff/${id}`)
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getStaffEvents() {
 	const response = await client<ApiEnvelope<StaffEvent[]>>('/events/staff')
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getStaffImportantMessages() {
 	const response = await client<ApiEnvelope<ImportantMessage[]>>('/events/staff/important-messages')
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function sendStaffEventMessage(id: number, content: string) {
 	const response = await client<ApiEnvelope<EventMessage>>(`/events/staff/${id}/messages`, {
@@ -188,10 +234,14 @@ export async function sendStaffEventMessage(id: number, content: string) {
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getOwnerEventMessages(id: number) {
 	const response = await client<ApiEnvelope<EventMessage[]>>(`/events/owner/${id}/messages`)
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function sendOwnerEventMessage(id: number, content: string) {
 	const response = await client<ApiEnvelope<EventMessage>>(`/events/owner/${id}/messages`, {
@@ -201,28 +251,40 @@ export async function sendOwnerEventMessage(id: number, content: string) {
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function addOwnerEventContact(id: number, email: string) {
 	const response = await client<ApiEnvelope<null>>(`/events/owner/${id}/contacts`, { method: 'POST', body: JSON.stringify({ email }) })
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function closeOwnerEvent(id: number) {
 	await client<ApiEnvelope<null>>(`/events/owner/${id}/close`, { method: 'POST' })
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function requestOwnerEventDeposit(id: number) {
 	await client<ApiEnvelope<null>>(`/events/owner/${id}/depositum-request`, { method: 'POST' })
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function getEventChangeProposals(id: number) {
 	const response = await client<ApiEnvelope<ChangeProposal[]>>(`/events/${id}/change-proposals`)
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function getOwnerEventChangeProposals(id: number) {
 	const response = await client<ApiEnvelope<ChangeProposal[]>>(`/events/owner/${id}/change-proposals`)
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function proposeEventChange(id: number, fieldName: string, newValue: string) {
 	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/${id}/change-proposals`, {
@@ -232,6 +294,8 @@ export async function proposeEventChange(id: number, fieldName: string, newValue
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function proposeOwnerEventChange(id: number, fieldName: string, newValue: string) {
 	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/owner/${id}/change-proposals`, {
 		method: 'POST',
@@ -240,6 +304,8 @@ export async function proposeOwnerEventChange(id: number, fieldName: string, new
 	return response.data
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 export async function decideEventChange(id: number, proposalId: number, decision: 'APPROVED' | 'REJECTED', explanation?: string) {
 	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/${id}/change-proposals/${proposalId}/decision`, {
 		method: 'POST',
@@ -247,6 +313,8 @@ export async function decideEventChange(id: number, proposalId: number, decision
 	})
 	return response.data
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 export async function decideOwnerEventChange(id: number, proposalId: number, decision: 'APPROVED' | 'REJECTED', explanation?: string) {
 	const response = await client<ApiEnvelope<ChangeProposal>>(`/events/owner/${id}/change-proposals/${proposalId}/decision`, {

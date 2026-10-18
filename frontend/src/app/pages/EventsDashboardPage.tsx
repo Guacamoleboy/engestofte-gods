@@ -4,6 +4,8 @@
 
 import EventsDashboardPageContent from '../../features/events-dashboard-page'
 
+// ------------------------------------------------------------------------------------------------------
+
 export default function EventsDashboardPage() {
 	return <EventsDashboardPageContent />
 }
