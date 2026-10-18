@@ -4,12 +4,15 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { submitAiAnswer, type AiConversationTurn, type AiInteractionResponse } from '../../api/endpoints/aiFlow'
-import { ApiError } from '../../api/client'
 import { AI_FLOW_DRAFT } from '../../shared/data/aiFlowDraft'
 import type { Language } from '../../shared/data/i18n/types'
 
 type Message = {
 	id: number
+	requestId?: string
+	requestQuestion?: string
+	requestStep?: number
+	requestLanguage?: Language
 	sender: 'assistant' | 'customer'
 	senderName?: string
 	text: string
@@ -22,6 +25,8 @@ type Message = {
 
 const DRAFT_KEY = AI_FLOW_DRAFT.key
 const DRAFT_VERSION = AI_FLOW_DRAFT.version
+const YEAR_2027_BOOKING = /\b2027\b/i
+const BOOKED_STATUS = /\b(?:fully\s+booked|booked|fuldt\s+booket|booket|ausgebucht)\b/i
 
 type StoredDraft = {
 	version: number
@@ -42,6 +47,38 @@ type StoredDraft = {
 	language: Language
 	savedAt: string
 	submissionId?: string
+}
+
+function remove2027BookingSentences(text: string) {
+	return text.split(/(?<=[.!?])\s+/u)
+		.filter((sentence) => !(YEAR_2027_BOOKING.test(sentence) && BOOKED_STATUS.test(sentence)))
+		.join(' ')
+		.trim()
+}
+
+function composeAssistantMessage(acknowledgement: string, followUp: string, status: AiInteractionResponse['status'], currentStep: number, language: Language) {
+	let reply = acknowledgement.trimEnd()
+	let nextQuestion = followUp.trim()
+	if (currentStep > 2) {
+		reply = remove2027BookingSentences(reply)
+		nextQuestion = remove2027BookingSentences(nextQuestion)
+	}
+
+	if (nextQuestion && reply.toLocaleLowerCase(language).endsWith(nextQuestion.toLocaleLowerCase(language))) {
+		reply = reply.slice(0, -nextQuestion.length).trimEnd()
+	}
+
+	const acknowledgementExplains2027Availability = /\b2027\b/i.test(reply)
+		&& /\b(?:fully\s+booked|booked|fuldt\s+booket|booket|ausgebucht)\b/i.test(reply)
+	if (currentStep === 2 && acknowledgementExplains2027Availability) {
+		nextQuestion = remove2027BookingSentences(nextQuestion)
+	}
+
+	const questionMark = reply.indexOf('?')
+	if (questionMark >= 0) reply = reply.slice(0, questionMark).trimEnd()
+	if (currentStep === 1 && status === 'STEP_COMPLETE') reply = ''
+
+	return [reply, nextQuestion].filter(Boolean).join('\n\n')
 }
 
 function readDraft(): StoredDraft | null {
@@ -65,7 +102,7 @@ function readDraft(): StoredDraft | null {
 	}
 }
 
-export function useAiFlow(introMessage: string, stepQuestions: string[], finalMessage: string, defaultCustomerName: string, aiUnavailableMessage: string, language: Language) {
+export function useAiFlow(introMessage: string, stepQuestions: string[], finalMessage: string, defaultCustomerName: string, language: Language) {
 	const [initialDraft] = useState(readDraft)
 	const [hasUnrecognizedDraft] = useState(() => {
 		try {
@@ -81,6 +118,9 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 	const [messages, setMessages] = useState<Message[]>(() => initialDraft
 		? initialDraft.messages.map((message) => ({
 			...message,
+			text: message.sender === 'assistant' && typeof message.step === 'number' && message.step > 2
+				? remove2027BookingSentences(message.text)
+				: message.text,
 			createdAt: new Date(message.createdAt),
 			status: message.status === 'sending' ? 'failed' : message.status,
 		}))
@@ -112,7 +152,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 	const [isPending, setIsPending] = useState(false)
 	const [isComplete, setIsComplete] = useState(initialDraft?.isComplete ?? false)
 	const [isOutOfScope, setIsOutOfScope] = useState(initialDraft?.isOutOfScope ?? false)
-	const [isAiUnavailable, setIsAiUnavailable] = useState(initialDraft?.isAiUnavailable ?? false)
+	const [isAiUnavailable] = useState(initialDraft?.isAiUnavailable ?? false)
 	const [error, setError] = useState('')
 	const [hasResumedDraft] = useState(Boolean(initialDraft))
 
@@ -160,17 +200,27 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 		if (!submittedAnswer || isPending || isComplete || isOutOfScope || isAiUnavailable) return
 
 		const retryMessage = [...messages].reverse().find((message) =>
-			message.sender === 'customer' && message.status === 'failed' && message.text === submittedAnswer,
+			message.sender === 'customer'
+				&& message.status === 'failed'
+				&& message.text === submittedAnswer
+				&& message.requestQuestion === question
+				&& message.requestStep === currentStep
+				&& message.requestLanguage === language,
 		)
 		const outgoingId = retryMessage?.id ?? nextMessageId.current++
+		const requestId = retryMessage?.requestId ?? crypto.randomUUID()
 		const senderName = customerName.current || defaultCustomerName
 		const sentAt = new Date()
 		setMessages((currentMessages) => retryMessage
 			? currentMessages.map((message) => message.id === outgoingId
-				? { ...message, createdAt: sentAt, status: 'sending' }
+				? { ...message, requestId, requestQuestion: question, requestStep: currentStep, requestLanguage: language, createdAt: sentAt, status: 'sending' }
 				: message)
 			: [...currentMessages, {
 				id: outgoingId,
+				requestId,
+				requestQuestion: question,
+				requestStep: currentStep,
+				requestLanguage: language,
 				sender: 'customer',
 				senderName,
 				text: submittedAnswer,
@@ -188,6 +238,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 		}
 		try {
 			const result: AiInteractionResponse = await submitAiAnswer(
+				requestId,
 				submittedAnswer,
 				question,
 				customerName.current,
@@ -217,22 +268,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 
 			const flowChanged = nextStep > currentStep
 			setCurrentStep(nextStep)
-			const acknowledgement = result.acknowledgement.trimEnd()
-			const followUp = nextQuestion.trim()
-			const acknowledgementAlreadyAsksFollowUp = result.status === 'IN_PROGRESS'
-				&& followUp.length > 0
-				&& acknowledgement.toLocaleLowerCase(language).endsWith(followUp.toLocaleLowerCase(language))
-			const dateAcknowledgementRepeatsUnavailableYear = currentStep === 2
-				&& result.status === 'IN_PROGRESS'
-				&& /\b2027\b/.test(submittedAnswer)
-			const responseAcknowledgement = dateAcknowledgementRepeatsUnavailableYear
-				? ''
-				: currentStep === 1 && result.status === 'STEP_COMPLETE'
-					? ''
-				: acknowledgementAlreadyAsksFollowUp
-					? acknowledgement.slice(0, -followUp.length).trimEnd()
-					: acknowledgement
-			const assistantText = [responseAcknowledgement, nextQuestion].filter(Boolean).join('\n\n')
+			const assistantText = composeAssistantMessage(result.acknowledgement, nextQuestion, result.status, currentStep, language)
 			setMessages((currentMessages) => [...currentMessages.map((message): Message =>
 				message.id === outgoingId ? { ...message, senderName: customerName.current || senderName, status: 'sent' } : message,
 			), {
@@ -252,18 +288,7 @@ export function useAiFlow(introMessage: string, stepQuestions: string[], finalMe
 			setMessages((currentMessages) => currentMessages.map((message) =>
 				message.id === outgoingId ? { ...message, status: 'failed' } : message,
 			))
-			if (!(error instanceof ApiError) || error.code >= 500) {
-				setIsAiUnavailable(true)
-				setMessages((currentMessages) => [...currentMessages, {
-					id: nextMessageId.current++,
-					sender: 'assistant',
-					text: aiUnavailableMessage,
-					createdAt: new Date(),
-					status: 'received',
-				}])
-			} else {
-				setError('request-failed')
-			}
+			setError('request-failed')
 		} finally {
 			setIsPending(false)
 		}

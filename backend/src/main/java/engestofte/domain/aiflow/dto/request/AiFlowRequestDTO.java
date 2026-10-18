@@ -15,7 +15,8 @@ public class AiFlowRequestDTO {
 	// ___________________
 	//
 	//		{
-	//			"answer": "Alex Morgan",
+	//			"request_id": "b4afc574-8dbb-4588-a76e-bd7f34b9f582",
+	//			"answer": "User One",
 	//			"current_question": "What name should I create the enquiry under?",
 	//			"customer_name": "",
 	//			"step": 1,
@@ -53,5 +54,8 @@ public class AiFlowRequestDTO {
 
 	@JsonProperty("conversation")
 	private List<AiFlowTurnDTO> conversation;
+
+	@JsonProperty("request_id")
+	private String requestId;
 
 }

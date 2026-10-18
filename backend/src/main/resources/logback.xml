@@ -13,7 +13,7 @@
     <!-- >>>>>>>>>>>>>>>  | GENERIC LOGGING |  <<<<<<<<<<<<<<< -->
     <!-- ====================================================================================================================================== -->
 
-    <property name="MOODMAP_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - %msg%n%ex"/>
+    <property name="ENGESTOFTE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - %msg%n%ex"/>
 
     <!-- ====================================================================================================================================== -->
     <!-- >>>>>>>>>>>>>>>  | TERMINAL, IDE & CONSOLE |  <<<<<<<<<<<<<<< -->
@@ -23,7 +23,7 @@
 
         <!-- Formatting log events to text-->
         <encoder>
-            <pattern>${MOODMAP_LOG_PATTERN}</pattern>
+            <pattern>${ENGESTOFTE_LOG_PATTERN}</pattern>
         </encoder>
 
     </appender>
@@ -35,17 +35,17 @@
     <appender name="FILE_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
         <!-- Active Logging File -->
-        <file>logs/moodmap.log</file>
+        <file>logs/engestofte.log</file>
 
         <!-- Daily rotation og log files by date (compressed) -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/moodmap.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>logs/engestofte.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
             <!-- Number of log files before deletion -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
         <encoder>
-            <pattern>${MOODMAP_LOG_PATTERN}</pattern>
+            <pattern>${ENGESTOFTE_LOG_PATTERN}</pattern>
         </encoder>
 
     </appender>

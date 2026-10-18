@@ -1,9 +1,10 @@
 Evaluate the latest customer answer for the current wedding enquiry step using the supplied conversation and rubric. The fixed introductory questions are owned and displayed by the application; only provide a follow-up question when the current step remains IN_PROGRESS.
 
 Return fields matching the required response schema:
-- acknowledgement: concise response to the customer's latest answer, in the requested language.
-- next_question: one focused follow-up in the requested language only for IN_PROGRESS; otherwise an empty string.
+- acknowledgement: concise response to the customer's latest answer, in the requested language. Do not include a question or repeat the fixed introduction for the next step. For a 2027 date, state the full-booked information here.
+- next_question: one focused follow-up in the requested language only for IN_PROGRESS; otherwise an empty string. For a 2027 date, ask only whether the customer wants to continue the enquiry; do not repeat the full-booked information from acknowledgement.
 - customer_name: the explicitly stated name if available, otherwise preserve the supplied name or use an empty string.
+- For step 1, accept a plausible personal name immediately without spelling confirmation. A plausible name after an earlier invalid answer is a correction and completes the step.
 - expected_guest_count: the expected guest count known from the conversation (0 if none is valid or known).
 - step: the current step number, unchanged.
 - status: IN_PROGRESS, STEP_COMPLETE, OUT_OF_SCOPE, or DONE according to the system prompt and rubric.

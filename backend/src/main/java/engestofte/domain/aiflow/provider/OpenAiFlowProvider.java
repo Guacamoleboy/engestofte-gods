@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.net.http.HttpRequest;
+import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
@@ -23,12 +24,22 @@ public class OpenAiFlowProvider implements AiFlowProvider, EnquiryAssessmentProv
 	// Attributes
 	private static final String API_URL = "https://api.openai.com/v1/responses";
 	private static final String MODEL = "gpt-4.1-mini";
+	private static final int FLOW_MAX_OUTPUT_TOKENS = 1200;
+	private static final int ASSESSMENT_MAX_OUTPUT_TOKENS = 2400;
 	private final String apiKey;
+	private final HttpClient httpClient;
+	private final URI apiUri;
 
 	// _________________________________________________________________________________________________________________
 
 	public OpenAiFlowProvider(String apiKey) {
+		this(apiKey, PoolConfig.getClient(), URI.create(API_URL));
+	}
+
+	OpenAiFlowProvider(String apiKey, HttpClient httpClient, URI apiUri) {
 		this.apiKey = apiKey;
+		this.httpClient = httpClient;
+		this.apiUri = apiUri;
 	}
 
 	// _________________________________________________________________________________________________________________
@@ -50,6 +61,7 @@ public class OpenAiFlowProvider implements AiFlowProvider, EnquiryAssessmentProv
 					.replace("{{RUBRIC}}", rubric);
 			String body = PoolConfig.getMapper().writeValueAsString(Map.of(
 					"model", MODEL,
+					"max_output_tokens", FLOW_MAX_OUTPUT_TOKENS,
 					"store", false,
 					"instructions", readResource("prompts/system-prompt.md"),
 					"input", userPrompt,
@@ -73,14 +85,14 @@ public class OpenAiFlowProvider implements AiFlowProvider, EnquiryAssessmentProv
 					))
 			));
 
-			HttpRequest httpRequest = HttpRequest.newBuilder(URI.create(API_URL))
+			HttpRequest httpRequest = HttpRequest.newBuilder(apiUri)
 					.timeout(Duration.ofSeconds(45))
 					.header("Authorization", "Bearer " + apiKey)
 					.header("Content-Type", "application/json")
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.build();
 
-			HttpResponse<String> response = PoolConfig.getClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+			HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 			if (response.statusCode() < 200 || response.statusCode() >= 300) {
 				throw new ApiException(500, "AI service is unavailable");
 			}
@@ -129,6 +141,7 @@ public class OpenAiFlowProvider implements AiFlowProvider, EnquiryAssessmentProv
 				"additionalProperties", false);
 			String body = PoolConfig.getMapper().writeValueAsString(Map.of(
 					"model", MODEL,
+					"max_output_tokens", ASSESSMENT_MAX_OUTPUT_TOKENS,
 					"store", false,
 					"instructions", readResource("prompts/enquiry-assessment-system-prompt.md"),
 					"input", prompt,
@@ -137,13 +150,13 @@ public class OpenAiFlowProvider implements AiFlowProvider, EnquiryAssessmentProv
 							"name", "wedding_enquiry_assessment",
 							"strict", true,
 							"schema", schema))));
-			HttpRequest httpRequest = HttpRequest.newBuilder(URI.create(API_URL))
+			HttpRequest httpRequest = HttpRequest.newBuilder(apiUri)
 					.timeout(Duration.ofSeconds(45))
 					.header("Authorization", "Bearer " + apiKey)
 					.header("Content-Type", "application/json")
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.build();
-			HttpResponse<String> response = PoolConfig.getClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+			HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 			if (response.statusCode() < 200 || response.statusCode() >= 300) {
 				throw new ApiException(500, "AI enquiry assessment is unavailable");
 			}

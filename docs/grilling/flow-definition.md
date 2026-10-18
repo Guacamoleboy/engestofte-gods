@@ -13,7 +13,7 @@ Dette dokument fastlægger, hvilke oplysninger AI-flowet skal indsamle, og hvorn
 
 Samtalen præsenterer de godkendte oplysninger i denne personlige rækkefølge. Feltklassifikationerne nedenfor er fortsat styrende.
 
-1. Kontaktpersonens navn til personlig tiltale; et fornavn er tilstrækkeligt.
+1. Kontaktpersonens navn til personlig tiltale; et fornavn er tilstrækkeligt. Et plausibelt navn accepteres straks uden stavebekræftelse. Spørg kun igen, hvis svaret tydeligt ikke er et plausibelt personnavn. Et plausibelt navn efter et tidligere afvist svar behandles som en rettelse, og flowet fortsætter.
 2. Ønsket bryllupsdato eller datointerval. Datoens ledighed er ikke bekræftet, før Engestofte har undersøgt den.
 3. Forventet gæsteantal (maksimalt 150) og overnatningsbehov. Hvis kunden siger, at alle gæster overnatter, og gæsteantallet allerede er kendt, bruges det antal også som overnatningsantal; spørg ikke igen hvor mange. Når der er én kendt bryllupsdato, og kunden bekræfter, at alle overnatter i perioden, forstås det som én nat fra bryllupsdatoen til dagen efter. Brug datoerne uden at spørge om nætterne igen, medmindre kunden selv nævner et længere eller andet ophold, som stadig er uklart. Hvis kunden har gæster, men ikke ønsker overnatning på godset, anbefaler AI'en at arrangere bus og tilbyder at undersøge muligheden.
 4. Kunden vælger mellem Normal, Intim (kun højst 60 gæster) og Skræddersyet. AI'en afklarer kun, om vielsen ønskes på Engestofte, et andet sted eller endnu ikke er besluttet.
@@ -34,7 +34,7 @@ Introspørgsmålene er faste og lokaliserede. Trin 4 viser valgene som cards, og
 
 Ved 60 eller færre gæster vises Intim som et skoleprojektforslag, der samler Standardpakken med reception i Værkstedet. Det må ikke vises eller anbefales over 60 gæster. Kortet viser kun, hvad retningen indeholder; priser vises ikke i kortene. Se [faktagrundlaget for AI-flowet](ai-flow-factual-context.md).
 
-I skoleprojektets demo antages alle bryllupsdatoer i 2027 at være fuldt bookede. Kunden kan fortsætte forespørgslen for at blive taget i betragtning ved et eventuelt afbud, men der må ikke loves en plads eller booking. De dokumenterede normale bryllupsmåneder er maj, juni, august og september. I april, juli og oktober afholdes der normalt ikke bryllupper, men kunden må fortsætte forespørgslen til manuel vurdering. November, december, januar, februar og marts holdes lukket for bryllupper; kunden kan vælge en ny dato eller lukke forespørgslen. Alle datoer i 2028 antages ubeskrevne i demokalenderen, men dette tilsidesætter ikke månedernes sæsonregler og kunden må ikke loves en booking. Belægning i andre år er ukendt. Se [faktagrundlaget for AI-flowet](ai-flow-factual-context.md).
+I skoleprojektets demo antages alle bryllupsdatoer i 2027 at være fuldt bookede. Kunden kan stadig fortsætte og indsende forespørgslen til Engestofte for vurdering. Der tilbydes ikke venteliste, og det må ikke fremstilles som en reservation eller booking. De dokumenterede normale bryllupsmåneder er maj, juni, august og september. I april, juli og oktober afholdes der normalt ikke bryllupper, men kunden må fortsætte forespørgslen til manuel vurdering. November, december, januar, februar og marts holdes lukket for bryllupper; kunden kan vælge en ny dato eller lukke forespørgslen. Alle datoer i 2028 antages ubeskrevne i demokalenderen, men dette tilsidesætter ikke månedernes sæsonregler og kunden må ikke loves en booking. Belægning i andre år er ukendt. Se [faktagrundlaget for AI-flowet](ai-flow-factual-context.md).
 
 ## Brylluppets program
 

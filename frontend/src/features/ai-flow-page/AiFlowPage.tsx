@@ -16,7 +16,7 @@ export default function AiFlowPage() {
 	const { content, language } = useTranslate()
 	const copy = content.aiFlow
 	const { startFinalTransition } = useAiFlowTransition()
-	const { answer, currentStep, customerName, expectedGuestCount, hasAllergies, allergyDetails, expectedVeganCount, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, setHasAllergies, setAllergyDetails, setExpectedVeganCount, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finalMessage, copy.customerName, copy.aiUnavailable, language)
+	const { answer, currentStep, customerName, expectedGuestCount, hasAllergies, allergyDetails, expectedVeganCount, error, formatMessageTime, hasResumedDraft, hasUnrecognizedDraft, isAiUnavailable, isComplete, isOutOfScope, isPending, messages, messagesEndRef, setAnswer, setHasAllergies, setAllergyDetails, setExpectedVeganCount, submitAnswer } = useAiFlow(copy.introMessage, copy.stepQuestions, copy.finalMessage, copy.customerName, language)
 	const progressLabel = isComplete
 		? copy.flowComplete
 		: copy.flowProgress.replace('{step}', String(currentStep))

@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 @Builder
 @AllArgsConstructor
-@Table(name = "ai_flow_interactions")
+@Table(name = "ai_flow_interactions", uniqueConstraints = @UniqueConstraint(name = "uk_ai_flow_interactions_request_id", columnNames = "request_id"))
 public class AiFlow {
 
 	// _________________________________________________________________________________________________________________
@@ -19,7 +19,7 @@ public class AiFlow {
 	//
 	//		PgAdmin
 	//		_______
-	//		id | answer | current_question | customer_name | language | acknowledgement | next_question | step | status
+	//		id | request_id | answer | current_question | customer_name | language | acknowledgement | next_question | step | status
 	//
 	// __________________
 	// Tested: NO
@@ -59,6 +59,9 @@ public class AiFlow {
 	@Column(name = "status", nullable = false, length = 32)
 	private AiFlowStatus status;
 
+	@Column(name = "request_id", length = 36)
+	private String requestId;
+
 	// ______ | NESTED FIELDS | ________________________________________________________________________________________
 
 	public static class Fields {
@@ -71,6 +74,7 @@ public class AiFlow {
 		public static final String NEXT_QUESTION = "nextQuestion";
 		public static final String STEP = "step";
 		public static final String STATUS = "status";
+		public static final String REQUEST_ID = "requestId";
 	}
 
 }

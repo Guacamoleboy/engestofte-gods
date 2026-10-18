@@ -1,0 +1,50 @@
+{
+  "user1": {
+    "full_name": "User One",
+    "email": "user1@example.test",
+    "password": "test-password-123"
+  },
+  "roleCustomer": {
+    "name": "CUSTOMER"
+  },
+  "roleStaff": {
+    "name": "STAFF"
+  },
+  "roleOwner": {
+    "name": "OWNER"
+  },
+  "aiFlowRequest": {
+    "request_id": "b4afc574-8dbb-4588-a76e-bd7f34b9f582",
+    "answer": "user1",
+    "current_question": "What name should I use?",
+    "customer_name": "User One",
+    "step": 1,
+    "language": "en",
+    "conversation": []
+  },
+  "aiFlowResponse": {
+    "acknowledgement": "Thank you.",
+    "next_question": "What date are you considering?",
+    "customer_name": "User One",
+    "step": 1,
+    "status": "IN_PROGRESS"
+  },
+  "eventData": {
+    "customerName": "User One <user1@example.test> +45 12 34 56 78",
+    "eventName": "User One celebration at user1@example.test",
+    "conversation": [
+      {"question": "What is your name?", "answer": "User One"},
+      {"question": "What date are you considering?", "answer": "12 July 2028 or 14 July 2028"}
+    ]
+  },
+  "emptyEventData": {},
+  "completeEnquiryDraft": {
+    "isComplete": true,
+    "language": "en",
+    "expectedGuestCount": 60,
+    "conversation": [
+      {"question": "What is your name?", "answer": "User One"},
+      {"question": "What date are you considering?", "answer": "12 July 2028"}
+    ]
+  }
+}

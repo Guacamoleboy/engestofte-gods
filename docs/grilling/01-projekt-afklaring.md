@@ -625,9 +625,9 @@ Skoleprojektet antager, at alle datoer i 2028 står ubeskrevne i demoens kalende
 
 D55 fastlægger, at projektets Intim-retning kun tilbydes ved højst 60 gæster og består af dokumenterede standard- og receptionsdele med historiske priser. Busundersøgelsen ved fravalgt overnatning består. D54 gælder fortsat for kalenderadgang og AI'ens generelle faktagrænser.
 
-### D56 — 2027 er fuldt booket i skoleprojektet, og kunden kan vælge venteliste
+### D56 — 2027 er fuldt booket i skoleprojektet, og kunden kan fortsætte forespørgslen
 
-Skoleprojektets kalenderantagelse er, at alle bryllupsdatoer i 2027 er fuldt bookede. Når kunden angiver en 2027-dato, må AI'en ikke gå videre automatisk. Den skal fortælle kunden, at året er fuldt booket, og tilbyde at fortsætte forespørgslen, så ønsket kan noteres til overvejelse ved et eventuelt afbud. Det er ikke en booking eller garanti for en plads. Spørgsmålet på dansk er: `Ønsker du at fortsætte forespørgslen, {navn}? 🙂` Ved et tydeligt ja kan forespørgslen fortsætte; ved et nej afsluttes den venligt, og kunden sendes tilbage til `/kontakt` i stedet for at blive spurgt om en ny dato.
+Skoleprojektets kalenderantagelse er, at alle bryllupsdatoer i 2027 er fuldt bookede. Når kunden angiver en 2027-dato, må AI'en ikke gå videre automatisk. Den skal fortælle kunden, at året er fuldt booket, men at kunden stadig kan fortsætte og indsende forespørgslen til Engestofte for vurdering. Der tilbydes ikke venteliste, og fortsættelse er hverken en reservation eller booking. Stil kun spørgsmålet: `Ønsker du at fortsætte forespørgslen, {navn}? 🙂` Ved et tydeligt ja kan forespørgslen fortsætte; ved et nej afsluttes den venligt, og kunden sendes tilbage til `/kontakt` i stedet for at blive spurgt om en ny dato.
 
 D56 er en skoleprojektantagelse, ikke en påstand om den aktuelle kalender. Den supplerer D55 for 2027; antagelsen om frie datoer i 2028 består, ligesom den sædvanlige juli-praksis.
 

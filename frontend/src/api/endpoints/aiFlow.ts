@@ -23,8 +23,9 @@ export type AiConversationTurn = {
 	answer: string
 }
 
-export async function submitAiAnswer(answer: string, currentQuestion: string, customerName: string, step: number, language: Language, conversation: AiConversationTurn[]): Promise<AiInteractionResponse> {
+export async function submitAiAnswer(requestId: string, answer: string, currentQuestion: string, customerName: string, step: number, language: Language, conversation: AiConversationTurn[]): Promise<AiInteractionResponse> {
 	const response = await create<AiInteractionEnvelope>('ai-flow/interaction', {
+		request_id: requestId,
 		answer,
 		current_question: currentQuestion,
 		customer_name: customerName,
