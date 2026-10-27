@@ -5,6 +5,10 @@
 > This has been done - not by will - but by need from my AIDA course which I respect.\
 > Focus has been on architecture, prompting, specs, tickets & learning using LLM CLI integrated in my workflow.
 
+> [!IMPORTANT]  
+> Project has been completed with a grade of:\
+> 10 - (B/A)
+
 ---
 
 This project is created for Engestofte Gods for my final AIDA Course project.
