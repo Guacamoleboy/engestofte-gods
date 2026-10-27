@@ -6,8 +6,9 @@
 > Focus has been on architecture, prompting, specs, tickets & learning using LLM CLI integrated in my workflow.
 
 > [!IMPORTANT]  
-> Project has been completed with a grade of:\
-> 10 - (B/A)
+> School Project has been completed with a grade of:\
+> **10**\
+> Danish Scale for reference: -03, 00, 02, 4, 7, 10 & 12.
 
 ---
 
